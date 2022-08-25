@@ -1,0 +1,51 @@
+.iconContext {
+  color: #a6b0cf;
+}
+
+.iconContext:hover {
+  color: whitesmoke;
+}
+
+.nav-text {
+  display: flex;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  color: #a6b0cf;
+  width: 100%;
+  font-size: larger;
+}
+
+.avatar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.username {
+  font-size: medium;
+  color: grey;
+  padding-right: 0.25vw;
+}
+
+.inline {
+  display: inline-flex;
+  flex-direction: row;
+}
+
+.nav-tex:hover {
+  color: whitesmoke;
+}
+
+.nav-text a {
+  display: flex;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+  color: #a6b0cf;
+  width: 100%;
+  font-size: larger;
+}
+
+.nav-text a:hover {
+  color: whitesmoke;
+}
