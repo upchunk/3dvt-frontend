@@ -3,13 +3,15 @@ import jwt_decode from "jwt-decode";
 import * as api from "../utils/api";
 
 const initialState = {
-  userid: 1,
+  userid: "",
+  apikey: "",
   loading: true,
   reload: false,
   popUp: false,
   toApprove: "",
   isApproved: false,
   userData: {},
+  groupNames: [],
   username: "",
   password: "",
   accessToken: "",
@@ -23,11 +25,11 @@ export const userConfigSlice = createSlice({
   initialState,
   reducers: {
     setUserid: (state, action) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
       state.userid = action.payload;
+    },
+
+    setApikey: (state, action) => {
+      state.apikey = action.payload;
     },
 
     setLoading: (state, action) => {
@@ -44,6 +46,11 @@ export const userConfigSlice = createSlice({
 
     setUserData: (state, action) => {
       state.userData = action.payload;
+      state.apikey = action.payload.apikey;
+    },
+
+    setGroupNames: (state, action) => {
+      state.groupNames = action.payload;
     },
 
     setAuth: (state, action) => {
@@ -75,13 +82,14 @@ export const userConfigSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const {
   setUserid,
+  setApikey,
   setLoading,
   setReload,
   setPopUp,
   setUserData,
+  setGroupNames,
   setAuth,
   setJwtToken,
   setApproval,

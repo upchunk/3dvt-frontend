@@ -8,6 +8,8 @@ export const baseURL = () =>
 
 export const userInfoUrl = (id) => `/api/users/${id}/`;
 
+export const groupInfoUrl = (id) => `/api/group/${id}/`;
+
 export const taskHistoryUrl = (id) => `/api/historydata/?userid=${id}`;
 
 export const postTaskUrl = () => `/api/realtime/`;

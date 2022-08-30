@@ -20,11 +20,13 @@ import { IconContext } from "react-icons";
 import { Link, Outlet } from "react-router-dom";
 import logo from "../../assets/horizontal-white.png";
 import { Avatar, Grid } from "@mui/material";
-import { useSelector } from "react-redux";
 import { IoChevronDown, IoSettingsOutline } from "react-icons/io5";
 import Stack from "@mui/system/Stack";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { LogOut } from "../../utils/api";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth, setJwtToken, setUserData } from "../../redux/userConfig";
 
 const drawerWidth = 240;
 
@@ -75,7 +77,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function PersistentDrawerLeft() {
   const [open, setOpen] = React.useState(true);
+  const refresh_token = useSelector((state) => state.userConfig.refreshToken);
   const userData = useSelector((state) => state.userConfig.userData);
+  const dispatch = useDispatch();
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
@@ -87,6 +91,16 @@ export default function PersistentDrawerLeft() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSignOut = () => {
+    LogOut(refresh_token).then((res) => {
+      if (res.status === 205) {
+        dispatch(setAuth(false));
+        dispatch(setJwtToken(""));
+        dispatch(setUserData({}));
+      }
+    });
   };
 
   const toolbar = (
@@ -143,7 +157,7 @@ export default function PersistentDrawerLeft() {
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
-              <MenuItem onClick={handleClose}>Logout</MenuItem>
+              <MenuItem onClick={handleSignOut}>Logout</MenuItem>
             </Menu>
           </div>
           <Link to={"/pengaturan"}>

@@ -1,0 +1,38 @@
+.card {
+  margin: 2vh 2vw;
+  display: flex;
+  width: 400px;
+  height: fit-content;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: normal;
+  box-shadow: 0 5px 20px #a0a0a0;
+}
+
+.wrapcard {
+  display: flex;
+  flex-direction: column;
+  margin: 2vh 2vw;
+  padding: 10px 20px;
+  border-radius: 1vh;
+  justify-content: center;
+  background-color: #fff;
+  align-items: center;
+  box-shadow: 0 0.5vw 1.5vh #a0a0a0;
+}
+
+.loginCard {
+  display: flex;
+  height: fit-content;
+  max-width: fit-content;
+  margin: 2vh 1.5vw;
+  padding: 10px 20px;
+  border-radius: 1vh;
+  background-color: #25a79f;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0.5vw 1.5vh #a0a0a0;
+}

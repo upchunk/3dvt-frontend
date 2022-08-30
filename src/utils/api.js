@@ -6,6 +6,7 @@ import {
   setErrSeverity,
 } from "../redux/runnerConfig";
 import { store } from "../redux/store";
+import { setAuth } from "../redux/userConfig";
 import * as url from "./urls";
 
 let controller;
@@ -20,6 +21,9 @@ const ErrorViewer = (error) => {
       errorList.push(toHeaderCase(each) + ": " + error.response.data[each])
     );
     var message = errorList.join("\n");
+    if (error.response.status === 401) {
+      store.dispatch(setAuth(false));
+    }
     store.dispatch(setErrSeverity("error"));
     store.dispatch(setErrMessage(message));
     store.dispatch(setErrCatch(true));
@@ -94,6 +98,12 @@ export async function getData(task_id) {
     .catch((error) => {
       ErrorViewer(error);
     });
+}
+
+export async function getGroupInfo(id) {
+  return await axios.get(url.groupInfoUrl(id)).catch((error) => {
+    ErrorViewer(error);
+  });
 }
 
 export async function CreateSchedule(requestBody) {
