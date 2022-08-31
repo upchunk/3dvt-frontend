@@ -21,7 +21,6 @@ export default function UserCard() {
           color: "white",
         }}
         title="Welcome Back !"
-        subheaderTypographyProps={true}
         text="Welcome"
         subheader={
           <Typography gutterBottom variant="subtitle1" component="div">

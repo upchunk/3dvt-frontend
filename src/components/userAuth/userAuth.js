@@ -33,12 +33,6 @@ export default function LoginAndRegister({ page }) {
     }
   };
 
-  const handleFullName = (fullName) => {
-    const [first, last] = fullName.split(" ");
-    setRequestBody({ ...requestBody, first_name: first });
-    setRequestBody({ ...requestBody, last_name: last });
-  };
-
   async function handleLogin() {
     api
       .jwtauthenticate(requestBody)
@@ -116,7 +110,9 @@ export default function LoginAndRegister({ page }) {
           placeholder="Masukkan Nama"
           variant="outlined"
           sx={{ marginBottom: 1 }}
-          onChange={(e) => handleFullName(e.target.value)}
+          onChange={(e) =>
+            setRequestBody({ ...requestBody, full_name: e.target.value })
+          }
         />
         <TextField
           className="white soften"
@@ -180,7 +176,7 @@ export default function LoginAndRegister({ page }) {
               variant="contained"
               onClick={page === "masuk" ? handleLogin : handleRegister}
               onKeyDown={detectKeyDown}
-              sx={{ mt: 2, width: "100%", backgroundColor: "#0148A9" }}
+              sx={{ mt: 1, mb: 1, width: "100%", backgroundColor: "#0148A9" }}
             >
               {toHeaderCase(page)}
             </Button>
