@@ -45,3 +45,11 @@ export const ChangePasswordUrl = (id) => `/api/change_password/${id}/`;
 export const LogOutUrl = () => `/api/logout/`;
 
 export const LogOutAllUrl = () => `/api/logout/all/`;
+
+export const SegmentationListUrl = () => `/api/segmentation/`;
+
+export const SegmentationGetUrl = () => `/api/segmentation/${id}/`;
+
+export const ReconstructionListUrl = () => `/api/reconstruction/`;
+
+export const ReconstructionGetUrl = () => `/api/reconstruction/${id}/`;

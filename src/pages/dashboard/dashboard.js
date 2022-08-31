@@ -1,10 +1,11 @@
 import React from "react";
+import UserCard from "../../components/muiCard/userCard";
 import "./dashboard.css";
 
 export default function Dashboard() {
   return (
     <div className="dashboard">
-      <h1 className="textRow">Coming Soon</h1>
+      <UserCard></UserCard>
     </div>
   );
 }

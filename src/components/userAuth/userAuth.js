@@ -20,8 +20,6 @@ export default function LoginAndRegister({ page }) {
   const apikey = useSelector((state) => state.userConfig.apikey);
   const [requestBody, setRequestBody] = useState({});
 
-  sessionStorage.clear();
-
   useEffect(() => {
     document.addEventListener("keydown", detectKeyDown);
     return () => document.removeEventListener("keydown", detectKeyDown);
