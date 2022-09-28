@@ -1,5 +1,5 @@
 import React from "react";
-import UserCard from "../../components/muiCard/userCard";
+import UserCard from "../../components/userCard";
 import "./dashboard.css";
 
 export default function Dashboard() {

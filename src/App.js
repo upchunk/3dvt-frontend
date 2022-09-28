@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import Dashboard from "./pages/dashboard/dashboard";
-import Segmentasi from "./pages/dataSegmentasi/dataSegmentasi";
 import Rekonstruksi3d from "./pages/rekonstruksi3d/rekonstruksi3d";
 import Feedback from "./pages/feedback/feedback";
 import PersistentDrawerLeft from "./components/navigation/navigation";
@@ -11,64 +10,51 @@ import DataSegmentasi from "./pages/dataSegmentasi/dataSegmentasi";
 import DataRekonstruksi from "./pages/dataRekonstruksi/dataRekonstruksi";
 import User from "./pages/user/user";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserInfo } from "./utils/api";
+import { getUserInfo, newRefreshToken, setDefaultToken } from "./utils/api";
 import {
   setAuth,
-  setGroupNames,
   setJwtToken,
+  setLoading,
   setUserData,
 } from "./redux/userConfig";
 import AuthPage from "./pages/authPage/authPage";
-import Snackbars from "./components/snackbar/snackbar";
-import * as api from "./utils/api";
+import Snackbars from "./components/snackbar";
 import PrivateWrapper from "./utils/PrivateWrapper";
+import Segmentasi from "./pages/segmentasi/segmentasi";
 
-function App() {
+export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
   const jwtToken = useSelector((state) => state.userConfig.jwtToken);
   const refreshToken = useSelector((state) => state.userConfig.refreshToken);
   const accessToken = useSelector((state) => state.userConfig.accessToken);
-  const userData = useSelector((state) => state.userConfig.userData);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    api.setDefaultToken(accessToken).catch(() => dispatch(setAuth(false)));
-  }, [jwtToken]);
-
   function updateToken() {
-    if (refreshToken) {
-      api.refreshToken(refreshToken).then((token) => {
+    if (refreshToken && refreshToken !== "")
+      newRefreshToken(refreshToken).then((token) => {
         dispatch(setJwtToken(token));
       });
-    }
   }
 
   useEffect(() => {
-    let fourmin = 1000 * 60 * 4; // 1000ms (1s) * 60s (1m) * 4m
+    if (accessToken && accessToken !== "")
+      setDefaultToken(accessToken).catch(() => dispatch(setAuth(false)));
+  }, [accessToken]);
+
+  useEffect(() => {
+    let delay = 1000 * 60 * 29; // 29Min Delay
     let interval = setInterval(() => {
       updateToken();
-    }, fourmin);
+    }, delay);
     return () => clearInterval(interval);
   }, [jwtToken]);
 
   useEffect(() => {
-    var groupList = [];
-    userData.groups?.forEach((id) =>
-      api
-        .getGroupInfo(id)
-        .then((res) => {
-          groupList.push(res.data.name);
-        })
-        .then(() => {
-          dispatch(setGroupNames(groupList));
-        })
-    );
-  }, [userData]);
-
-  useEffect(() => {
-    getUserInfo(userid).then((res) => {
-      dispatch(setUserData(res.data));
-    });
+    if (userid)
+      getUserInfo(userid).then((res) => {
+        dispatch(setUserData(res?.data));
+        dispatch(setLoading(false));
+      });
   }, [userid]);
 
   return (
@@ -95,5 +81,3 @@ function App() {
     </>
   );
 }
-
-export default App;

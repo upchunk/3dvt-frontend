@@ -26,7 +26,12 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { LogOut } from "../../utils/api";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuth, setJwtToken, setUserData } from "../../redux/userConfig";
+import {
+  setAuth,
+  setJwtToken,
+  setLoading,
+  setUserData,
+} from "../../redux/userConfig";
 
 const drawerWidth = 240;
 
@@ -99,6 +104,9 @@ export default function PersistentDrawerLeft() {
         dispatch(setAuth(false));
         dispatch(setJwtToken(""));
         dispatch(setUserData({}));
+        dispatch(setLoading(true));
+        window.localStorage.clear();
+        window.sessionStorage.clear();
       }
     });
   };

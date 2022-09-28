@@ -60,6 +60,8 @@
   text-align: center;
   flex-direction: row;
   font-size: medium;
+  justify-content: center;
+  align-items: center;
 }
 
 .spotlight {

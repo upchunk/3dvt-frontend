@@ -11,7 +11,7 @@ import * as url from "./urls";
 
 let controller;
 
-const ErrorViewer = (error) => {
+export const ErrorViewer = (error) => {
   const errorList = [];
   if (error.response) {
     errorList.push(
@@ -44,117 +44,18 @@ export async function getUserInfo(id) {
   });
 }
 
-export async function getTaskHistory(id) {
+export async function getGroupInfo(id) {
   if (controller != undefined) {
     controller.abort();
   }
   controller = new AbortController();
-  return await axios.get(url.taskHistoryUrl(id), {
-    signal: controller.signal,
-  });
-}
-
-export async function postTask(requestBody) {
   return await axios
-    .post(url.postTaskUrl(), requestBody)
-    .then((res) => {
-      return res.data;
+    .get(url.groupInfoUrl(id), {
+      signal: controller.signal,
     })
     .catch((error) => {
       ErrorViewer(error);
     });
-}
-
-export async function postTBTask(requestBody) {
-  return await axios
-    .post(url.postTaskbasedUrl(), requestBody)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      ErrorViewer(error);
-    });
-}
-
-export async function postLegacy(requestBody) {
-  return await axios
-    .post(url.postLegacyUrl(), requestBody, {
-      headers: { "Content-Type": "application/json" },
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((error) => {
-      ErrorViewer(error);
-    });
-}
-
-export async function getData(task_id) {
-  return await axios
-    .get(url.getDataUrl(task_id))
-    .then((res) => {
-      return res.data.result;
-    })
-    .catch((error) => {
-      ErrorViewer(error);
-    });
-}
-
-export async function getGroupInfo(id) {
-  return await axios.get(url.groupInfoUrl(id)).catch((error) => {
-    ErrorViewer(error);
-  });
-}
-
-export async function CreateSchedule(requestBody) {
-  return await axios
-    .post(url.ScheduleUrl(), requestBody)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      ErrorViewer(error);
-    });
-}
-
-export async function getSchedule() {
-  return await axios.get(url.ScheduleUrl()).catch((error) => {
-    ErrorViewer(error);
-  });
-}
-
-export async function getMappedSchedule(id) {
-  return await axios.get(url.MappingTableUrl(id)).catch((error) => {
-    ErrorViewer(error);
-  });
-}
-
-export async function updateSchedule(id, data) {
-  return await axios
-    .patch(url.ScheduleItemsUrl(id), data)
-    .then(() => {
-      return "Delete schedule successfully";
-    })
-    .catch((error) => {
-      ErrorViewer(error);
-    });
-}
-
-export async function deleteSchedule(id) {
-  return await axios
-    .delete(url.ScheduleItemsUrl(id))
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      ErrorViewer(error);
-    });
-}
-
-export async function crontabDetail(id) {
-  return await axios.get(url.CrontabItemsUrl(id)).catch((error) => {
-    ErrorViewer(error);
-  });
 }
 
 export async function jwtauthenticate(data) {
@@ -165,7 +66,46 @@ export async function jwtauthenticate(data) {
     })
     .catch((error) => {
       ErrorViewer(error);
-      return error;
+    });
+}
+
+export async function postSegmentasi(formData) {
+  return await axios
+    .post(url.SegmentationUrl(), formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      store.dispatch(setErrSeverity("success"));
+      store.dispatch(setErrMessage(res.data.message));
+      store.dispatch(setErrCatch(true));
+      return res.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function listSegmentasi(userid = "", groupname = "", status = "") {
+  return await axios
+    .get(url.SegmentationUrl(userid, groupname, status))
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function getSegmentasi(id) {
+  if (controller != undefined) {
+    controller.abort();
+  }
+  controller = new AbortController();
+  return await axios
+    .get(url.SegmentationObjectUrl(id), {
+      signal: controller.signal,
+    })
+    .catch((error) => {
+      ErrorViewer(error);
     });
 }
 
@@ -180,7 +120,7 @@ export async function Register(data) {
     });
 }
 
-export async function refreshToken(refresh) {
+export async function newRefreshToken(refresh) {
   const data = {
     refresh: refresh,
   };

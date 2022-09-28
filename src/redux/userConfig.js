@@ -24,10 +24,6 @@ export const userConfigSlice = createSlice({
   name: "userConfig",
   initialState,
   reducers: {
-    setUserid: (state, action) => {
-      state.userid = action.payload;
-    },
-
     setApikey: (state, action) => {
       state.apikey = action.payload;
     },
@@ -83,7 +79,6 @@ export const userConfigSlice = createSlice({
 });
 
 export const {
-  setUserid,
   setApikey,
   setLoading,
   setReload,
