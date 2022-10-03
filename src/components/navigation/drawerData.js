@@ -1,6 +1,6 @@
 import React from "react";
 import { BiHomeCircle } from "react-icons/bi";
-import { AiOutlineFileText, AiOutlineQuestionCircle } from "react-icons/ai";
+import { AiOutlineFileText } from "react-icons/ai";
 import { TbCameraPlus, TbCamera, TbBox } from "react-icons/tb";
 
 export const MainMenu = [
@@ -44,15 +44,6 @@ export const Rekonstruksi = [
     title: " Rekonstruksi Baru",
     path: "/rekonstruksi",
     icon: <TbBox />,
-    cName: "nav-text",
-  },
-];
-
-export const OtherInfo = [
-  {
-    title: " Tentang 3DVT",
-    path: "/about",
-    icon: <AiOutlineQuestionCircle />,
     cName: "nav-text",
   },
 ];

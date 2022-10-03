@@ -17,6 +17,7 @@ export default function Landing() {
   return (
     <div>
       <img className="background" src={background}></img>
+      <header></header>
       <section className="flex-container">
         <img className="app-logo" src={logo} width={"40%"}></img>
         <h1 className="textRow">{judul1}</h1>
@@ -37,6 +38,7 @@ export default function Landing() {
         <h1 className="textRow">{judul4}</h1>
         <p className="textRow">{paragraph4}</p>
       </section>
+      <footer></footer>
     </div>
   );
 }
