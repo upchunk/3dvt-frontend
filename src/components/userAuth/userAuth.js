@@ -6,6 +6,7 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  CssBaseline,
   FormControl,
   FormLabel,
   TextField,
@@ -27,6 +28,7 @@ import {
   GenerateApiKey,
   jwtauthenticate,
 } from "../../utils/api";
+import { Box } from "@mui/system";
 
 export default function LoginAndRegister({ page }) {
   const dispatch = useDispatch();
@@ -54,7 +56,7 @@ export default function LoginAndRegister({ page }) {
       .then((res) => {
         if (res.data.access) {
           dispatch(setJwtToken(res.data));
-          navigate("../");
+          navigate("../dashboard");
         }
       })
       .then(() => {
@@ -78,7 +80,7 @@ export default function LoginAndRegister({ page }) {
   }
 
   const Login = (
-    <>
+    <div>
       <FormControl sx={{ marginBottom: 1 }} fullWidth>
         <FormLabel>Username:</FormLabel>
         <TextField
@@ -102,7 +104,7 @@ export default function LoginAndRegister({ page }) {
           }
         />
       </FormControl>
-    </>
+    </div>
   );
 
   const Register = (
@@ -190,7 +192,11 @@ export default function LoginAndRegister({ page }) {
   );
 
   return (
-    <div>
+    <Box
+      className="flex-container"
+      sx={{ display: "flex", flexDirection: "column" }}
+    >
+      <CssBaseline />
       <Card sx={{ maxWidth: 400, height: "content", p: 1, mb: 3 }}>
         <CardMedia
           component="img"
@@ -244,6 +250,6 @@ export default function LoginAndRegister({ page }) {
           </p>
         )}
       </div>
-    </div>
+    </Box>
   );
 }

@@ -186,7 +186,7 @@ export default function PersistentDrawerLeft() {
   const drawer = (
     <>
       <DrawerHeader>
-        <Link to={"/"}>
+        <Link to={"/dashboard"}>
           <img src={logo} alt="3DVT" width="100"></img>
         </Link>
       </DrawerHeader>
