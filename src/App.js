@@ -21,6 +21,7 @@ import AuthPage from "./pages/authPage/authPage";
 import Snackbars from "./components/snackbar";
 import PrivateWrapper from "./utils/PrivateWrapper";
 import Segmentasi from "./pages/segmentasi/segmentasi";
+import Landing from "./pages/landing/landing";
 
 export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
@@ -74,6 +75,7 @@ export default function App() {
               <Route path="/user" element={<User />} />
             </Route>
           </Route>
+          <Route path="/landing" element={<Landing />} />
           <Route path="/masuk" element={<AuthPage page={"masuk"} />} exact />
           <Route path="/daftar" element={<AuthPage page={"daftar"} />} exact />
         </Routes>
