@@ -74,6 +74,7 @@ export default function App() {
               <Route path="/feedback" element={<Feedback />} />
               <Route path="/pengaturan" element={<Pengaturan />} />
               <Route path="/user" element={<User />} />
+              <Route path="/about" element={<Landing />} />
             </Route>
           </Route>
           <Route element={<TopAppBar />}>

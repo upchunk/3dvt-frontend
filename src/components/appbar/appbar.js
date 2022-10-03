@@ -71,7 +71,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function TopAppBar() {
-  const open = true;
+  const open = false;
   const isAuthenticated = useSelector(
     (state) => state.userConfig.isAuthenticated
   );

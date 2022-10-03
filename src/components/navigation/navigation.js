@@ -1,6 +1,6 @@
 import * as React from "react";
 import "./navigation.css";
-import { MainMenu, Rekonstruksi, Segmentasi } from "./drawerData";
+import { MainMenu, OtherInfo, Rekonstruksi, Segmentasi } from "./drawerData";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -257,6 +257,28 @@ export default function PersistentDrawerLeft() {
       </Divider>
       <List>
         {Rekonstruksi.map((item, index) => {
+          return (
+            <ListItem key={index} className={item.cName} disablePadding>
+              <ListItemButton>
+                <Link to={item.path}>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      pl: 2,
+                      pr: 2,
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </Link>
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
+      <List>
+        {OtherInfo.map((item, index) => {
           return (
             <ListItem key={index} className={item.cName} disablePadding>
               <ListItemButton>
