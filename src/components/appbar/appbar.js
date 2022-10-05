@@ -34,6 +34,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: 0,
+    marginTop: "-2vh",
   })
 );
 
@@ -89,8 +90,6 @@ export default function TopAppBar() {
         dispatch(setJwtToken(""));
         dispatch(setUserData({}));
         dispatch(setLoading(true));
-        window.localStorage.clear();
-        window.sessionStorage.clear();
       }
     });
   };
@@ -101,6 +100,8 @@ export default function TopAppBar() {
         justify="space-between" // Add it here :)
         container
         spacing={24}
+        paddingY={1}
+        paddingX={2}
       >
         <Grid item>
           <Link to="/dashboard">

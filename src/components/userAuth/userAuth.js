@@ -9,6 +9,7 @@ import {
   CssBaseline,
   FormControl,
   FormLabel,
+  Grid,
   TextField,
   Typography,
 } from "@mui/material";
@@ -197,59 +198,72 @@ export default function LoginAndRegister({ page }) {
       sx={{ display: "flex", flexDirection: "column" }}
     >
       <CssBaseline />
-      <Card sx={{ maxWidth: 400, height: "content", p: 1, mb: 3 }}>
-        <CardMedia
-          component="img"
-          height="150"
-          image={logo}
-          alt="3DVT Logo"
-          sx={{ pt: 5, pb: 3, paddingX: 7 }}
-        />
-        <CardHeader
-          sx={{
-            backgroundColor: "white",
-            color: "black",
-            p: 0,
-            m: 0,
-          }}
-          align="center"
-          title={cardTitle}
-        />
-        <CardContent>{page === "masuk" ? Login : Register}</CardContent>
-        <CardActions sx={{ justifyContent: "center", paddingBottom: 3 }}>
-          <Button
-            variant="contained"
-            onClick={page === "masuk" ? handleLogin : handleRegister}
-            onKeyDown={detectKeyDown}
-            sx={{
-              width: "90%",
-              backgroundColor: "#0148A9",
-              paddingX: 3,
-              paddingBottom: 1,
-              align: "center",
-            }}
-          >
-            {toHeaderCase(page)}
-          </Button>
-        </CardActions>
-      </Card>
-      <div className="center-text">
-        {page === "masuk" ? (
-          <p>
-            Belum punya akun?{" "}
-            <Link className="linkText" to="/daftar">
-              Daftar di sini
-            </Link>
-          </p>
-        ) : (
-          <p>
-            Sudah punya akun?{" "}
-            <Link className="linkText" to="/masuk">
-              Masuk di sini
-            </Link>
-          </p>
-        )}
-      </div>
+      <Grid
+        container
+        spacing={2}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid item xs={12}>
+          <Card sx={{ maxWidth: 400, height: "content", p: 1 }}>
+            <CardMedia
+              component="img"
+              height="150"
+              image={logo}
+              alt="3DVT Logo"
+              sx={{ pt: 5, pb: 3, paddingX: 7 }}
+            />
+            <CardHeader
+              sx={{
+                backgroundColor: "white",
+                color: "black",
+                p: 0,
+                m: 0,
+              }}
+              align="center"
+              title={cardTitle}
+            />
+            <CardContent>{page === "masuk" ? Login : Register}</CardContent>
+            <CardActions sx={{ justifyContent: "center", paddingBottom: 3 }}>
+              <Button
+                variant="contained"
+                onClick={page === "masuk" ? handleLogin : handleRegister}
+                onKeyDown={detectKeyDown}
+                sx={{
+                  width: "90%",
+                  backgroundColor: "#0148A9",
+                  paddingX: 3,
+                  paddingBottom: 1,
+                  align: "center",
+                }}
+              >
+                {toHeaderCase(page)}
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <div className="center-text">
+            {page === "masuk" ? (
+              <p>
+                Belum punya akun?{" "}
+                <Link className="linkText" to="/daftar">
+                  Daftar di sini
+                </Link>
+              </p>
+            ) : (
+              <p>
+                Sudah punya akun?{" "}
+                <Link className="linkText" to="/masuk">
+                  Masuk di sini
+                </Link>
+              </p>
+            )}
+          </div>
+        </Grid>
+      </Grid>
     </Box>
   );
 }
