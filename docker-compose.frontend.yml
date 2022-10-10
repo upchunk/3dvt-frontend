@@ -1,8 +1,6 @@
 services:
   frontend:
     image: "${FRONTEND_IMAGE}"
-    expose:
-      - 3000
     volumes:
       - react_build:/react/build
   nginx:
