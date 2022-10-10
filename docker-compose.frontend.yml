@@ -1,0 +1,19 @@
+services:
+  frontend:
+    image: "${FRONTEND_IMAGE}"
+    expose:
+      - 3000
+    volumes:
+      - react_build:/react/build
+  nginx:
+    image: "${NGINX_IMAGE}"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - react_build:/var/www/react
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
+    
+volumes:
+  react_build:
