@@ -34,7 +34,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
       duration: theme.transitions.duration.leavingScreen,
     }),
     marginLeft: 0,
-    marginTop: "-2vh",
+    marginTop: -40,
   })
 );
 

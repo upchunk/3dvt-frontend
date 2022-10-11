@@ -25,7 +25,7 @@ export default function Landing() {
   const navigate = useNavigate();
 
   return (
-    <Stack className="landing" paddingX={24} sx={{ flexGrow: 1 }}>
+    <Stack className="landing" paddingX={"10vw"} sx={{ flexGrow: 1 }}>
       <section>
         <Stack
           direction="column"
@@ -66,7 +66,7 @@ export default function Landing() {
       <section>
         <Stack
           direction={{ xs: "column", md: "row" }}
-          spacing={{ xs: 2, sm: 2, md: 4 }}
+          spacing={{ xs: 2, md: 4 }}
           alignItems="center"
           justifyContent="center"
           style={{ minHeight: "100vh" }}
@@ -94,7 +94,7 @@ export default function Landing() {
       <section>
         <Stack
           direction={{ xs: "column", md: "row" }}
-          spacing={{ xs: 1, sm: 2, md: 4 }}
+          spacing={{ xs: 2, md: 4 }}
           alignItems="center"
           justifyContent="center"
           style={{ minHeight: "100vh" }}
@@ -147,7 +147,7 @@ export default function Landing() {
           </Typography>
           <Stack
             direction={{ xs: "column", md: "row" }}
-            spacing={{ xs: 1, sm: 2, md: 4 }}
+            spacing={{ xs: 2, md: 4 }}
             alignItems="center"
             justifyContent="center"
             padding={2}
@@ -160,12 +160,12 @@ export default function Landing() {
       <section>
         <Stack
           direction={{ xs: "column", md: "row" }}
-          spacing={{ xs: 1, sm: 2, md: 4 }}
+          spacing={{ xs: 2, md: 4 }}
           alignItems="center"
           justifyContent="center"
           style={{ minHeight: "100vh" }}
         >
-          <Stack direction={{ xs: "column" }} spacing={{ xs: 1, sm: 2, md: 4 }}>
+          <Stack direction={{ xs: "column" }} spacing={{ xs: 2, md: 4 }}>
             <Typography
               variant="h4"
               fontFamily="montserrat"
