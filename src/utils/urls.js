@@ -29,3 +29,7 @@ export const SegmentationObjectUrl = (id) => `/api/segmentation/${id}/`;
 export const ReconstructionUrl = () => `/api/reconstruction/`;
 
 export const ReconstructionObjectUrl = (id) => `/api/reconstruction/${id}/`;
+
+export const SectionObjectUrl = (section) => `/api/landingPage/${section}/`;
+
+export const SectionListUrl = () => `/api/landingPage/`;

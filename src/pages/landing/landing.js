@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./landing.css";
 import logo from "../../assets/Logo Horizontal Crop.png";
 import ilust1 from "../../assets/ilust1.svg";
@@ -10,8 +10,10 @@ import { useNavigate } from "react-router-dom";
 import { Stack } from "@mui/system";
 import Platform from "../../components/platformCard";
 import { BiRightArrowAlt } from "react-icons/bi";
+import { useSelector } from "react-redux";
 
 export default function Landing() {
+  const loading = useSelector((state) => state.userConfig.loading);
   const judul1 = "Selamat datang di 3DVT";
   const judul2 = "Kenapa 3DVT dibuat?";
   const judul3 = "Bagaimana 3DVT Bekerja?";
@@ -23,6 +25,10 @@ export default function Landing() {
   const paragraph4 = faker.lorem.paragraph(5);
   const paragraph5 = faker.lorem.paragraph(5);
   const navigate = useNavigate();
+
+  useState(() => {
+    console.log("section useState");
+  }, [loading]);
 
   return (
     <Stack className="landing" paddingX={"10vw"} sx={{ flexGrow: 1 }}>
