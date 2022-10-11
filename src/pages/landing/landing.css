@@ -17,13 +17,10 @@
   max-width: 400px;
 }
 
-section {
-  min-height: 100vh;
-}
-
 .ilustration {
   display: flex;
-  max-width: 300px;
+  max-width: 70%;
+  min-width: 300px;
   margin: auto;
 }
 
