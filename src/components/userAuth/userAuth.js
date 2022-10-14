@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Button,
   Card,
@@ -35,15 +35,15 @@ export default function LoginAndRegister({ page }) {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const apikey = useSelector((state) => state.userConfig.apikey);
-  const [requestBody, setRequestBody] = useState({});
+  const [requestBody, setRequestBody] = React.useState({});
 
-  useEffect(() => {
+  React.useEffect(() => {
     deleteAuthHeader();
     window.localStorage.clear();
     window.sessionStorage.clear();
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.addEventListener("keydown", detectKeyDown);
     return () => document.removeEventListener("keydown", detectKeyDown);
   }, [requestBody]);

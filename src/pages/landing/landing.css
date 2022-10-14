@@ -24,6 +24,12 @@
   margin: auto;
 }
 
+.researcher {
+  display: flex;
+  width: auto;
+  margin: auto;
+}
+
 .center {
   display: flex;
   justify-content: center;
