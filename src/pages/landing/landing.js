@@ -14,25 +14,21 @@ import {
 import { useNavigate } from "react-router-dom";
 import Platform from "../../components/platformCard";
 import { BiRightArrowAlt } from "react-icons/bi";
-import { useSelector } from "react-redux";
 import { getSectionList } from "../../utils/api";
 
 export default function Landing() {
-  const loading = useSelector((state) => state.userConfig.loading);
   const navigate = useNavigate();
   const [sectionData, setSectionData] = React.useState([]);
   // const vid_width = "100%";
   // const vid_height = "100vh";
 
   React.useState(() => {
-    if (loading) {
-      getSectionList().then((res) => {
-        if (res.count > 0) {
-          setSectionData(res.results);
-        }
-      });
-    }
-  }, [loading]);
+    getSectionList().then((res) => {
+      if (res.count > 0) {
+        setSectionData(res.results);
+      }
+    });
+  }, []);
 
   return (
     <Stack className="landing" paddingX={"10vw"} sx={{ flexGrow: 1 }}>

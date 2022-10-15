@@ -25,7 +25,6 @@
     "redux-thunk": "^2.4.1"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
     "eslint": "^8.25.0",
     "eslint-plugin-react": "^7.31.10",
     "react-scripts": "^5.0.1"

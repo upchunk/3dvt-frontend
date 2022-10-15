@@ -23,6 +23,7 @@ import PrivateWrapper from "./utils/PrivateWrapper";
 import Segmentasi from "./pages/segmentasi/segmentasi";
 import Landing from "./pages/landing/landing";
 import TopAppBar from "./components/appbar/appbar";
+import LamanAdmin from "./pages/adminPage/adminPage";
 
 export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
@@ -71,9 +72,10 @@ export default function App() {
               <Route path="/segmentasi/data" element={<DataSegmentasi />} />
               <Route path="/rekonstruksi" element={<Rekonstruksi3d />} />
               <Route path="/rekonstruksi/data" element={<DataRekonstruksi />} />
-              <Route path="/feedback" element={<Feedback />} />
+              <Route path="/saran" element={<Feedback />} />
               <Route path="/pengaturan" element={<Pengaturan />} />
               <Route path="/user" element={<User />} />
+              <Route path="/edit-landing-page" element={<LamanAdmin />} />
             </Route>
           </Route>
           <Route element={<TopAppBar />}>

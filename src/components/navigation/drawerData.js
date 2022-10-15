@@ -1,7 +1,7 @@
 import React from "react";
 import { BiHomeCircle } from "react-icons/bi";
 import { AiOutlineFileText } from "react-icons/ai";
-import { TbCameraPlus, TbCamera, TbBox } from "react-icons/tb";
+import { TbCameraPlus, TbCamera, TbBox, TbLayout } from "react-icons/tb";
 
 export const MainMenu = [
   {
@@ -12,7 +12,7 @@ export const MainMenu = [
   },
   {
     title: " Saran",
-    path: "/feedback",
+    path: "/saran",
     icon: <AiOutlineFileText />,
     cName: "nav-text",
   },
@@ -44,6 +44,15 @@ export const Rekonstruksi = [
     title: " Rekonstruksi Baru",
     path: "/rekonstruksi",
     icon: <TbBox />,
+    cName: "nav-text",
+  },
+];
+
+export const StaffOnly = [
+  {
+    title: " Edit Landing Page",
+    path: "/edit-landing-page",
+    icon: <TbLayout />,
     cName: "nav-text",
   },
 ];

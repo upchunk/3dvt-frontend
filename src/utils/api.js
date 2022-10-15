@@ -202,3 +202,14 @@ export async function getSectionData(section) {
       ErrorViewer(error);
     });
 }
+
+export async function updateSectionData(section, data) {
+  return await axios
+    .patch(url.SectionObjectUrl(section), data)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
