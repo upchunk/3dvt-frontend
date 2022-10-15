@@ -9,6 +9,7 @@
 .landing {
   background-image: url("./../../assets/background.svg");
   background-size: cover;
+  background-color: aliceblue;
 }
 
 .app-logo {

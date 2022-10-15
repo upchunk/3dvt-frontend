@@ -1,9 +1,6 @@
 import React from "react";
 import "./landing.css";
 import logo from "../../assets/Logo Horizontal Crop.png";
-import ilust1 from "../../assets/ilust1.svg";
-import ilust2 from "../../assets/ilust2.svg";
-import ilust3 from "../../assets/ilust3.svg";
 import researcher from "../../assets/researcher.svg";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -76,7 +73,7 @@ export default function Landing() {
               justifyContent="center"
               style={{ minHeight: "100vh" }}
             >
-              <img src={ilust1} className="ilustration" loading="lazy" />
+              <img src={each.image} className="ilustration" loading="lazy" />
               <Stack direction={{ xs: "column" }}>
                 <Typography
                   variant="h4"
@@ -120,7 +117,7 @@ export default function Landing() {
                   {each.content}
                 </Typography>
               </Stack>
-              <img src={ilust2} className="ilustration" loading="lazy" />
+              <img src={each.image} className="ilustration" loading="lazy" />
             </Stack>
           ) : each.section === "section4" ? (
             <Stack
@@ -195,7 +192,7 @@ export default function Landing() {
                   <BiRightArrowAlt fontSize={"large"} />
                 </Button>
               </Stack>
-              <img src={ilust3} className="ilustration" loading="lazy" />
+              <img src={each.image} className="ilustration" loading="lazy" />
             </Stack>
           ) : each.section === "section7" ? (
             <Stack
