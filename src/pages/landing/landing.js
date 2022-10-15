@@ -2,9 +2,16 @@ import React from "react";
 import "./landing.css";
 import logo from "../../assets/Logo Horizontal Crop.png";
 import researcher from "../../assets/researcher.svg";
-import { Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Stack } from "@mui/system";
 import Platform from "../../components/platformCard";
 import { BiRightArrowAlt } from "react-icons/bi";
 import { useSelector } from "react-redux";
@@ -14,6 +21,8 @@ export default function Landing() {
   const loading = useSelector((state) => state.userConfig.loading);
   const navigate = useNavigate();
   const [sectionData, setSectionData] = React.useState([]);
+  // const vid_width = "100%";
+  // const vid_height = "100vh";
 
   React.useState(() => {
     if (loading) {
@@ -27,8 +36,8 @@ export default function Landing() {
 
   return (
     <Stack className="landing" paddingX={"10vw"} sx={{ flexGrow: 1 }}>
-      {sectionData.map((each, index) => (
-        <section key={index}>
+      {sectionData.map((each) => (
+        <section key={each.section}>
           {each.section === "section1" ? (
             <Stack
               direction="column"
@@ -156,6 +165,61 @@ export default function Landing() {
                 <Platform variant={"Website"} />
               </Stack>
             </Stack>
+          ) : each.section === "section5" ? (
+            <Stack
+              direction={{ xs: "column", md: "row" }}
+              spacing={{ xs: 2, md: -10 }}
+              alignItems="center"
+              justifyContent="center"
+              style={{ minHeight: "100vh" }}
+            >
+              <div className="video-responsive">
+                <iframe
+                  src={`https://www.youtube.com/embed/${each.kwargs.embedid}`}
+                  title={each.kwargs.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+              <Card sx={{ maxWidth: 400, position: "relative" }}>
+                <CardContent>
+                  <Box padding="1vh 0.5vw">
+                    <Typography
+                      variant="h4"
+                      fontFamily="montserrat"
+                      fontWeight={"bold"}
+                      align="justify"
+                    >
+                      {each.title}
+                    </Typography>
+                  </Box>
+                  <Box padding="1vh 0.5vw">
+                    <Typography
+                      fontFamily="inherit"
+                      fontSize={"1.2rem"}
+                      align="justify"
+                    >
+                      {each.content}
+                    </Typography>
+                  </Box>
+                </CardContent>
+                <CardActions>
+                  <Box padding="1vh 0.5vw">
+                    <Button
+                      variant="contained"
+                      sx={{
+                        width: "fit-content",
+                        backgroundColor: "#0148A9",
+                        align: "center",
+                      }}
+                    >
+                      Lihat Sekarang <BiRightArrowAlt fontSize={"large"} />
+                    </Button>
+                  </Box>
+                </CardActions>
+              </Card>
+            </Stack>
           ) : each.section === "section6" ? (
             <Stack
               direction={{ xs: "column", md: "row" }}
@@ -217,7 +281,11 @@ export default function Landing() {
               >
                 {each.content}
               </Typography>
-              <Stack width={"100%"} spacing={{ xs: 2, md: 4 }}>
+              <Stack
+                width={"100%"}
+                spacing={{ xs: 2, md: 6 }}
+                justifyContent="space-around"
+              >
                 <Stack
                   direction={{ xs: "row" }}
                   alignItems="center"
@@ -234,14 +302,7 @@ export default function Landing() {
                       className="researcher"
                       loading="lazy"
                     />
-                    <Typography
-                      variant="h6"
-                      fontFamily="montserrat"
-                      fontWeight={"bold"}
-                      align="center"
-                    >
-                      Nama Kang Riset
-                    </Typography>
+                    <h3>Nama Kang Riset</h3>
                   </Stack>
                   <Stack
                     direction={{ xs: "column" }}
@@ -253,14 +314,7 @@ export default function Landing() {
                       className="researcher"
                       loading="lazy"
                     />
-                    <Typography
-                      variant="h6"
-                      fontFamily="montserrat"
-                      fontWeight={"bold"}
-                      align="center"
-                    >
-                      Nama Kang Riset
-                    </Typography>
+                    <h3>Nama Kang Riset</h3>
                   </Stack>
                   <Stack
                     direction={{ xs: "column" }}
@@ -272,14 +326,7 @@ export default function Landing() {
                       className="researcher"
                       loading="lazy"
                     />
-                    <Typography
-                      variant="h6"
-                      fontFamily="montserrat"
-                      fontWeight={"bold"}
-                      align="center"
-                    >
-                      Nama Kang Riset
-                    </Typography>
+                    <h3>Nama Kang Riset</h3>
                   </Stack>
                 </Stack>
                 <Stack
@@ -298,14 +345,7 @@ export default function Landing() {
                       className="researcher"
                       loading="lazy"
                     />
-                    <Typography
-                      variant="h6"
-                      fontFamily="montserrat"
-                      fontWeight={"bold"}
-                      align="center"
-                    >
-                      Nama Kang Riset
-                    </Typography>
+                    <h3>Nama Kang Riset</h3>
                   </Stack>
                   <Stack
                     direction={{ xs: "column" }}
@@ -317,14 +357,7 @@ export default function Landing() {
                       className="researcher"
                       loading="lazy"
                     />
-                    <Typography
-                      variant="h6"
-                      fontFamily="montserrat"
-                      fontWeight={"bold"}
-                      align="center"
-                    >
-                      Nama Kang Riset
-                    </Typography>
+                    <h3>Nama Kang Riset</h3>
                   </Stack>
                   <Stack
                     direction={{ xs: "column" }}
@@ -336,14 +369,7 @@ export default function Landing() {
                       className="researcher"
                       loading="lazy"
                     />
-                    <Typography
-                      variant="h6"
-                      fontFamily="montserrat"
-                      fontWeight={"bold"}
-                      align="center"
-                    >
-                      Nama Kang Riset
-                    </Typography>
+                    <h3>Nama Kang Riset</h3>
                   </Stack>
                 </Stack>
               </Stack>
