@@ -1,3 +1,3 @@
 FROM jonasal/nginx-certbot:latest
 
-COPY nginx.conf /etc/nginx/user_conf.d/
+COPY nginx.conf /etc/nginx/conf.d/
