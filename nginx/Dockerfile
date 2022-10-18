@@ -1,3 +1,4 @@
-FROM jonasal/nginx-certbot:latest
+FROM nginx:latest
 
-COPY 3dvtusg.com.conf /etc/nginx/conf.d/
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/

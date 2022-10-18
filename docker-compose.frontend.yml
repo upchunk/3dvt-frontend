@@ -9,8 +9,6 @@ services:
       - react_build:/var/www/react
     ports:
       - 80:80
-    environment:
-      - CERTBOT_EMAIL=${CERTBOT_EMAIL}
     depends_on:
       - frontend
     
