@@ -180,3 +180,36 @@ export async function ChangePassword(id, data) {
       ErrorViewer(error);
     });
 }
+
+export async function getSectionList() {
+  return await axios
+    .get(url.SectionListUrl())
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function getSectionData(section) {
+  return await axios
+    .get(url.SectionObjectUrl(section))
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function updateSectionData(section, data) {
+  return await axios
+    .patch(url.SectionObjectUrl(section), data)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}

@@ -21,6 +21,9 @@ import AuthPage from "./pages/authPage/authPage";
 import Snackbars from "./components/snackbar";
 import PrivateWrapper from "./utils/PrivateWrapper";
 import Segmentasi from "./pages/segmentasi/segmentasi";
+import Landing from "./pages/landing/landing";
+import TopAppBar from "./components/appbar/appbar";
+import LamanAdmin from "./pages/adminPage/adminPage";
 
 export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
@@ -64,15 +67,19 @@ export default function App() {
         <Routes>
           <Route element={<PrivateWrapper />}>
             <Route element={<PersistentDrawerLeft />}>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/segmentasi" element={<Segmentasi />} />
               <Route path="/segmentasi/data" element={<DataSegmentasi />} />
               <Route path="/rekonstruksi" element={<Rekonstruksi3d />} />
               <Route path="/rekonstruksi/data" element={<DataRekonstruksi />} />
-              <Route path="/feedback" element={<Feedback />} />
+              <Route path="/saran" element={<Feedback />} />
               <Route path="/pengaturan" element={<Pengaturan />} />
               <Route path="/user" element={<User />} />
+              <Route path="/edit-landing-page" element={<LamanAdmin />} />
             </Route>
+          </Route>
+          <Route element={<TopAppBar />}>
+            <Route path="/" element={<Landing />} />
           </Route>
           <Route path="/masuk" element={<AuthPage page={"masuk"} />} exact />
           <Route path="/daftar" element={<AuthPage page={"daftar"} />} exact />

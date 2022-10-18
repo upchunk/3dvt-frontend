@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import { useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
@@ -60,7 +60,7 @@ export default function StyledDropzone() {
     isDragAccept,
     isDragReject,
   } = useDropzone({ accept: { "image/*": [] } });
-  const [modelIndex, setModelIndex] = useState(0);
+  const [modelIndex, setModelIndex] = React.useState(0);
   const models = ["model_tesis_epoch20_sz448.hdf5"];
   const dispatch = useDispatch();
 
@@ -70,7 +70,7 @@ export default function StyledDropzone() {
     <li key={file.path}>{file.path}</li>
   ));
 
-  const style = useMemo(
+  const style = React.useMemo(
     () => ({
       ...baseStyle,
       ...(isFocused ? focusedStyle : {}),
@@ -80,7 +80,7 @@ export default function StyledDropzone() {
     [isFocused, isDragAccept, isDragReject]
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     dispatch(setShowGalery(false));
     formData.append("user", 1);
     formData.append("model", models[modelIndex]);
