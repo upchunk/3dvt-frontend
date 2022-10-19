@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Button,
   Card,
@@ -6,8 +6,10 @@ import {
   CardContent,
   CardHeader,
   CardMedia,
+  CssBaseline,
   FormControl,
   FormLabel,
+  Grid,
   TextField,
   Typography,
 } from "@mui/material";
@@ -27,20 +29,21 @@ import {
   GenerateApiKey,
   jwtauthenticate,
 } from "../../utils/api";
+import { Box } from "@mui/system";
 
 export default function LoginAndRegister({ page }) {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const apikey = useSelector((state) => state.userConfig.apikey);
-  const [requestBody, setRequestBody] = useState({});
+  const [requestBody, setRequestBody] = React.useState({});
 
-  useEffect(() => {
+  React.useEffect(() => {
     deleteAuthHeader();
     window.localStorage.clear();
     window.sessionStorage.clear();
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.addEventListener("keydown", detectKeyDown);
     return () => document.removeEventListener("keydown", detectKeyDown);
   }, [requestBody]);
@@ -54,7 +57,7 @@ export default function LoginAndRegister({ page }) {
       .then((res) => {
         if (res.data.access) {
           dispatch(setJwtToken(res.data));
-          navigate("../");
+          navigate("../dashboard");
         }
       })
       .then(() => {
@@ -78,7 +81,7 @@ export default function LoginAndRegister({ page }) {
   }
 
   const Login = (
-    <>
+    <div>
       <FormControl sx={{ marginBottom: 1 }} fullWidth>
         <FormLabel>Username:</FormLabel>
         <TextField
@@ -102,7 +105,7 @@ export default function LoginAndRegister({ page }) {
           }
         />
       </FormControl>
-    </>
+    </div>
   );
 
   const Register = (
@@ -190,60 +193,77 @@ export default function LoginAndRegister({ page }) {
   );
 
   return (
-    <div>
-      <Card sx={{ maxWidth: 400, height: "content", p: 1, mb: 3 }}>
-        <CardMedia
-          component="img"
-          height="150"
-          image={logo}
-          alt="3DVT Logo"
-          sx={{ pt: 5, pb: 3, paddingX: 7 }}
-        />
-        <CardHeader
-          sx={{
-            backgroundColor: "white",
-            color: "black",
-            p: 0,
-            m: 0,
-          }}
-          align="center"
-          title={cardTitle}
-        />
-        <CardContent>{page === "masuk" ? Login : Register}</CardContent>
-        <CardActions sx={{ justifyContent: "center", paddingBottom: 3 }}>
-          <Button
-            variant="contained"
-            onClick={page === "masuk" ? handleLogin : handleRegister}
-            onKeyDown={detectKeyDown}
-            sx={{
-              width: "90%",
-              backgroundColor: "#0148A9",
-              paddingX: 3,
-              paddingBottom: 1,
-              align: "center",
-            }}
-          >
-            {toHeaderCase(page)}
-          </Button>
-        </CardActions>
-      </Card>
-      <div className="center-text">
-        {page === "masuk" ? (
-          <p>
-            Belum punya akun?{" "}
-            <Link className="linkText" to="/daftar">
-              Daftar di sini
-            </Link>
-          </p>
-        ) : (
-          <p>
-            Sudah punya akun?{" "}
-            <Link className="linkText" to="/masuk">
-              Masuk di sini
-            </Link>
-          </p>
-        )}
-      </div>
-    </div>
+    <Box
+      className="flex-container"
+      sx={{ display: "flex", flexDirection: "column" }}
+    >
+      <CssBaseline />
+      <Grid
+        container
+        spacing={2}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Grid item xs={12}>
+          <Card sx={{ maxWidth: 400, height: "content", p: 1 }}>
+            <CardMedia
+              component="img"
+              height="150"
+              image={logo}
+              alt="3DVT Logo"
+              sx={{ pt: 5, pb: 3, paddingX: 7 }}
+            />
+            <CardHeader
+              sx={{
+                backgroundColor: "white",
+                color: "black",
+                p: 0,
+                m: 0,
+              }}
+              align="center"
+              title={cardTitle}
+            />
+            <CardContent>{page === "masuk" ? Login : Register}</CardContent>
+            <CardActions sx={{ justifyContent: "center", paddingBottom: 3 }}>
+              <Button
+                variant="contained"
+                onClick={page === "masuk" ? handleLogin : handleRegister}
+                onKeyDown={detectKeyDown}
+                sx={{
+                  width: "90%",
+                  backgroundColor: "#0148A9",
+                  paddingX: 3,
+                  paddingBottom: 1,
+                  align: "center",
+                }}
+              >
+                {toHeaderCase(page)}
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        <Grid item xs={12}>
+          <div className="center-text">
+            {page === "masuk" ? (
+              <p>
+                Belum punya akun?{" "}
+                <Link className="linkText" to="/daftar">
+                  Daftar di sini
+                </Link>
+              </p>
+            ) : (
+              <p>
+                Sudah punya akun?{" "}
+                <Link className="linkText" to="/masuk">
+                  Masuk di sini
+                </Link>
+              </p>
+            )}
+          </div>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
