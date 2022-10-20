@@ -15,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  deleteResearcherData,
   getResearcherList,
   postResearcherData,
   updateResearcherData,
@@ -46,6 +47,13 @@ export default function ResearchersForm() {
       console.log(event.target.value);
       setMode(event.target.value);
     }
+  };
+
+  const defaultBody = {
+    id: "",
+    name: "",
+    link: "",
+    description: "",
   };
 
   const [requestBody, setRequestBody] = React.useState({
@@ -104,6 +112,7 @@ export default function ResearchersForm() {
           )
         );
         dispatch(setErrCatch(true));
+        setRequestBody(defaultBody);
         loadData();
       }
     });
@@ -125,6 +134,24 @@ export default function ResearchersForm() {
           )
         );
         dispatch(setErrCatch(true));
+        setRequestBody(defaultBody);
+        loadData();
+      }
+    });
+  }
+
+  async function handleDelete() {
+    await deleteResearcherData(requestBody.id).then((res) => {
+      console.log(res.status, res.statusText);
+      if (res.status === 204) {
+        dispatch(setErrSeverity("success"));
+        dispatch(
+          setErrMessage(
+            `Data ${toHeaderCase(requestBody.name)} Berhasil di Hapus`
+          )
+        );
+        dispatch(setErrCatch(true));
+        setRequestBody(defaultBody);
         loadData();
       }
     });
@@ -146,7 +173,7 @@ export default function ResearchersForm() {
           spacing={2}
           sx={{ justifyContent: "center", alignItems: "center" }}
         >
-          {mode === "update" ? (
+          {mode === "create" ? null : (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>
@@ -174,97 +201,101 @@ export default function ResearchersForm() {
                 </FormControl>
               </Grid>
             </>
-          ) : null}
-          <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>
-              Nama Dosen / Peneliti
-            </Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <FormControl fullWidth>
-              <TextField
-                className="white soften"
-                size="small"
-                type="string"
-                variant="outlined"
-                value={requestBody.name}
-                sx={{ marginBottom: 1 }}
-                onChange={(e) =>
-                  setRequestBody({ ...requestBody, name: e.target.value })
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>
-              Link Profile / Akun ITS
-            </Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <FormControl fullWidth>
-              <TextField
-                className="white soften"
-                size="small"
-                multiline
-                type="url"
-                variant="outlined"
-                value={requestBody.link}
-                sx={{ marginBottom: 1 }}
-                onChange={(e) =>
-                  setRequestBody({
-                    ...requestBody,
-                    link: e.target.value,
-                  })
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>Avatar</Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <Stack
-              direction={"row"}
-              spacing={{ xs: 2, md: 4 }}
-              alignItems="center"
-            >
-              {requestBody.avatar ? (
-                <img width="200px" src={requestBody.avatar} alt="Avatar" />
-              ) : null}
+          )}
+          {mode === "delete" ? null : (
+            <>
+              <Grid item xs={2}>
+                <Typography fontFamily={"montserrat"}>
+                  Nama Dosen / Peneliti
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <FormControl fullWidth>
+                  <TextField
+                    className="white soften"
+                    size="small"
+                    type="string"
+                    variant="outlined"
+                    value={requestBody.name}
+                    sx={{ marginBottom: 1 }}
+                    onChange={(e) =>
+                      setRequestBody({ ...requestBody, name: e.target.value })
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={2}>
+                <Typography fontFamily={"montserrat"}>
+                  Link Profile / Akun ITS
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <FormControl fullWidth>
+                  <TextField
+                    className="white soften"
+                    size="small"
+                    multiline
+                    type="url"
+                    variant="outlined"
+                    value={requestBody.link}
+                    sx={{ marginBottom: 1 }}
+                    onChange={(e) =>
+                      setRequestBody({
+                        ...requestBody,
+                        link: e.target.value,
+                      })
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={2}>
+                <Typography fontFamily={"montserrat"}>Avatar</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <Stack
+                  direction={"row"}
+                  spacing={{ xs: 2, md: 4 }}
+                  alignItems="center"
+                >
+                  {requestBody.avatar ? (
+                    <img width="200px" src={requestBody.avatar} alt="Avatar" />
+                  ) : null}
 
-              <MuiFileInput
-                label={"Input Gambar"}
-                value={avatar}
-                fullWidth
-                helperText={"Masukkan Gambar disini"}
-                onChange={handleAvatar}
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>
-              Keyword Argument (JSON)
-            </Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <FormControl fullWidth>
-              <TextField
-                className="white soften"
-                size="small"
-                multiline
-                type="string"
-                variant="outlined"
-                value={requestBody.kwargs}
-                sx={{ marginBottom: 1 }}
-                onChange={(e) =>
-                  setRequestBody({
-                    ...requestBody,
-                    kwargs: e.target.value,
-                  })
-                }
-              />
-            </FormControl>
-          </Grid>
+                  <MuiFileInput
+                    label={"Input Gambar"}
+                    value={avatar}
+                    fullWidth
+                    helperText={"Masukkan Gambar disini"}
+                    onChange={handleAvatar}
+                  />
+                </Stack>
+              </Grid>
+              <Grid item xs={2}>
+                <Typography fontFamily={"montserrat"}>
+                  Keyword Argument (JSON)
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <FormControl fullWidth>
+                  <TextField
+                    className="white soften"
+                    size="small"
+                    multiline
+                    type="string"
+                    variant="outlined"
+                    value={requestBody.kwargs}
+                    sx={{ marginBottom: 1 }}
+                    onChange={(e) =>
+                      setRequestBody({
+                        ...requestBody,
+                        kwargs: e.target.value,
+                      })
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </>
+          )}
         </Grid>
       </CardContent>
 
@@ -279,6 +310,7 @@ export default function ResearchersForm() {
           >
             <ToggleButton value="update">Update</ToggleButton>
             <ToggleButton value="create">Create</ToggleButton>
+            <ToggleButton value="delete">Delete</ToggleButton>
           </ToggleButtonGroup>
           <Button
             variant="contained"
@@ -287,7 +319,7 @@ export default function ResearchersForm() {
                 ? handleUpdate
                 : mode === "create"
                 ? handleCreate
-                : null
+                : handleDelete
             }
           >
             Terapkan
