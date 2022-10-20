@@ -205,7 +205,11 @@ export async function getSectionData(section) {
 
 export async function updateSectionData(section, data) {
   return await axios
-    .patch(url.SectionObjectUrl(section), data)
+    .patch(url.SectionObjectUrl(section), data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then((response) => {
       return response;
     })

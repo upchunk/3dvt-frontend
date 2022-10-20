@@ -14,33 +14,53 @@ import {
 } from "@mui/material";
 import { getSectionList, updateSectionData } from "../utils/api";
 import { Stack } from "@mui/system";
+import { MuiFileInput } from "mui-file-input";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, setReload } from "../redux/userConfig";
 export default function LandingPageForm() {
+  const dispatch = useDispatch();
+  const reload = useSelector((state) => state.userConfig.reload);
+  const loading = useSelector((state) => state.userConfig.loading);
   const [sectionList, setSectionList] = React.useState([]);
-  // eslint-disable-next-line no-unused-vars
-  const [sectionData, setSectionData] = React.useState({});
+  const [image, setImage] = React.useState(null);
   const cardTitle = (
     <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
       Modifikasi Landing Page
     </Typography>
   );
 
+  let formData = new FormData();
+
   const [requestBody, setRequestBody] = React.useState({
     section: "",
     title: "",
     content: "",
     image: "",
-    kwargs: {},
+    kwargs: "",
   });
 
-  React.useEffect(() => {
-    getSectionList().then((res) => {
-      if (res.count > 0) {
-        setSectionList(res.results);
-      }
-    });
-  }, []);
+  const handleImage = (img) => {
+    setImage(img);
+    console.log(img);
+  };
+
+  const loadData = () => {
+    if (loading)
+      getSectionList().then((res) => {
+        if (res.count > 0) {
+          setSectionList(res.results);
+        }
+      });
+  };
 
   React.useEffect(() => {
+    dispatch(setLoading(true));
+    loadData();
+    dispatch(setReload(false));
+  }, [reload]);
+
+  React.useEffect(() => {
+    console.log(requestBody.section);
     sectionList.map((each) => {
       if (each.section === requestBody.section) {
         setRequestBody({
@@ -52,11 +72,17 @@ export default function LandingPageForm() {
         });
       }
     });
-  }, [requestBody.section]);
+  }, [requestBody.section, sectionList]);
 
   async function handleUpdate() {
-    await updateSectionData(requestBody.section, requestBody).then((res) => {
+    formData.append("section", requestBody.section);
+    formData.append("title", requestBody.title);
+    formData.append("image", image, image.name);
+    formData.append("content", requestBody.content);
+    formData.append("kwargs", JSON.stringify(requestBody.kwargs));
+    await updateSectionData(requestBody.section, formData).then((res) => {
       console.log(res.status, res.statusText);
+      if (res.status === 200) dispatch(setReload(true));
     });
   }
 
@@ -88,14 +114,18 @@ export default function LandingPageForm() {
                 }}
               >
                 {sectionList.map((each) => (
-                  <MenuItem key={each.section} value={each.section}>
+                  <MenuItem
+                    key={each.section}
+                    value={each.section}
+                    aria-label="Section"
+                  >
                     {each.section}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Grid>
-          {requestBody.title !== "" ? (
+          {requestBody.title && requestBody.title !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>Judul</Typography>
@@ -117,7 +147,7 @@ export default function LandingPageForm() {
               </Grid>
             </>
           ) : null}
-          {requestBody.content !== "" ? (
+          {requestBody.content && requestBody.content !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>
@@ -145,46 +175,34 @@ export default function LandingPageForm() {
               </Grid>
             </>
           ) : null}
-          {requestBody.image !== null ? (
+          {requestBody.image && requestBody.image !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>Gambar</Typography>
               </Grid>
               <Grid item xs={10}>
-                <FormControl fullWidth>
-                  <Stack
-                    direction={"row"}
-                    spacing={{ xs: 2, md: 4 }}
-                    alignItems="center"
-                    justifyContent="space-around"
-                  >
-                    <img
-                      width="200px"
-                      src={requestBody.image}
-                      alt="Image Preview"
-                    />
-                    <TextField
-                      fullWidth
-                      className="white soften"
-                      multiline
-                      size="small"
-                      type="string"
-                      variant="outlined"
-                      value={requestBody.image}
-                      sx={{ marginBottom: 1 }}
-                      onChange={(e) =>
-                        setRequestBody({
-                          ...requestBody,
-                          image: e.target.value,
-                        })
-                      }
-                    />
-                  </Stack>
-                </FormControl>
+                <Stack
+                  direction={"row"}
+                  spacing={{ xs: 2, md: 4 }}
+                  alignItems="center"
+                  justifyContent="space-around"
+                >
+                  <img
+                    width="200px"
+                    src={requestBody.image}
+                    alt="Image Preview"
+                  />
+                  <MuiFileInput
+                    label={"Input Gambar"}
+                    value={image}
+                    helperText={"Masukkan Gambar disini"}
+                    onChange={handleImage}
+                  />
+                </Stack>
               </Grid>
             </>
           ) : null}
-          {requestBody.kwargs !== null ? (
+          {requestBody.kwargs && requestBody.kwargs !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>
@@ -216,9 +234,11 @@ export default function LandingPageForm() {
       </CardContent>
 
       <CardActions>
-        <Button variant="contained" onClick={handleUpdate}>
-          Terapkan
-        </Button>
+        {requestBody.section && requestBody.section !== "" ? (
+          <Button variant="contained" onClick={handleUpdate}>
+            Terapkan
+          </Button>
+        ) : null}
       </CardActions>
     </Card>
   );
