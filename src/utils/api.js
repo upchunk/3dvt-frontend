@@ -109,7 +109,7 @@ export async function getSegmentasi(id) {
     });
 }
 
-export async function Register(data) {
+export async function userRegister(data) {
   return await axios
     .post(url.RegisterUrl(), data)
     .then((response) => {
@@ -205,7 +205,48 @@ export async function getSectionData(section) {
 
 export async function updateSectionData(section, data) {
   return await axios
-    .patch(url.SectionObjectUrl(section), data)
+    .patch(url.SectionObjectUrl(section), data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function getResearcherList() {
+  return await axios
+    .get(url.ResearcherListUrl())
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function getResearcherData(section) {
+  return await axios
+    .get(url.ResearcherObjectUrl(section))
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function updateResearcherData(section, data) {
+  return await axios
+    .patch(url.ResearcherObjectUrl(section), data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then((response) => {
       return response;
     })

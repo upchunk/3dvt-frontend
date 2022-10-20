@@ -15,20 +15,16 @@ import {
 import { getSectionList, updateSectionData } from "../utils/api";
 import { Stack } from "@mui/system";
 import { MuiFileInput } from "mui-file-input";
-import { useDispatch } from "react-redux";
-import {
-  setErrCatch,
-  setErrMessage,
-  setErrSeverity,
-} from "../redux/runnerConfig";
-import { toHeaderCase } from "js-convert-case";
-export default function LandingPageForm() {
+import { useDispatch, useSelector } from "react-redux";
+import { setReload } from "../redux/userConfig";
+export default function ResearchersForm() {
+  const dispatch = useDispatch();
+  const reload = useSelector((state) => state.userConfig.reload);
   const [sectionList, setSectionList] = React.useState([]);
   const [image, setImage] = React.useState(null);
-  const dispatch = useDispatch();
   const cardTitle = (
     <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
-      Modifikasi Landing Page
+      Modifikasi Data Researcher
     </Typography>
   );
 
@@ -47,19 +43,25 @@ export default function LandingPageForm() {
     console.log(img);
   };
 
-  async function loadData() {
-    getSectionList().then((res) => {
-      if (res.count > 0) {
-        setSectionList(res.results);
-      }
-    });
-  }
+  const loadData = () => {
+    if (reload)
+      getSectionList()
+        .then((res) => {
+          if (res.count > 0) {
+            setSectionList(res.results);
+          }
+        })
+        .then(() => {
+          dispatch(setReload(false));
+        });
+  };
 
   React.useEffect(() => {
     loadData();
-  }, []);
+  }, [reload]);
 
   React.useEffect(() => {
+    console.log(requestBody.section);
     sectionList.map((each) => {
       if (each.section === requestBody.section) {
         setRequestBody({
@@ -74,21 +76,14 @@ export default function LandingPageForm() {
   }, [requestBody.section, sectionList]);
 
   async function handleUpdate() {
+    formData.append("section", requestBody.section);
     formData.append("title", requestBody.title);
-    if (image !== null) formData.append("image", image, image.name);
+    formData.append("image", image, image.name);
     formData.append("content", requestBody.content);
     formData.append("kwargs", JSON.stringify(requestBody.kwargs));
     await updateSectionData(requestBody.section, formData).then((res) => {
-      if (res.status === 200) {
-        dispatch(setErrSeverity("success"));
-        dispatch(
-          setErrMessage(
-            `Data ${toHeaderCase(requestBody.section)} Berhasil di Update`
-          )
-        );
-        dispatch(setErrCatch(true));
-        loadData();
-      }
+      console.log(res.status, res.statusText);
+      if (res.status === 200) dispatch(setReload(true));
     });
   }
 

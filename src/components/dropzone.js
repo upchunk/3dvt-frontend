@@ -14,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import { postSegmentasi } from "../utils/api";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setResultImages,
   setShowGalery,
@@ -61,6 +61,7 @@ export default function StyledDropzone() {
     isDragReject,
   } = useDropzone({ accept: { "image/*": [] } });
   const [modelIndex, setModelIndex] = React.useState(0);
+  const userid = useSelector((state) => state.userConfig.userid);
   const models = ["model_tesis_epoch20_sz448.hdf5"];
   const dispatch = useDispatch();
 
@@ -82,11 +83,12 @@ export default function StyledDropzone() {
 
   React.useEffect(() => {
     dispatch(setShowGalery(false));
-    formData.append("user", 1);
+    formData.append("user", userid);
     formData.append("model", models[modelIndex]);
   }, [modelIndex]);
 
   acceptedFiles.map((file) => {
+    console.log(file);
     formData.append("images", file, file.name);
   });
 

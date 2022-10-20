@@ -3,6 +3,7 @@ import "./landing.css";
 import logo from "../../assets/Logo Horizontal Crop.png";
 import researcher from "../../assets/researcher.svg";
 import {
+  Avatar,
   Box,
   Button,
   Card,
@@ -279,6 +280,7 @@ export default function Landing() {
               </Typography>
               <Stack
                 width={"100%"}
+                direction={{ xs: "column" }}
                 spacing={{ xs: 2, md: 6 }}
                 justifyContent="space-around"
               >
@@ -288,42 +290,30 @@ export default function Landing() {
                   justifyContent="space-around"
                   spacing={{ xs: 2, md: 4 }}
                 >
-                  <Stack
-                    direction={{ xs: "column" }}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <img
+                  <div className="researcher">
+                    <Avatar
+                      alt="Remy Sharp"
                       src={researcher}
-                      className="researcher"
-                      loading="lazy"
+                      sx={{ width: 150, height: 150 }}
                     />
                     <h3>Nama Kang Riset</h3>
-                  </Stack>
-                  <Stack
-                    direction={{ xs: "column" }}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <img
+                  </div>
+                  <div className="researcher">
+                    <Avatar
+                      alt="Remy Sharp"
                       src={researcher}
-                      className="researcher"
-                      loading="lazy"
+                      sx={{ width: 150, height: 150 }}
                     />
                     <h3>Nama Kang Riset</h3>
-                  </Stack>
-                  <Stack
-                    direction={{ xs: "column" }}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <img
+                  </div>
+                  <div className="researcher">
+                    <Avatar
+                      alt="Remy Sharp"
                       src={researcher}
-                      className="researcher"
-                      loading="lazy"
+                      sx={{ width: 150, height: 150 }}
                     />
                     <h3>Nama Kang Riset</h3>
-                  </Stack>
+                  </div>
                 </Stack>
                 <Stack
                   direction={{ xs: "row" }}
@@ -331,42 +321,30 @@ export default function Landing() {
                   justifyContent="space-around"
                   spacing={{ xs: 2, md: 4 }}
                 >
-                  <Stack
-                    direction={{ xs: "column" }}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <img
+                  <div className="researcher">
+                    <Avatar
+                      alt="Remy Sharp"
                       src={researcher}
-                      className="researcher"
-                      loading="lazy"
+                      sx={{ width: 150, height: 150 }}
                     />
                     <h3>Nama Kang Riset</h3>
-                  </Stack>
-                  <Stack
-                    direction={{ xs: "column" }}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <img
+                  </div>
+                  <div className="researcher">
+                    <Avatar
+                      alt="Remy Sharp"
                       src={researcher}
-                      className="researcher"
-                      loading="lazy"
+                      sx={{ width: 150, height: 150 }}
                     />
                     <h3>Nama Kang Riset</h3>
-                  </Stack>
-                  <Stack
-                    direction={{ xs: "column" }}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <img
+                  </div>
+                  <div className="researcher">
+                    <Avatar
+                      alt="Remy Sharp"
                       src={researcher}
-                      className="researcher"
-                      loading="lazy"
+                      sx={{ width: 150, height: 150 }}
                     />
                     <h3>Nama Kang Riset</h3>
-                  </Stack>
+                  </div>
                 </Stack>
               </Stack>
             </Stack>
