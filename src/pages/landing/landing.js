@@ -292,20 +292,21 @@ export default function Landing() {
               >
                 {each.content}
               </Typography>
-              <Grid container rowSpacing={4}>
+              <Grid container rowSpacing={2}>
                 {researchers.map((each) => (
                   <Grid
                     item
                     key={each.id}
                     xs={12}
-                    sm={5}
+                    sm={6}
                     md={4}
+                    direction={{ xs: "row", sm: "column" }}
                     className="researcher"
                   >
                     <Avatar
                       alt={`${each.name}`}
                       src={each.avatar}
-                      sx={{ width: 150, height: 150, marginBottom: 2 }}
+                      sx={{ width: 150, height: 150, margin: 2 }}
                     />
                     <Typography
                       variant="h5"
@@ -318,75 +319,6 @@ export default function Landing() {
                   </Grid>
                 ))}
               </Grid>
-              {/* <Stack
-                width={"100%"}
-                direction={{ xs: "column" }}
-                spacing={{ xs: 2, md: 6 }}
-                justifyContent="space-around"
-              >
-                <Stack
-                  direction={{ xs: "row" }}
-                  alignItems="center"
-                  justifyContent="space-around"
-                  spacing={{ xs: 2, md: 4 }}
-                >
-                  <div className="researcher">
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={researcher}
-                      sx={{ width: 150, height: 150 }}
-                    />
-                    <h3>Nama Kang Riset</h3>
-                  </div>
-                  <div className="researcher">
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={researcher}
-                      sx={{ width: 150, height: 150 }}
-                    />
-                    <h3>Nama Kang Riset</h3>
-                  </div>
-                  <div className="researcher">
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={researcher}
-                      sx={{ width: 150, height: 150 }}
-                    />
-                    <h3>Nama Kang Riset</h3>
-                  </div>
-                </Stack>
-                <Stack
-                  direction={{ xs: "row" }}
-                  alignItems="center"
-                  justifyContent="space-around"
-                  spacing={{ xs: 2, md: 4 }}
-                >
-                  <div className="researcher">
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={researcher}
-                      sx={{ width: 150, height: 150 }}
-                    />
-                    <h3>Nama Kang Riset</h3>
-                  </div>
-                  <div className="researcher">
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={researcher}
-                      sx={{ width: 150, height: 150 }}
-                    />
-                    <h3>Nama Kang Riset</h3>
-                  </div>
-                  <div className="researcher">
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={researcher}
-                      sx={{ width: 150, height: 150 }}
-                    />
-                    <h3>Nama Kang Riset</h3>
-                  </div>
-                </Stack>
-              </Stack> */}
             </Stack>
           ) : null}
         </section>
