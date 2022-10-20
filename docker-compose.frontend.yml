@@ -1,0 +1,16 @@
+services:
+  frontend:
+    image: "${FRONTEND_IMAGE}"
+    volumes:
+      - react_build:/react/build
+  nginx:
+    image: "${NGINX_IMAGE}"
+    volumes:
+      - react_build:/var/www/react
+    ports:
+      - 80:80
+    depends_on:
+      - frontend
+    
+volumes:
+  react_build:
