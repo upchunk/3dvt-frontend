@@ -1,7 +1,6 @@
 import React from "react";
 import "./landing.css";
 import logo from "../../assets/Logo Horizontal Crop.png";
-import researcher from "../../assets/researcher.svg";
 import {
   Avatar,
   Box,
@@ -9,26 +8,41 @@ import {
   Card,
   CardActions,
   CardContent,
+  Grid,
   Stack,
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Platform from "../../components/platformCard";
 import { BiRightArrowAlt } from "react-icons/bi";
-import { getSectionList } from "../../utils/api";
+import { getResearcherList, getSectionList } from "../../utils/api";
 
 export default function Landing() {
   const navigate = useNavigate();
   const [sectionData, setSectionData] = React.useState([]);
+  const [researchers, setResearchers] = React.useState([]);
   // const vid_width = "100%";
   // const vid_height = "100vh";
 
-  React.useState(() => {
+  const loadSection = () => {
     getSectionList().then((res) => {
       if (res.count > 0) {
         setSectionData(res.results);
       }
     });
+  };
+
+  const loadResearcher = () => {
+    getResearcherList().then((res) => {
+      if (res.count > 0) {
+        setResearchers(res.results);
+      }
+    });
+  };
+
+  React.useState(() => {
+    loadSection();
+    loadResearcher();
   }, []);
 
   return (
@@ -278,7 +292,33 @@ export default function Landing() {
               >
                 {each.content}
               </Typography>
-              <Stack
+              <Grid container rowSpacing={4}>
+                {researchers.map((each) => (
+                  <Grid
+                    item
+                    key={each.id}
+                    xs={12}
+                    sm={5}
+                    md={4}
+                    className="researcher"
+                  >
+                    <Avatar
+                      alt={`${each.name}`}
+                      src={each.avatar}
+                      sx={{ width: 150, height: 150, marginBottom: 2 }}
+                    />
+                    <Typography
+                      variant="h5"
+                      fontFamily="montserrat"
+                      fontWeight={"bold"}
+                      align="center"
+                    >
+                      {each.name}
+                    </Typography>
+                  </Grid>
+                ))}
+              </Grid>
+              {/* <Stack
                 width={"100%"}
                 direction={{ xs: "column" }}
                 spacing={{ xs: 2, md: 6 }}
@@ -346,7 +386,7 @@ export default function Landing() {
                     <h3>Nama Kang Riset</h3>
                   </div>
                 </Stack>
-              </Stack>
+              </Stack> */}
             </Stack>
           ) : null}
         </section>
