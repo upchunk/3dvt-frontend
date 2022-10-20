@@ -188,7 +188,6 @@ export default function Landing() {
                 <iframe
                   src={`https://www.youtube.com/embed/${each.kwargs.embedid}`}
                   title={each.kwargs.title}
-                  frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
@@ -300,14 +299,16 @@ export default function Landing() {
                     xs={12}
                     sm={6}
                     md={4}
-                    direction={{ xs: "row", sm: "column" }}
+                    flexDirection={{ xs: "row", sm: "column" }}
                     className="researcher"
                   >
-                    <Avatar
-                      alt={`${each.name}`}
-                      src={each.avatar}
-                      sx={{ width: 150, height: 150, margin: 2 }}
-                    />
+                    <a href={each.link} target="_blank" rel="noreferrer">
+                      <Avatar
+                        alt={`${each.name}`}
+                        src={each.avatar}
+                        sx={{ width: 150, height: 150, margin: 2 }}
+                      />
+                    </a>
                     <Typography
                       variant="h5"
                       fontFamily="montserrat"

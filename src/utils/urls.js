@@ -37,3 +37,7 @@ export const SectionObjectUrl = (section) => `/api/landingPage/${section}/`;
 export const ResearcherListUrl = () => `/api/researcher/`;
 
 export const ResearcherObjectUrl = (id) => `/api/researcher/${id}/`;
+
+export const PublicationListUrl = () => `/api/publication/`;
+
+export const PublicationObjectUrl = (id) => `/api/publication/${id}/`;

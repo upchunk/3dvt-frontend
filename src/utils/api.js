@@ -240,6 +240,21 @@ export async function getResearcherData(section) {
     });
 }
 
+export async function postResearcherData(data) {
+  return await axios
+    .post(url.ResearcherListUrl(), data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
 export async function updateResearcherData(id, data) {
   return await axios
     .patch(url.ResearcherObjectUrl(id), data, {
@@ -247,6 +262,72 @@ export async function updateResearcherData(id, data) {
         "Content-Type": "multipart/form-data",
       },
     })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function deleteResearcherData(id) {
+  return await axios
+    .delete(url.ResearcherObjectUrl(id))
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function getPublicationList() {
+  return await axios
+    .get(url.PublicationListUrl())
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function postPublicationData(data) {
+  return await axios
+    .post(url.PublicationListUrl(), data)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function getPublicationData(section) {
+  return await axios
+    .get(url.PublicationObjectUrl(section))
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function updatePublicationData(id, data) {
+  return await axios
+    .patch(url.PublicationObjectUrl(id), data)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function deletePublicationData(id) {
+  return await axios
+    .delete(url.PublicationObjectUrl(id))
     .then((response) => {
       return response;
     })
