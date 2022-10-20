@@ -12,78 +12,86 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { getSectionList, updateSectionData } from "../utils/api";
+import { getResearcherList, updateResearcherData } from "../utils/api";
 import { Stack } from "@mui/system";
 import { MuiFileInput } from "mui-file-input";
-import { useDispatch, useSelector } from "react-redux";
-import { setReload } from "../redux/userConfig";
+import { useDispatch } from "react-redux";
+import {
+  setErrCatch,
+  setErrMessage,
+  setErrSeverity,
+} from "../redux/runnerConfig";
+import { toHeaderCase } from "js-convert-case";
 export default function ResearchersForm() {
   const dispatch = useDispatch();
-  const reload = useSelector((state) => state.userConfig.reload);
-  const [sectionList, setSectionList] = React.useState([]);
-  const [image, setImage] = React.useState(null);
+  const [researcherList, setResearcherList] = React.useState([]);
+  const [avatar, setAvatar] = React.useState(null);
   const cardTitle = (
     <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
-      Modifikasi Data Researcher
+      Modifikasi Data Peneliti
     </Typography>
   );
 
   let formData = new FormData();
 
   const [requestBody, setRequestBody] = React.useState({
-    section: "",
-    title: "",
-    content: "",
-    image: "",
+    id: "",
+    name: "",
+    link: "",
+    avatar: "",
     kwargs: "",
   });
 
-  const handleImage = (img) => {
-    setImage(img);
+  const handleAvatar = (img) => {
+    setAvatar(img);
     console.log(img);
   };
 
   const loadData = () => {
-    if (reload)
-      getSectionList()
-        .then((res) => {
-          if (res.count > 0) {
-            setSectionList(res.results);
-          }
-        })
-        .then(() => {
-          dispatch(setReload(false));
-        });
+    getResearcherList().then((res) => {
+      if (res.count > 0) {
+        setResearcherList(res.results);
+        console.log(res.results);
+      }
+    });
   };
 
   React.useEffect(() => {
     loadData();
-  }, [reload]);
+  }, []);
 
   React.useEffect(() => {
-    console.log(requestBody.section);
-    sectionList.map((each) => {
-      if (each.section === requestBody.section) {
+    researcherList.map((each) => {
+      if (each.id === requestBody.id) {
         setRequestBody({
           ...requestBody,
-          title: each.title,
-          content: each.content,
-          image: each.image,
+          name: each.name,
+          link: each.link,
+          avatar: each.avatar,
           kwargs: each.kwargs,
         });
       }
     });
-  }, [requestBody.section, sectionList]);
+  }, [requestBody.id, researcherList]);
 
   async function handleUpdate() {
-    formData.append("section", requestBody.section);
-    formData.append("title", requestBody.title);
-    formData.append("image", image, image.name);
-    formData.append("content", requestBody.content);
+    formData.append("name", requestBody.name);
+    if (avatar !== null) formData.append("avatar", avatar, avatar.name);
+    if (requestBody.link !== null && requestBody.link !== "")
+      formData.append("link", requestBody.link);
     formData.append("kwargs", JSON.stringify(requestBody.kwargs));
-    await updateSectionData(requestBody.section, formData).then((res) => {
+    await updateResearcherData(requestBody.id, formData).then((res) => {
       console.log(res.status, res.statusText);
-      if (res.status === 200) dispatch(setReload(true));
+      if (res.status === 200) {
+        dispatch(setErrSeverity("success"));
+        dispatch(
+          setErrMessage(
+            `Data ${toHeaderCase(requestBody.name)} Berhasil di Update`
+          )
+        );
+        dispatch(setErrCatch(true));
+        loadData();
+      }
     });
   }
 
@@ -104,32 +112,32 @@ export default function ResearchersForm() {
           sx={{ justifyContent: "center", alignItems: "center" }}
         >
           <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>Pilih Section</Typography>
+            <Typography fontFamily={"montserrat"}>
+              Pilih Dosen / Peneliti
+            </Typography>
           </Grid>
           <Grid item xs={10}>
             <FormControl fullWidth>
               <Select
-                value={requestBody.section}
+                value={requestBody.id}
                 onChange={(e) => {
-                  setRequestBody({ ...requestBody, section: e.target.value });
+                  setRequestBody({ ...requestBody, id: e.target.value });
                 }}
               >
-                {sectionList.map((each) => (
-                  <MenuItem
-                    key={each.section}
-                    value={each.section}
-                    aria-label="Section"
-                  >
-                    {each.section}
+                {researcherList.map((each) => (
+                  <MenuItem key={each.id} value={each.id} aria-label="Section">
+                    {each.name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Grid>
-          {requestBody.title && requestBody.title !== "" ? (
+          {requestBody.name !== "" ? (
             <>
               <Grid item xs={2}>
-                <Typography fontFamily={"montserrat"}>Judul</Typography>
+                <Typography fontFamily={"montserrat"}>
+                  Nama Dosen / Peneliti
+                </Typography>
               </Grid>
               <Grid item xs={10}>
                 <FormControl fullWidth>
@@ -138,21 +146,21 @@ export default function ResearchersForm() {
                     size="small"
                     type="string"
                     variant="outlined"
-                    value={requestBody.title}
+                    value={requestBody.name}
                     sx={{ marginBottom: 1 }}
                     onChange={(e) =>
-                      setRequestBody({ ...requestBody, title: e.target.value })
+                      setRequestBody({ ...requestBody, name: e.target.value })
                     }
                   />
                 </FormControl>
               </Grid>
             </>
           ) : null}
-          {requestBody.content && requestBody.content !== "" ? (
+          {requestBody.link !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>
-                  Konten / Isi Paragraf
+                  Link Profile / Akun ITS
                 </Typography>
               </Grid>
               <Grid item xs={10}>
@@ -161,14 +169,14 @@ export default function ResearchersForm() {
                     className="white soften"
                     size="small"
                     multiline
-                    type="string"
+                    type="url"
                     variant="outlined"
-                    value={requestBody.content}
+                    value={requestBody.link}
                     sx={{ marginBottom: 1 }}
                     onChange={(e) =>
                       setRequestBody({
                         ...requestBody,
-                        content: e.target.value,
+                        link: e.target.value,
                       })
                     }
                   />
@@ -176,34 +184,33 @@ export default function ResearchersForm() {
               </Grid>
             </>
           ) : null}
-          {requestBody.image && requestBody.image !== "" ? (
+          {requestBody.avatar !== "" ? (
             <>
               <Grid item xs={2}>
-                <Typography fontFamily={"montserrat"}>Gambar</Typography>
+                <Typography fontFamily={"montserrat"}>Avatar</Typography>
               </Grid>
               <Grid item xs={10}>
                 <Stack
                   direction={"row"}
                   spacing={{ xs: 2, md: 4 }}
                   alignItems="center"
-                  justifyContent="space-around"
                 >
-                  <img
-                    width="200px"
-                    src={requestBody.image}
-                    alt="Image Preview"
-                  />
+                  {requestBody.avatar ? (
+                    <img width="200px" src={requestBody.avatar} alt="Avatar" />
+                  ) : null}
+
                   <MuiFileInput
                     label={"Input Gambar"}
-                    value={image}
+                    value={avatar}
+                    fullWidth
                     helperText={"Masukkan Gambar disini"}
-                    onChange={handleImage}
+                    onChange={handleAvatar}
                   />
                 </Stack>
               </Grid>
             </>
           ) : null}
-          {requestBody.kwargs && requestBody.kwargs !== "" ? (
+          {requestBody.kwargs !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>
@@ -235,7 +242,7 @@ export default function ResearchersForm() {
       </CardContent>
 
       <CardActions>
-        {requestBody.section && requestBody.section !== "" ? (
+        {requestBody.id !== "" ? (
           <Button variant="contained" onClick={handleUpdate}>
             Terapkan
           </Button>

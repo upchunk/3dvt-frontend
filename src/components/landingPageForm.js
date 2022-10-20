@@ -131,7 +131,7 @@ export default function LandingPageForm() {
               </Select>
             </FormControl>
           </Grid>
-          {requestBody.title && requestBody.title !== "" ? (
+          {requestBody.title !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>Judul</Typography>
@@ -153,7 +153,7 @@ export default function LandingPageForm() {
               </Grid>
             </>
           ) : null}
-          {requestBody.content && requestBody.content !== "" ? (
+          {requestBody.content !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>
@@ -181,7 +181,7 @@ export default function LandingPageForm() {
               </Grid>
             </>
           ) : null}
-          {requestBody.image && requestBody.image !== "" ? (
+          {requestBody.image !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>Gambar</Typography>
@@ -191,15 +191,17 @@ export default function LandingPageForm() {
                   direction={"row"}
                   spacing={{ xs: 2, md: 4 }}
                   alignItems="center"
-                  justifyContent="space-around"
                 >
-                  <img
-                    width="200px"
-                    src={requestBody.image}
-                    alt="Image Preview"
-                  />
+                  {requestBody.image ? (
+                    <img
+                      width="200px"
+                      src={requestBody.image}
+                      alt="Image Preview"
+                    />
+                  ) : null}
                   <MuiFileInput
                     label={"Input Gambar"}
+                    fullWidth
                     value={image}
                     helperText={"Masukkan Gambar disini"}
                     onChange={handleImage}
@@ -208,7 +210,7 @@ export default function LandingPageForm() {
               </Grid>
             </>
           ) : null}
-          {requestBody.kwargs && requestBody.kwargs !== "" ? (
+          {requestBody.kwargs !== "" ? (
             <>
               <Grid item xs={2}>
                 <Typography fontFamily={"montserrat"}>
@@ -240,7 +242,7 @@ export default function LandingPageForm() {
       </CardContent>
 
       <CardActions>
-        {requestBody.section && requestBody.section !== "" ? (
+        {requestBody.section !== "" ? (
           <Button variant="contained" onClick={handleUpdate}>
             Terapkan
           </Button>

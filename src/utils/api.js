@@ -240,9 +240,9 @@ export async function getResearcherData(section) {
     });
 }
 
-export async function updateResearcherData(section, data) {
+export async function updateResearcherData(id, data) {
   return await axios
-    .patch(url.ResearcherObjectUrl(section), data, {
+    .patch(url.ResearcherObjectUrl(id), data, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
