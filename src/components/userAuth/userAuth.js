@@ -28,6 +28,7 @@ import {
   deleteAuthHeader,
   GenerateApiKey,
   jwtauthenticate,
+  userRegister,
 } from "../../utils/api";
 import { Box } from "@mui/system";
 
@@ -69,8 +70,7 @@ export default function LoginAndRegister({ page }) {
   }
 
   async function handleRegister() {
-    deleteAuthHeader();
-    Register(requestBody).then((response) => {
+    userRegister(requestBody).then((response) => {
       if (response) {
         dispatch(setErrSeverity("success"));
         dispatch(setErrMessage(response.statusText));

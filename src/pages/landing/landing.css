@@ -27,8 +27,13 @@
 
 .researcher {
   display: flex;
-  width: auto;
-  margin: auto;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.researcher h3 {
+  padding-top: 10px;
 }
 
 .center {

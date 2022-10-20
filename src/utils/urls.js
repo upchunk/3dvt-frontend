@@ -33,3 +33,7 @@ export const ReconstructionObjectUrl = (id) => `/api/reconstruction/${id}/`;
 export const SectionObjectUrl = (section) => `/api/landingPage/${section}/`;
 
 export const SectionListUrl = () => `/api/landingPage/`;
+
+export const ResearcherListUrl = () => `/api/researcher/`;
+
+export const ResearcherObjectUrl = (id) => `/api/researcher/${id}/`;
