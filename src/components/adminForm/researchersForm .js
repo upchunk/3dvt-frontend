@@ -21,7 +21,6 @@ import {
   updateResearcherData,
 } from "../../utils/api";
 import { Stack } from "@mui/system";
-import { MuiFileInput } from "mui-file-input";
 import { useDispatch } from "react-redux";
 import {
   setErrCatch,
@@ -29,10 +28,13 @@ import {
   setErrSeverity,
 } from "../../redux/runnerConfig";
 import { toHeaderCase } from "js-convert-case";
+import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
+
 export default function ResearchersForm() {
   const dispatch = useDispatch();
   const [researcherList, setResearcherList] = React.useState([]);
   const [avatar, setAvatar] = React.useState(null);
+  const [imageURL, setImageURL] = React.useState("");
   const [mode, setMode] = React.useState("update");
   const cardTitle = (
     <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
@@ -42,18 +44,12 @@ export default function ResearchersForm() {
 
   let formData = new FormData();
 
-  const handleChange = (event) => {
-    if (mode !== event.target.value) {
-      console.log(event.target.value);
-      setMode(event.target.value);
-    }
-  };
-
   const defaultBody = {
     id: "",
     name: "",
     link: "",
-    description: "",
+    avatar: "",
+    kwargs: "",
   };
 
   const [requestBody, setRequestBody] = React.useState({
@@ -64,18 +60,34 @@ export default function ResearchersForm() {
     kwargs: "",
   });
 
-  const handleAvatar = (img) => {
-    setAvatar(img);
-    console.log(img);
+  const handleChange = (event) => {
+    if (mode !== event.target.value) {
+      setRequestBody({ ...requestBody, ...defaultBody });
+      setMode(event.target.value);
+    }
+  };
+
+  const handleAvatar = (e) => {
+    setAvatar(e.target.files[0]);
+    setImageURL(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0]);
+  };
+
+  const emptyAvatar = () => {
+    setAvatar(null);
+    setImageURL(null);
   };
 
   const loadData = () => {
-    getResearcherList().then((res) => {
-      if (res.count > 0) {
-        setResearcherList(res.results);
-        console.log(res.results);
-      }
-    });
+    getResearcherList()
+      .then((res) => {
+        if (res.count > 0) {
+          setResearcherList(res.results);
+        }
+      })
+      .then(() => {
+        emptyAvatar();
+      });
   };
 
   React.useEffect(() => {
@@ -87,6 +99,7 @@ export default function ResearchersForm() {
       if (each.id === requestBody.id) {
         setRequestBody({
           ...requestBody,
+          id: each.id,
           name: each.name,
           link: each.link,
           avatar: each.avatar,
@@ -112,7 +125,6 @@ export default function ResearchersForm() {
           )
         );
         dispatch(setErrCatch(true));
-        setRequestBody(defaultBody);
         loadData();
       }
     });
@@ -134,7 +146,6 @@ export default function ResearchersForm() {
           )
         );
         dispatch(setErrCatch(true));
-        setRequestBody(defaultBody);
         loadData();
       }
     });
@@ -151,7 +162,6 @@ export default function ResearchersForm() {
           )
         );
         dispatch(setErrCatch(true));
-        setRequestBody(defaultBody);
         loadData();
       }
     });
@@ -260,14 +270,34 @@ export default function ResearchersForm() {
                   {requestBody.avatar ? (
                     <img width="200px" src={requestBody.avatar} alt="Avatar" />
                   ) : null}
-
-                  <MuiFileInput
-                    label={"Input Gambar"}
-                    value={avatar}
-                    fullWidth
-                    helperText={"Masukkan Gambar disini"}
-                    onChange={handleAvatar}
-                  />
+                  {avatar ? (
+                    <>
+                      <DoubleArrowIcon fontSize="large" />
+                      <img width="200px" src={imageURL} alt="Avatar" />
+                      <Button
+                        variant="contained"
+                        component="label"
+                        onClick={emptyAvatar}
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "orange",
+                          },
+                        }}
+                      >
+                        Batalkan
+                      </Button>
+                    </>
+                  ) : (
+                    <Button variant="contained" component="label">
+                      Pilih Avatar Baru
+                      <input
+                        hidden
+                        accept="image/*"
+                        type="file"
+                        onChange={handleAvatar}
+                      />
+                    </Button>
+                  )}
                 </Stack>
               </Grid>
               <Grid item xs={2}>
@@ -309,8 +339,36 @@ export default function ResearchersForm() {
             aria-label="Platform"
           >
             <ToggleButton value="update">Update</ToggleButton>
-            <ToggleButton value="create">Create</ToggleButton>
-            <ToggleButton value="delete">Delete</ToggleButton>
+            <ToggleButton
+              value="create"
+              sx={{
+                "&:hover": {
+                  color: "white",
+                  backgroundColor: "#00c800",
+                },
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  color: "white",
+                  backgroundColor: "#00c800",
+                },
+              }}
+            >
+              Create
+            </ToggleButton>
+            <ToggleButton
+              value="delete"
+              sx={{
+                "&:hover": {
+                  color: "white",
+                  backgroundColor: "red",
+                },
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  color: "white",
+                  backgroundColor: "red",
+                },
+              }}
+            >
+              Delete
+            </ToggleButton>
           </ToggleButtonGroup>
           <Button
             variant="contained"

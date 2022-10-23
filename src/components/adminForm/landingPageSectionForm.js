@@ -14,7 +14,6 @@ import {
 } from "@mui/material";
 import { getSectionList, updateSectionData } from "../../utils/api";
 import { Stack } from "@mui/system";
-import { MuiFileInput } from "mui-file-input";
 import { useDispatch } from "react-redux";
 import {
   setErrCatch,
@@ -22,8 +21,11 @@ import {
   setErrSeverity,
 } from "../../redux/runnerConfig";
 import { toHeaderCase } from "js-convert-case";
+import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
+
 export default function LandingPageSectionForm() {
   const [sectionList, setSectionList] = React.useState([]);
+  const [imageURL, setImageURL] = React.useState("");
   const [image, setImage] = React.useState(null);
   const dispatch = useDispatch();
   const cardTitle = (
@@ -34,6 +36,13 @@ export default function LandingPageSectionForm() {
 
   let formData = new FormData();
 
+  const defaultBody = {
+    title: "",
+    content: "",
+    image: "",
+    kwargs: "",
+  };
+
   const [requestBody, setRequestBody] = React.useState({
     section: "",
     title: "",
@@ -42,17 +51,26 @@ export default function LandingPageSectionForm() {
     kwargs: "",
   });
 
-  const handleImage = (img) => {
-    setImage(img);
-    console.log(img);
+  const handleImage = (e) => {
+    setImage(e.target.files[0]);
+    setImageURL(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const emptyImage = () => {
+    setImage(null);
+    setImageURL(null);
   };
 
   async function loadData() {
-    getSectionList().then((res) => {
-      if (res.count > 0) {
-        setSectionList(res.results);
-      }
-    });
+    getSectionList()
+      .then((res) => {
+        if (res.count > 0) {
+          setSectionList(res.results);
+        }
+      })
+      .then(() => {
+        emptyImage();
+      });
   }
 
   React.useEffect(() => {
@@ -64,6 +82,7 @@ export default function LandingPageSectionForm() {
       if (each.section === requestBody.section) {
         setRequestBody({
           ...requestBody,
+          section: each.section,
           title: each.title,
           content: each.content,
           image: each.image,
@@ -87,6 +106,7 @@ export default function LandingPageSectionForm() {
           )
         );
         dispatch(setErrCatch(true));
+        setRequestBody({ ...requestBody, defaultBody });
         loadData();
       }
     });
@@ -199,13 +219,34 @@ export default function LandingPageSectionForm() {
                       alt="Image Preview"
                     />
                   ) : null}
-                  <MuiFileInput
-                    label={"Input Gambar"}
-                    fullWidth
-                    value={image}
-                    helperText={"Masukkan Gambar disini"}
-                    onChange={handleImage}
-                  />
+                  {image ? (
+                    <>
+                      <DoubleArrowIcon fontSize="large" />
+                      <img width="200px" src={imageURL} alt="image" />
+                      <Button
+                        variant="contained"
+                        component="label"
+                        onClick={emptyImage}
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "orange",
+                          },
+                        }}
+                      >
+                        Batalkan
+                      </Button>
+                    </>
+                  ) : (
+                    <Button variant="contained" component="label">
+                      Pilih Gambar Baru
+                      <input
+                        hidden
+                        accept="image/*"
+                        type="file"
+                        onChange={handleImage}
+                      />
+                    </Button>
+                  )}
                 </Stack>
               </Grid>
             </>

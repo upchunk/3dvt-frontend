@@ -30,20 +30,13 @@ import { toHeaderCase } from "js-convert-case";
 import { Stack } from "@mui/system";
 export default function PublicationForm() {
   const dispatch = useDispatch();
-  const [researcherList, setPublicationList] = React.useState([]);
+  const [publicationList, setPublicationList] = React.useState([]);
   const [mode, setMode] = React.useState("update");
   const cardTitle = (
     <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
       Modifikasi Data Publikasi
     </Typography>
   );
-
-  const handleChange = (event) => {
-    if (mode !== event.target.value) {
-      console.log(event.target.value);
-      setMode(event.target.value);
-    }
-  };
 
   const defaultBody = {
     id: "",
@@ -59,11 +52,17 @@ export default function PublicationForm() {
     description: "",
   });
 
+  const handleChange = (event) => {
+    if (mode !== event.target.value) {
+      setRequestBody({ ...requestBody, ...defaultBody });
+      setMode(event.target.value);
+    }
+  };
+
   const loadData = () => {
     getPublicationList().then((res) => {
       if (res.count > 0) {
         setPublicationList(res.results);
-        console.log(res.results);
       }
     });
   };
@@ -73,17 +72,18 @@ export default function PublicationForm() {
   }, []);
 
   React.useEffect(() => {
-    researcherList.map((each) => {
+    publicationList.map((each) => {
       if (each.id === requestBody.id) {
         setRequestBody({
           ...requestBody,
+          id: each.id,
           name: each.name,
           link: each.link,
           description: each.description,
         });
       }
     });
-  }, [requestBody.id, researcherList]);
+  }, [requestBody.id, publicationList]);
 
   async function handleUpdate() {
     await updatePublicationData(requestBody.id, requestBody).then((res) => {
@@ -96,7 +96,6 @@ export default function PublicationForm() {
           )
         );
         dispatch(setErrCatch(true));
-        setRequestBody(defaultBody);
         loadData();
       }
     });
@@ -113,7 +112,6 @@ export default function PublicationForm() {
           )
         );
         dispatch(setErrCatch(true));
-        setRequestBody(defaultBody);
         loadData();
       }
     });
@@ -130,7 +128,6 @@ export default function PublicationForm() {
           )
         );
         dispatch(setErrCatch(true));
-        setRequestBody(defaultBody);
         loadData();
       }
     });
@@ -167,7 +164,7 @@ export default function PublicationForm() {
                       setRequestBody({ ...requestBody, id: e.target.value });
                     }}
                   >
-                    {researcherList.map((each) => (
+                    {publicationList.map((each) => (
                       <MenuItem
                         key={each.id}
                         value={each.id}
@@ -266,8 +263,36 @@ export default function PublicationForm() {
             aria-label="Platform"
           >
             <ToggleButton value="update">Update</ToggleButton>
-            <ToggleButton value="create">Create</ToggleButton>
-            <ToggleButton value="delete">Delete</ToggleButton>
+            <ToggleButton
+              value="create"
+              sx={{
+                "&:hover": {
+                  color: "white",
+                  backgroundColor: "#00c800",
+                },
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  color: "white",
+                  backgroundColor: "#00c800",
+                },
+              }}
+            >
+              Create
+            </ToggleButton>
+            <ToggleButton
+              value="delete"
+              sx={{
+                "&:hover": {
+                  color: "white",
+                  backgroundColor: "red",
+                },
+                "&.Mui-selected, &.Mui-selected:hover": {
+                  color: "white",
+                  backgroundColor: "red",
+                },
+              }}
+            >
+              Delete
+            </ToggleButton>
           </ToggleButtonGroup>
           <Button
             variant="contained"
