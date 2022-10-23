@@ -88,7 +88,6 @@ export default function StyledDropzone() {
   }, [modelIndex]);
 
   acceptedFiles.map((file) => {
-    console.log(file);
     formData.append("images", file, file.name);
   });
 

@@ -70,7 +70,6 @@ export default function ResearchersForm() {
   const handleAvatar = (e) => {
     setAvatar(e.target.files[0]);
     setImageURL(URL.createObjectURL(e.target.files[0]));
-    console.log(e.target.files[0]);
   };
 
   const emptyAvatar = () => {
@@ -116,7 +115,6 @@ export default function ResearchersForm() {
       formData.append("link", requestBody.link);
     formData.append("kwargs", JSON.stringify(requestBody.kwargs));
     await updateResearcherData(requestBody.id, formData).then((res) => {
-      console.log(res.status, res.statusText);
       if (res.status === 200) {
         dispatch(setErrSeverity("success"));
         dispatch(
@@ -137,7 +135,6 @@ export default function ResearchersForm() {
       formData.append("link", requestBody.link);
     formData.append("kwargs", JSON.stringify(requestBody.kwargs));
     await postResearcherData(formData).then((res) => {
-      console.log(res.status, res.statusText);
       if (res.status === 201) {
         dispatch(setErrSeverity("success"));
         dispatch(
@@ -153,7 +150,6 @@ export default function ResearchersForm() {
 
   async function handleDelete() {
     await deleteResearcherData(requestBody.id).then((res) => {
-      console.log(res.status, res.statusText);
       if (res.status === 204) {
         dispatch(setErrSeverity("success"));
         dispatch(

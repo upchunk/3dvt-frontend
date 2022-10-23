@@ -87,7 +87,6 @@ export default function PublicationForm() {
 
   async function handleUpdate() {
     await updatePublicationData(requestBody.id, requestBody).then((res) => {
-      console.log(res.status, res.statusText);
       if (res.status === 200) {
         dispatch(setErrSeverity("success"));
         dispatch(
@@ -103,7 +102,6 @@ export default function PublicationForm() {
 
   async function handleCreate() {
     await postPublicationData(requestBody).then((res) => {
-      console.log(res.status, res.statusText);
       if (res.status === 201) {
         dispatch(setErrSeverity("success"));
         dispatch(
@@ -119,7 +117,6 @@ export default function PublicationForm() {
 
   async function handleDelete() {
     await deletePublicationData(requestBody.id).then((res) => {
-      console.log(res.status, res.statusText);
       if (res.status === 204) {
         dispatch(setErrSeverity("success"));
         dispatch(
