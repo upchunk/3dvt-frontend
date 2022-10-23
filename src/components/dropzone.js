@@ -94,16 +94,20 @@ export default function StyledDropzone({ type }) {
   }, [modelIndex]);
 
   acceptedFiles.map((file) => {
-    formData.append("images", file, file.name);
+    type === "segmentasi"
+      ? formData.append("images", file, file.name)
+      : formData.append("file", file, file.name);
   });
 
   const cardTitle = (
     <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
-      Buat Projek Segmentasi Baru
+      {type === "segmentasi"
+        ? "Buat Projek Segmentasi Baru"
+        : "Buat Projek Rekonstruksi Baru"}
     </Typography>
   );
 
-  async function handleSubmit() {
+  async function handleSegmentasi() {
     if (acceptedFiles.length > 0)
       postSegmentasi(formData).then((res) => {
         getSegmentasi(res.task_data.id).then((response) => {
@@ -128,6 +132,10 @@ export default function StyledDropzone({ type }) {
       });
   }
 
+  async function handleRekonstruksi() {
+    return;
+  }
+
   return (
     <Card sx={{ p: 3 }}>
       <CardHeader
@@ -138,6 +146,33 @@ export default function StyledDropzone({ type }) {
         }}
         title={cardTitle}
       ></CardHeader>
+      {type === "segmentasi" ? (
+        <CardContent>
+          <Grid
+            container
+            spacing={2}
+            sx={{ justifyContent: "center", alignItems: "center" }}
+          >
+            <Grid item xs={2}>
+              <Typography fontFamily={"montserrat"}>Model:</Typography>
+            </Grid>
+            <Grid item xs={10}>
+              <FormControl fullWidth>
+                <Select
+                  value={modelIndex}
+                  onChange={(e) => setModelIndex(e.target.value)}
+                >
+                  {models.map((each, index) => (
+                    <MenuItem key={index} value={index}>
+                      {each}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </CardContent>
+      ) : null}
       <CardContent>
         <Grid
           container
@@ -145,32 +180,11 @@ export default function StyledDropzone({ type }) {
           sx={{ justifyContent: "center", alignItems: "center" }}
         >
           <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>Model:</Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <FormControl fullWidth>
-              <Select
-                value={modelIndex}
-                onChange={(e) => setModelIndex(e.target.value)}
-              >
-                {models.map((each, index) => (
-                  <MenuItem key={index} value={index}>
-                    {each}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </CardContent>
-      <CardContent>
-        <Grid
-          container
-          spacing={2}
-          sx={{ justifyContent: "center", alignItems: "center" }}
-        >
-          <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>Lampirkan Gambar:</Typography>
+            <Typography fontFamily={"montserrat"}>
+              {type === "segmentasi"
+                ? "Lampirkan Gambar :"
+                : "Lampirkan File (.gltf)"}
+            </Typography>
           </Grid>
           <Grid item xs={10}>
             <div className="container">
@@ -192,9 +206,15 @@ export default function StyledDropzone({ type }) {
         </Grid>
       </CardContent>
       <CardActions>
-        <Button onClick={handleSubmit} variant="contained">
-          Run
-        </Button>
+        {type === "segmentasi" ? (
+          <Button onClick={handleSegmentasi} variant="contained">
+            Jalankan
+          </Button>
+        ) : (
+          <Button onClick={handleRekonstruksi} variant="contained">
+            Jalankan
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
