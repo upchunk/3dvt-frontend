@@ -13,12 +13,14 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { postSegmentasi } from "../utils/api";
+import { getSegmentasi, postSegmentasi } from "../utils/api";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setResultImages,
+  // setResultImages,
   setShowGalery,
   setSourceImages,
+  // setSourceImages,
 } from "../redux/runnerConfig";
 
 const baseStyle = {
@@ -51,7 +53,7 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-export default function StyledDropzone() {
+export default function StyledDropzone({ type }) {
   const {
     acceptedFiles,
     getRootProps,
@@ -64,6 +66,10 @@ export default function StyledDropzone() {
   const userid = useSelector((state) => state.userConfig.userid);
   const models = ["model_tesis_epoch20_sz448.hdf5"];
   const dispatch = useDispatch();
+
+  if (!type) {
+    type = "segmentasi";
+  }
 
   let formData = new FormData();
 
@@ -100,8 +106,25 @@ export default function StyledDropzone() {
   async function handleSubmit() {
     if (acceptedFiles.length > 0)
       postSegmentasi(formData).then((res) => {
-        dispatch(setSourceImages(res.task_data.sources));
-        dispatch(setResultImages(res.task_data.results));
+        getSegmentasi(res.task_data.id).then((response) => {
+          const soureList = [];
+          const resultList = [];
+          response.data.images.forEach((image) => {
+            soureList.push({
+              original: image.images,
+              originalHeight: 448,
+              originalWidth: 448,
+            });
+            resultList.push({
+              original: image.result,
+              originalHeight: 448,
+              originalWidth: 448,
+            });
+          });
+          dispatch(setSourceImages(soureList));
+          dispatch(setResultImages(resultList));
+          dispatch(setShowGalery(true));
+        });
       });
   }
 

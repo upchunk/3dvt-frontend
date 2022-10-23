@@ -47,9 +47,24 @@ function DataTable({ title }) {
     setPage(newPage);
   };
 
-  const handleShow = (source, result) => {
-    dispatch(setSourceImages(source));
-    dispatch(setResultImages(result));
+  const handleShow = (images) => {
+    console.log(images);
+    const soureList = [];
+    const resultList = [];
+    images.forEach((image) => {
+      soureList.push({
+        original: image.images,
+        originalHeight: 448,
+        originalWidth: 448,
+      });
+      resultList.push({
+        original: image.result,
+        originalHeight: 448,
+        originalWidth: 448,
+      });
+    });
+    dispatch(setSourceImages(soureList));
+    dispatch(setResultImages(resultList));
     dispatch(setShowGalery(true));
   };
 
@@ -75,7 +90,7 @@ function DataTable({ title }) {
               <TableCell align="center">No.</TableCell>
               <TableCell align="center">Project {title} ID</TableCell>
               <TableCell align="center">Jumlah Citra</TableCell>
-              <TableCell align="center">Weight</TableCell>
+              <TableCell align="center">Model / Weight</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Waktu</TableCell>
               <TableCell align="center">Hasil</TableCell>
@@ -127,7 +142,7 @@ function DataTable({ title }) {
                     {row.id}
                   </TableCell>
                   <TableCell align="center" className="textContainer">
-                    {row.sources.length}
+                    {String(row.images).split(",").length}
                   </TableCell>
                   <TableCell align="center">{row.model}</TableCell>
                   <TableCell align="center">{row.status}</TableCell>
@@ -138,7 +153,7 @@ function DataTable({ title }) {
                     <Button
                       variant="contained"
                       size="small"
-                      onClick={() => handleShow(row.sources, row.results)}
+                      onClick={() => handleShow(row.images)}
                     >
                       Lihat
                     </Button>
@@ -149,15 +164,17 @@ function DataTable({ title }) {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={segData.count}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {segData.count ? (
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={segData?.count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      ) : null}
     </Paper>
   );
 }
