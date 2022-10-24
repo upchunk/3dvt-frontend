@@ -16,12 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { LogOut } from "../../utils/api";
 import logo from "../../assets/horizontal-crop.png";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setAuth,
-  setJwtToken,
-  setLoading,
-  setUserData,
-} from "../../redux/userConfig";
+import { setAuth } from "../../redux/userConfig";
 
 const drawerWidth = 0;
 
@@ -87,9 +82,6 @@ export default function TopAppBar() {
     LogOut(refresh_token).then((res) => {
       if (res.status === 205) {
         dispatch(setAuth(false));
-        dispatch(setJwtToken(""));
-        dispatch(setUserData({}));
-        dispatch(setLoading(true));
       }
     });
   };

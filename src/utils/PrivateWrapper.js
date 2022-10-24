@@ -6,7 +6,14 @@ const PrivateWrapper = () => {
   const isAuthenticated = useSelector(
     (state) => state.userConfig.isAuthenticated
   );
-  return isAuthenticated ? <Outlet /> : <Navigate to="/masuk" />;
+
+  return isAuthenticated ? (
+    <>
+      <Outlet />
+    </>
+  ) : (
+    <Navigate to="/masuk" />
+  );
 };
 
 export default PrivateWrapper;

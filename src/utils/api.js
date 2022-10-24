@@ -6,7 +6,7 @@ import {
   setErrSeverity,
 } from "../redux/runnerConfig";
 import { store } from "../redux/store";
-import { setAuth } from "../redux/userConfig";
+import { setAuth, setLoading } from "../redux/userConfig";
 import * as url from "./urls";
 
 let controller;
@@ -20,13 +20,19 @@ export const ErrorViewer = (error) => {
     Object.keys(error.response.data).map((each) =>
       errorList.push(toHeaderCase(each) + ": " + error.response.data[each])
     );
+    400 <= error.response.status < 500
+      ? store.dispatch(setErrSeverity("warning"))
+      : store.dispatch(setErrSeverity("error"));
     var message = errorList.join("\n");
     if (error.response.status === 401) {
+      store.dispatch(setLoading(true));
       store.dispatch(setAuth(false));
+      store.dispatch(setErrMessage(error.response.data.message));
+      store.dispatch(setErrCatch(true));
+    } else {
+      store.dispatch(setErrMessage(message));
+      store.dispatch(setErrCatch(true));
     }
-    store.dispatch(setErrSeverity("error"));
-    store.dispatch(setErrMessage(message));
-    store.dispatch(setErrCatch(true));
   }
 };
 

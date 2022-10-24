@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import jwt_decode from "jwt-decode";
-import * as api from "../utils/api";
 
 const initialState = {
   userid: "",
@@ -60,7 +59,6 @@ export const userConfigSlice = createSlice({
       const access = String(jwt.access);
       state.accessToken = access;
       state.userid = jwt_decode(access).user_id;
-      api.setDefaultToken(access);
 
       const refresh = String(jwt.refresh);
       state.refreshToken = refresh;

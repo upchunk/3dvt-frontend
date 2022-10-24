@@ -8,7 +8,7 @@
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.10",
     "@mui/system": "^5.10.10",
-    "@react-three/drei": "^9.36.0",
+    "@react-three/drei": "^9.37.1",
     "@react-three/fiber": "^8.8.10",
     "@reduxjs/toolkit": "^1.8.6",
     "axios": "^1.1.3",

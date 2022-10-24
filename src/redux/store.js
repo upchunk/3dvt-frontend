@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userConfigReducer from "./userConfig";
 import runnerConfigReducer from "./runnerConfig";
-import storage from "redux-persist/lib/storage/";
+import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";

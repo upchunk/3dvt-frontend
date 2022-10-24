@@ -16,6 +16,7 @@ const initialState = {
   sourceImages: [],
   resultImages: [],
   model: "",
+  showModel: false,
 };
 
 export const runnerConfigSlice = createSlice({
@@ -67,6 +68,9 @@ export const runnerConfigSlice = createSlice({
     setModel: (state, action) => {
       state.model = action.payload;
     },
+    setShowModel: (state, action) => {
+      state.showModel = action.payload;
+    },
   },
 });
 
@@ -87,6 +91,7 @@ export const {
   setSourceImages,
   setResultImages,
   setModel,
+  setShowModel,
 } = runnerConfigSlice.actions;
 
 export default runnerConfigSlice.reducer;

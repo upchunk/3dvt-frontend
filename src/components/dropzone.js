@@ -19,9 +19,11 @@ import {
   setErrCatch,
   setErrMessage,
   setErrSeverity,
+  setModel,
   setResultImages,
   // setResultImages,
   setShowGalery,
+  setShowModel,
   setSourceImages,
   // setSourceImages,
 } from "../redux/runnerConfig";
@@ -88,9 +90,12 @@ export default function StyledDropzone({ type }) {
     </Typography>
   );
 
-  const files = acceptedFiles.map((file) => (
-    <li key={file.path}>{file.path}</li>
-  ));
+  const files =
+    type === "segmentasi"
+      ? acceptedFiles.map((file) => <li key={file.path}>{file.path}</li>)
+      : acceptedFiles.map((file, index) =>
+          index === 0 ? <li key={file.path}>{file.path}</li> : null
+        );
 
   const style = React.useMemo(
     () => ({
@@ -101,8 +106,6 @@ export default function StyledDropzone({ type }) {
     }),
     [isFocused, isDragAccept, isDragReject]
   );
-
-  React.useEffect(() => {}, [modelIndex]);
 
   async function handleSegmentasi() {
     if (acceptedFiles.length > 0) {
@@ -142,19 +145,19 @@ export default function StyledDropzone({ type }) {
       dispatch(setShowGalery(false));
       formData.append("user", userid);
       formData.append("model", models[modelIndex]);
-      acceptedFiles.map((file) => {
-        formData.append("files", file, file.name);
-      });
-      const files = formData.get("files");
-      console.log(files);
-      const ext = getExtension(files.name);
-      if (ext !== "gltf") {
+      formData.append("files", acceptedFiles[0], acceptedFiles[0].name);
+      const ext = getExtension(acceptedFiles[0].name);
+      if (ext === "gltf" || ext === "obj") {
+        postRekonstruksi(formData);
+        dispatch(setModel(URL.createObjectURL(acceptedFiles[0])));
+        dispatch(setShowModel(true));
+      } else {
         dispatch(setErrSeverity("error"));
-        dispatch(setErrMessage("File Extension is not supported" + ext));
+        dispatch(
+          setErrMessage("File ini tidak didukung >> " + acceptedFiles[0].name)
+        );
         dispatch(setErrCatch(true));
-        return;
       }
-      postRekonstruksi(formData);
     }
   }
 

@@ -23,7 +23,6 @@ function DataTable({ title }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const userid = useSelector((state) => state.userConfig.userid);
-  const reload = useSelector((state) => state.userConfig.reload);
   const loading = useSelector((state) => state.userConfig.loading);
   const userData = useSelector((state) => state.userConfig.userData);
   const segData = useSelector((state) => state.runnerConfig.segData);
@@ -38,10 +37,12 @@ function DataTable({ title }) {
   };
 
   React.useEffect(() => {
-    dispatch(setLoading(true));
-    loadSegData(userid, userData?.institution, "SUCCESS");
-    dispatch(setReload(false));
-  }, [reload]);
+    if (userid !== "" && userData !== {}) {
+      dispatch(setLoading(true));
+      loadSegData(userid, userData?.institution, "SUCCESS");
+      dispatch(setReload(false));
+    }
+  }, [userData]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -74,7 +75,7 @@ function DataTable({ title }) {
   };
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden", p: 1 }}>
+    <Paper sx={{ maxWidth: "100%", overflow: "hidden", p: 1 }}>
       <Typography
         variant="h5"
         fontWeight={"bold"}

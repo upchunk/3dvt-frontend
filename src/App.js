@@ -27,17 +27,25 @@ import LandingPageModification from "./pages/landingPageForm/landingPageForm";
 
 export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
-  const jwtToken = useSelector((state) => state.userConfig.jwtToken);
   const refreshToken = useSelector((state) => state.userConfig.refreshToken);
   const accessToken = useSelector((state) => state.userConfig.accessToken);
   const dispatch = useDispatch();
 
   function updateToken() {
-    if (refreshToken && refreshToken !== "")
-      newRefreshToken(refreshToken).then((token) => {
-        dispatch(setJwtToken(token));
-      });
+    newRefreshToken(refreshToken).then((token) => {
+      dispatch(setJwtToken(token));
+    });
   }
+
+  useEffect(() => {
+    if (refreshToken && refreshToken !== "") {
+      let delay = 1000 * 60 * 29; // 29Min Delay
+      let interval = setInterval(() => {
+        updateToken();
+      }, delay);
+      return () => clearInterval(interval);
+    }
+  }, [refreshToken]);
 
   useEffect(() => {
     if (accessToken && accessToken !== "")
@@ -45,15 +53,7 @@ export default function App() {
   }, [accessToken]);
 
   useEffect(() => {
-    let delay = 1000 * 60 * 29; // 29Min Delay
-    let interval = setInterval(() => {
-      updateToken();
-    }, delay);
-    return () => clearInterval(interval);
-  }, [jwtToken]);
-
-  useEffect(() => {
-    if (userid)
+    if (userid && userid !== "")
       getUserInfo(userid).then((res) => {
         dispatch(setUserData(res?.data));
         dispatch(setLoading(false));

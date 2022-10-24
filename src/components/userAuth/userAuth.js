@@ -70,6 +70,7 @@ export default function LoginAndRegister({ page }) {
   }
 
   async function handleRegister() {
+    deleteAuthHeader();
     userRegister(requestBody).then((response) => {
       if (response) {
         dispatch(setErrSeverity("success"));
