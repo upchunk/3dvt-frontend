@@ -1,5 +1,5 @@
 import React from "react";
-import "./dataRekonstruksi.css";
+import "./rekonstruksi3d.css";
 
 export default function DataRekonstruksi() {
   return (

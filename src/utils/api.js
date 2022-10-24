@@ -109,6 +109,50 @@ export async function getSegmentasi(id) {
     });
 }
 
+export async function postRekonstruksi(formData) {
+  return await axios
+    .post(url.ReconstructionUrl(), formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((res) => {
+      store.dispatch(setErrSeverity("success"));
+      store.dispatch(setErrMessage(res.data.message));
+      store.dispatch(setErrCatch(true));
+      return res.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function listRekonstruksi(
+  userid = "",
+  groupname = "",
+  status = ""
+) {
+  return await axios
+    .get(url.ReconstructionUrl(userid, groupname, status))
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function getRekonstruksi(id) {
+  if (controller != undefined) {
+    controller.abort();
+  }
+  controller = new AbortController();
+  return await axios
+    .get(url.ReconstructionObjectUrl(id), {
+      signal: controller.signal,
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
 export async function userRegister(data) {
   return await axios
     .post(url.RegisterUrl(), data)

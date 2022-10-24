@@ -1,10 +1,11 @@
 import React from "react";
+import StyledDropzone from "../../components/dropzone";
 import "./rekonstruksi3d.css";
 
 export default function Rekonstruksi3d() {
   return (
     <div className="rekonstruksi3d">
-      <h1 className="textRow">Coming Soon</h1>
+      <StyledDropzone type={"rekonstruksi"} />
     </div>
   );
 }

@@ -26,7 +26,8 @@ export const SegmentationUrl = (userid, groupname, status) =>
 
 export const SegmentationObjectUrl = (id) => `/api/segmentation/${id}/`;
 
-export const ReconstructionUrl = () => `/api/reconstruction/`;
+export const ReconstructionUrl = (userid, groupname, status) =>
+  `/api/reconstruction/?user=${userid}&groupname=${groupname}&status=${status}`;
 
 export const ReconstructionObjectUrl = (id) => `/api/reconstruction/${id}/`;
 

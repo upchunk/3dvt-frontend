@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import DataTable from "../../components/dataTable";
 import ImageGalleryViewer from "../../components/imageGalery/imageGalery";
 
-import "./dataSegmentasi.css";
+import "./segmentasi.css";
 
 export default function DataSegmentasi() {
   const showGalery = useSelector((state) => state.runnerConfig.showGalery);

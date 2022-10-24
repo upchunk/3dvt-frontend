@@ -90,7 +90,6 @@ function DataTable({ title }) {
               <TableCell align="center">No.</TableCell>
               <TableCell align="center">Project {title} ID</TableCell>
               <TableCell align="center">Jumlah Citra</TableCell>
-              <TableCell align="center">Model / Weight</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Waktu</TableCell>
               <TableCell align="center">Hasil</TableCell>
@@ -118,15 +117,13 @@ function DataTable({ title }) {
                   <TableCell align="center">
                     <Skeleton />
                   </TableCell>
-                  <TableCell align="center">
-                    <Skeleton />
-                  </TableCell>
                 </TableRow>
               ))}
             {segData?.count === 0 ? (
               <TableRow>
-                <TableCell align="center" rowSpan={7}>
-                  No Data Found
+                <TableCell align="center" colSpan={6}>
+                  Tidak ada data yang dapat ditampilkan, silahkan melakukan
+                  Segmentasi baru
                 </TableCell>
               </TableRow>
             ) : (
@@ -144,7 +141,6 @@ function DataTable({ title }) {
                   <TableCell align="center" className="textContainer">
                     {String(row.images).split(",").length}
                   </TableCell>
-                  <TableCell align="center">{row.model}</TableCell>
                   <TableCell align="center">{row.status}</TableCell>
                   <TableCell align="center">
                     {row.createdate.split(".")[0].replace("T", " ")}

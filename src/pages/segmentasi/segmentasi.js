@@ -10,7 +10,7 @@ export default function Segmentasi() {
 
   return (
     <div className="segmentasi">
-      <StyledDropzone></StyledDropzone>
+      <StyledDropzone />
       {showGalery ? <ImageGalleryViewer /> : null}
     </div>
   );

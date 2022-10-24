@@ -13,9 +13,12 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { getSegmentasi, postSegmentasi } from "../utils/api";
+import { getSegmentasi, postRekonstruksi, postSegmentasi } from "../utils/api";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setErrCatch,
+  setErrMessage,
+  setErrSeverity,
   setResultImages,
   // setResultImages,
   setShowGalery,
@@ -54,6 +57,9 @@ const rejectStyle = {
 };
 
 export default function StyledDropzone({ type }) {
+  if (!type) type = "segmentasi";
+
+  const fileType = type === "segmentasi" ? { accept: { "image/*": [] } } : {};
   const {
     acceptedFiles,
     getRootProps,
@@ -61,17 +67,26 @@ export default function StyledDropzone({ type }) {
     isFocused,
     isDragAccept,
     isDragReject,
-  } = useDropzone({ accept: { "image/*": [] } });
+  } = useDropzone(fileType);
   const [modelIndex, setModelIndex] = React.useState(0);
   const userid = useSelector((state) => state.userConfig.userid);
   const models = ["model_tesis_epoch20_sz448.hdf5"];
   const dispatch = useDispatch();
 
-  if (!type) {
-    type = "segmentasi";
+  function getExtension(filename) {
+    const parts = filename.split(".");
+    return parts[parts.length - 1];
   }
 
   let formData = new FormData();
+
+  const cardTitle = (
+    <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
+      {type === "segmentasi"
+        ? "Buat Projek Segmentasi Baru"
+        : "Buat Projek Rekonstruksi Baru"}
+    </Typography>
+  );
 
   const files = acceptedFiles.map((file) => (
     <li key={file.path}>{file.path}</li>
@@ -87,28 +102,17 @@ export default function StyledDropzone({ type }) {
     [isFocused, isDragAccept, isDragReject]
   );
 
-  React.useEffect(() => {
-    dispatch(setShowGalery(false));
-    formData.append("user", userid);
-    formData.append("model", models[modelIndex]);
-  }, [modelIndex]);
-
-  acceptedFiles.map((file) => {
-    type === "segmentasi"
-      ? formData.append("images", file, file.name)
-      : formData.append("file", file, file.name);
-  });
-
-  const cardTitle = (
-    <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
-      {type === "segmentasi"
-        ? "Buat Projek Segmentasi Baru"
-        : "Buat Projek Rekonstruksi Baru"}
-    </Typography>
-  );
+  React.useEffect(() => {}, [modelIndex]);
 
   async function handleSegmentasi() {
-    if (acceptedFiles.length > 0)
+    if (acceptedFiles.length > 0) {
+      dispatch(setShowGalery(false));
+      formData.append("user", userid);
+      formData.append("model", models[modelIndex]);
+      acceptedFiles.map((file) => {
+        formData.append("images", file, file.name);
+      });
+
       postSegmentasi(formData).then((res) => {
         getSegmentasi(res.task_data.id).then((response) => {
           const soureList = [];
@@ -130,10 +134,28 @@ export default function StyledDropzone({ type }) {
           dispatch(setShowGalery(true));
         });
       });
+    }
   }
 
   async function handleRekonstruksi() {
-    return;
+    if (acceptedFiles.length > 0) {
+      dispatch(setShowGalery(false));
+      formData.append("user", userid);
+      formData.append("model", models[modelIndex]);
+      acceptedFiles.map((file) => {
+        formData.append("files", file, file.name);
+      });
+      const files = formData.get("files");
+      console.log(files);
+      const ext = getExtension(files.name);
+      if (ext !== "gltf") {
+        dispatch(setErrSeverity("error"));
+        dispatch(setErrMessage("File Extension is not supported" + ext));
+        dispatch(setErrCatch(true));
+        return;
+      }
+      postRekonstruksi(formData);
+    }
   }
 
   return (
