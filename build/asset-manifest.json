@@ -1,22 +1,19 @@
 {
   "files": {
-    "main.css": "/static/css/main.619a6eb6.css",
-    "main.js": "/static/js/main.39040cc2.js",
+    "main.css": "/static/css/main.d4663a55.css",
+    "main.js": "/static/js/main.ac503e8d.js",
     "static/media/horizontal-white.png": "/static/media/horizontal-white.09091bb4f57e1f9422f9.png",
     "static/media/horizontal-crop.png": "/static/media/horizontal-crop.009cde7cf0f3294b5b80.png",
     "static/media/Logo Horizontal Crop.png": "/static/media/Logo Horizontal Crop.a7cee0bb3e259ec4a5c4.png",
-    "static/media/ilust3.svg": "/static/media/ilust3.8f3a005245630a23f9d2a6bb574b453f.svg",
-    "static/media/ilust2.svg": "/static/media/ilust2.0bb2ca2b630b2ec645f70487e77620d8.svg",
-    "static/media/ilust1.svg": "/static/media/ilust1.25fa5218b60b47343e9cf4c63b6863c7.svg",
     "static/media/background.svg": "/static/media/background.419c4c75392c65627991.svg",
     "index.html": "/index.html",
     "static/media/tv.svg": "/static/media/tv.2cbeb45851a6b7d138dc4d99b0c82a73.svg",
     "static/media/smartphone.svg": "/static/media/smartphone.92043c91c5c6c3ba8a6f84740be051b7.svg",
-    "main.619a6eb6.css.map": "/static/css/main.619a6eb6.css.map",
-    "main.39040cc2.js.map": "/static/js/main.39040cc2.js.map"
+    "main.d4663a55.css.map": "/static/css/main.d4663a55.css.map",
+    "main.ac503e8d.js.map": "/static/js/main.ac503e8d.js.map"
   },
   "entrypoints": [
-    "static/css/main.619a6eb6.css",
-    "static/js/main.39040cc2.js"
+    "static/css/main.d4663a55.css",
+    "static/js/main.ac503e8d.js"
   ]
 }
