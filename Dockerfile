@@ -3,7 +3,6 @@ WORKDIR /react
 ENV PATH /react/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
-COPY .npmrc ./
 
 RUN npm install -g npm@latest svgo@^2.8.0
 RUN npm install --omit=dev
