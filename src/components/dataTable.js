@@ -8,48 +8,60 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useDispatch, useSelector } from "react-redux";
-import { listSegmentasi } from "../utils/api";
+import { listRekonstruksi, listSegmentasi } from "../utils/api";
 import {
+  setModel,
+  setRecData,
   setResultImages,
   setSegData,
   setShowGalery,
+  setShowModel,
   setSourceImages,
 } from "../redux/runnerConfig";
-import { setLoading, setReload } from "../redux/userConfig";
 import { Button, Skeleton, Typography } from "@mui/material";
 
 function DataTable({ title }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const [loading, setLoading] = React.useState(true);
   const userid = useSelector((state) => state.userConfig.userid);
-  const loading = useSelector((state) => state.userConfig.loading);
   const userData = useSelector((state) => state.userConfig.userData);
   const segData = useSelector((state) => state.runnerConfig.segData);
+  const recData = useSelector((state) => state.runnerConfig.recData);
   const skeletonArray = Array(5).fill("");
   const dispatch = useDispatch();
 
   const loadSegData = (userid, institution, status) => {
-    listSegmentasi(userid, institution, status).then((res) => {
-      dispatch(setSegData(res?.data));
-      dispatch(setLoading(false));
-    });
+    if (loading)
+      listSegmentasi(userid, institution, status).then((res) => {
+        dispatch(setSegData(res?.data));
+        setLoading(false);
+      });
+  };
+
+  const loadRecData = (userid, institution) => {
+    if (loading)
+      listRekonstruksi(userid, institution).then((res) => {
+        dispatch(setRecData(res?.data));
+        setLoading(false);
+      });
   };
 
   React.useEffect(() => {
     if (userid !== "" && userData !== {}) {
-      dispatch(setLoading(true));
-      loadSegData(userid, userData?.institution, "SUCCESS");
-      dispatch(setReload(false));
+      {
+        title === "Segmentasi"
+          ? loadSegData(userid, userData?.institution, "SUCCESS")
+          : loadRecData(userid, userData?.institution);
+      }
     }
-  }, [userData]);
+  }, [userid]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
   const handleShow = (images) => {
-    console.log(images);
     const soureList = [];
     const resultList = [];
     images.forEach((image) => {
@@ -69,6 +81,88 @@ function DataTable({ title }) {
     dispatch(setShowGalery(true));
   };
 
+  const handleRender = (files) => {
+    console.log(files[0].files);
+    dispatch(setModel(files[0].files));
+    dispatch(setShowModel(true));
+  };
+
+  const SegmentationTableHead = (
+    <TableRow>
+      <TableCell align="center">No.</TableCell>
+      <TableCell align="center">Project {title} ID</TableCell>
+      <TableCell align="center">Jumlah Citra</TableCell>
+      <TableCell align="center">Status</TableCell>
+      <TableCell align="center">Waktu</TableCell>
+      <TableCell align="center">Hasil</TableCell>
+    </TableRow>
+  );
+
+  const SegmentationTableBody = segData?.results?.map((row, index) => (
+    <TableRow
+      key={row.id}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell component="th" scope="row" align="center">
+        {index + 1}
+      </TableCell>
+      <TableCell align="center" className="textContainer">
+        {row.id}
+      </TableCell>
+      <TableCell align="center" className="textContainer">
+        {String(row.images).split(",").length}
+      </TableCell>
+      <TableCell align="center">{row.status}</TableCell>
+      <TableCell align="center">
+        {row.createdate.split(".")[0].replace("T", " ")}
+      </TableCell>
+      <TableCell align="center">
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => handleShow(row.images)}
+        >
+          Lihat
+        </Button>
+      </TableCell>
+    </TableRow>
+  ));
+
+  const ReconstructionTableHead = (
+    <TableRow>
+      <TableCell align="center">No.</TableCell>
+      <TableCell align="center">Project {title} ID</TableCell>
+      <TableCell align="center">Waktu</TableCell>
+      <TableCell align="center">Hasil</TableCell>
+    </TableRow>
+  );
+
+  const ReconstructionTableBody = recData?.results?.map((row, index) => (
+    <TableRow
+      key={row.id}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell component="th" scope="row" align="center">
+        {index + 1}
+      </TableCell>
+      <TableCell align="center" className="textContainer">
+        {row.id}
+      </TableCell>
+      <TableCell align="center">
+        {row.createdate.split(".")[0].replace("T", " ")}
+      </TableCell>
+      <TableCell align="center">
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => handleRender(row.files)}
+        >
+          Lihat
+        </Button>
+      </TableCell>
+    </TableRow>
+  ));
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -87,14 +181,9 @@ function DataTable({ title }) {
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            <TableRow>
-              <TableCell align="center">No.</TableCell>
-              <TableCell align="center">Project {title} ID</TableCell>
-              <TableCell align="center">Jumlah Citra</TableCell>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="center">Waktu</TableCell>
-              <TableCell align="center">Hasil</TableCell>
-            </TableRow>
+            {title === "Segmentasi"
+              ? SegmentationTableHead
+              : ReconstructionTableHead}
           </TableHead>
           <TableBody>
             {loading &&
@@ -112,56 +201,50 @@ function DataTable({ title }) {
                   <TableCell align="center">
                     <Skeleton />
                   </TableCell>
-                  <TableCell align="center">
-                    <Skeleton />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton />
-                  </TableCell>
+
+                  {title === "Segmentasi" ? (
+                    <>
+                      <TableCell align="center">
+                        <Skeleton />
+                      </TableCell>
+                      <TableCell align="center">
+                        <Skeleton />
+                      </TableCell>
+                    </>
+                  ) : null}
                 </TableRow>
               ))}
-            {segData?.count === 0 ? (
-              <TableRow>
-                <TableCell align="center" colSpan={6}>
-                  Tidak ada data yang dapat ditampilkan, silahkan melakukan
-                  Segmentasi baru
-                </TableCell>
-              </TableRow>
+            {title === "Segmentasi" ? (
+              <>
+                {segData?.count === 0 ? (
+                  <TableRow>
+                    <TableCell align="center" colSpan={6}>
+                      Belum ada data yang dapat ditampilkan, silahkan melakukan
+                      Segmentasi
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  SegmentationTableBody
+                )}
+              </>
             ) : (
-              segData?.results?.map((row, index) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row" align="center">
-                    {index + 1}
-                  </TableCell>
-                  <TableCell align="center" className="textContainer">
-                    {row.id}
-                  </TableCell>
-                  <TableCell align="center" className="textContainer">
-                    {String(row.images).split(",").length}
-                  </TableCell>
-                  <TableCell align="center">{row.status}</TableCell>
-                  <TableCell align="center">
-                    {row.createdate.split(".")[0].replace("T", " ")}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={() => handleShow(row.images)}
-                    >
-                      Lihat
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
+              <>
+                {recData?.count === 0 ? (
+                  <TableRow>
+                    <TableCell align="center" colSpan={4}>
+                      Belum ada data yang dapat ditampilkan, silahkan melakukan
+                      Rekonstruksi
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  ReconstructionTableBody
+                )}
+              </>
             )}
           </TableBody>
         </Table>
       </TableContainer>
-      {segData.count ? (
+      {title === "Segmentasi" ? (
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
@@ -171,7 +254,17 @@ function DataTable({ title }) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      ) : null}
+      ) : (
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={recData?.count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
     </Paper>
   );
 }
