@@ -1,27 +1,10 @@
 services:
-  frontend:
+  nginx:
     build:
       context: .
       dockerfile: Dockerfile
       cache_from:
-        - "${FRONTEND_IMAGE}"
-    image: "${FRONTEND_IMAGE}"
-    expose:
-      - 3000
-    volumes:
-    - react_build:/react/build
-  nginx:
-    build:
-      context: ./nginx
-      cache_from:
         - "${NGINX_IMAGE}"
     image: "${NGINX_IMAGE}"
-    volumes:
-      - react_build:/var/www/react
     ports:
       - 80:80
-    depends_on:
-      - frontend
-
-volumes:
-  react_build:
