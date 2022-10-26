@@ -1,6 +1,7 @@
 services:
   nginx:
     build:
+      context: .
       dockerfile: Dockerfile
       cache_from:
         - "${NGINX_IMAGE}"
