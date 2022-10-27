@@ -77,7 +77,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function PersistentDrawerLeft() {
   const [open, setOpen] = React.useState(true);
-  const refreshToken = useSelector((state) => state.userConfig.refreshToken);
+  const refresh_token = useSelector((state) => state.userConfig.refreshToken);
   const userData = useSelector((state) => state.userConfig.userData);
   const dispatch = useDispatch();
   const handleDrawerOpen = () => {
@@ -94,7 +94,7 @@ export default function PersistentDrawerLeft() {
   };
 
   const handleSignOut = () => {
-    LogOut(refreshToken).then((res) => {
+    LogOut(refresh_token).then((res) => {
       if (res.status === 205) {
         dispatch(setAuth(false));
       }
