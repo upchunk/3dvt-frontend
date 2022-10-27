@@ -25,12 +25,7 @@ export default function ModelRederer() {
     dispatch(setModel(""));
   }
   return (
-    <Card
-      display="flex"
-      justifyContent="flex-end"
-      alignItems="flex-end"
-      sx={{ p: 3 }}
-    >
+    <Card sx={{ p: 3 }}>
       <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
         <Button variant="contained" size="small" onClick={() => handleClose()}>
           Tutup
