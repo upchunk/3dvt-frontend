@@ -385,3 +385,58 @@ export async function deletePublicationData(id) {
       ErrorViewer(error);
     });
 }
+
+export async function getSuggestionList() {
+  return await axios
+    .get(url.SuggestionListUrl())
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function postSuggestionData(data) {
+  return await axios
+    .post(url.SuggestionListUrl(), data)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function getSuggestionData(section) {
+  return await axios
+    .get(url.SuggestionObjectUrl(section))
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function updateSuggestionData(id, data) {
+  return await axios
+    .patch(url.SuggestionObjectUrl(id), data)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function deleteSuggestionData(id) {
+  return await axios
+    .delete(url.SuggestionObjectUrl(id))
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}

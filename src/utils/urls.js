@@ -42,3 +42,7 @@ export const ResearcherObjectUrl = (id) => `/api/researcher/${id}/`;
 export const PublicationListUrl = () => `/api/publication/`;
 
 export const PublicationObjectUrl = (id) => `/api/publication/${id}/`;
+
+export const SuggestionListUrl = () => `/api/suggestions/`;
+
+export const SuggestionObjectUrl = (id) => `/api/suggestions/${id}/`;
