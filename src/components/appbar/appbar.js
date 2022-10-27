@@ -64,7 +64,7 @@ export default function TopAppBar() {
   const isAuthenticated = useSelector(
     (state) => state.userConfig.isAuthenticated
   );
-  const refresh_token = useSelector((state) => state.userConfig.refreshToken);
+  const refreshToken = useSelector((state) => state.userConfig.refreshToken);
   const userData = useSelector((state) => state.userConfig.userData);
   const dispatch = useDispatch();
 
@@ -79,7 +79,7 @@ export default function TopAppBar() {
   };
 
   const handleSignOut = () => {
-    LogOut(refresh_token).then((res) => {
+    LogOut(refreshToken).then((res) => {
       if (res.status === 205) {
         dispatch(setAuth(false));
       }

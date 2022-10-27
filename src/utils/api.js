@@ -41,7 +41,7 @@ export async function deleteAuthHeader() {
   delete axios.defaults.headers.common["Authorization"];
 }
 export async function setDefaultToken(accessToken) {
-  return (axios.defaults.headers["Authorization"] = `Bearer ${accessToken}`);
+  axios.defaults.headers["Authorization"] = `Bearer ${accessToken}`;
 }
 
 export async function getUserInfo(id) {

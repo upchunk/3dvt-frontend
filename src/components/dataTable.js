@@ -46,11 +46,10 @@ function DataTable({ title }) {
   const dispatch = useDispatch();
 
   const loadSegData = (userid, institution, status) => {
-    if (loading)
-      listSegmentasi(userid, institution, status).then((res) => {
-        dispatch(setSegData(res?.data));
-        setLoading(false);
-      });
+    listSegmentasi(userid, institution, status).then((res) => {
+      dispatch(setSegData(res?.data));
+      setLoading(false);
+    });
   };
 
   const deleteSegData = (id) => {
@@ -65,11 +64,10 @@ function DataTable({ title }) {
   };
 
   const loadRecData = (userid, institution) => {
-    if (loading)
-      listRekonstruksi(userid, institution).then((res) => {
-        dispatch(setRecData(res?.data));
-        setLoading(false);
-      });
+    listRekonstruksi(userid, institution).then((res) => {
+      dispatch(setRecData(res?.data));
+      setLoading(false);
+    });
   };
 
   const deleteRecData = (id) => {
@@ -86,11 +84,10 @@ function DataTable({ title }) {
   };
 
   const loadSuggestions = () => {
-    if (loading)
-      getSuggestionList().then((res) => {
-        setSuggestions(res);
-        setLoading(false);
-      });
+    getSuggestionList().then((res) => {
+      setSuggestions(res);
+      setLoading(false);
+    });
   };
 
   const deleteSugestion = (id) => {
@@ -105,7 +102,7 @@ function DataTable({ title }) {
   };
 
   React.useEffect(() => {
-    if (userid !== "" && userData !== {}) {
+    if (loading) {
       {
         title === "Segmentasi"
           ? loadSegData(userid, userData?.institution, "SUCCESS")

@@ -9,12 +9,7 @@ import DataSegmentasi from "./pages/segmentasi/dataSegmentasi";
 import DataRekonstruksi from "./pages/rekonstruksi3d/dataRekonstruksi";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo, newRefreshToken, setDefaultToken } from "./utils/api";
-import {
-  setAuth,
-  setJwtToken,
-  setLoading,
-  setUserData,
-} from "./redux/userConfig";
+import { setJwtToken, setLoading, setUserData } from "./redux/userConfig";
 import AuthPage from "./pages/authPage/authPage";
 import Snackbars from "./components/snackbar";
 import PrivateWrapper from "./utils/PrivateWrapper";
@@ -28,30 +23,21 @@ import StaffOnly from "./utils/StaffOnlyWrapper";
 
 export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
-  const refreshToken = useSelector((state) => state.userConfig.refreshToken);
-  const accessToken = useSelector((state) => state.userConfig.accessToken);
+  const jwtToken = useSelector((state) => state.userConfig.jwtToken);
   const dispatch = useDispatch();
 
-  function updateToken() {
-    newRefreshToken(refreshToken).then((token) => {
-      dispatch(setJwtToken(token));
-    });
-  }
-
   useEffect(() => {
-    if (refreshToken && refreshToken !== "") {
+    if (jwtToken && jwtToken !== {}) {
+      setDefaultToken(String(jwtToken.access));
       let delay = 1000 * 60 * 29; // 29Min Delay
       let interval = setInterval(() => {
-        updateToken();
+        newRefreshToken(String(jwtToken.refresh)).then((token) => {
+          dispatch(setJwtToken(token));
+        });
       }, delay);
       return () => clearInterval(interval);
     }
-  }, [refreshToken]);
-
-  useEffect(() => {
-    if (accessToken && accessToken !== "")
-      setDefaultToken(accessToken).catch(() => dispatch(setAuth(false)));
-  }, [accessToken]);
+  }, [jwtToken]);
 
   useEffect(() => {
     if (userid && userid !== "")
