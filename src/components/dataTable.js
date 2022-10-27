@@ -9,6 +9,8 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteRekonstruksi,
+  deleteSegmentasi,
   deleteSuggestionData,
   getSuggestionList,
   listRekonstruksi,
@@ -51,6 +53,17 @@ function DataTable({ title }) {
       });
   };
 
+  const deleteSegData = (id) => {
+    deleteSegmentasi(id).then((res) => {
+      if (res.status === 204) {
+        dispatch(setErrSeverity("success"));
+        dispatch(setErrMessage(`Segmentasi dengan ID ${id} berhasil di Hapus`));
+        dispatch(setErrCatch(true));
+        setLoading(true);
+      }
+    });
+  };
+
   const loadRecData = (userid, institution) => {
     if (loading)
       listRekonstruksi(userid, institution).then((res) => {
@@ -59,12 +72,36 @@ function DataTable({ title }) {
       });
   };
 
+  const deleteRecData = (id) => {
+    deleteRekonstruksi(id).then((res) => {
+      if (res.status === 204) {
+        dispatch(setErrSeverity("success"));
+        dispatch(
+          setErrMessage(`Rekonstruksi dengan ID ${id} berhasil di Hapus`)
+        );
+        dispatch(setErrCatch(true));
+        setLoading(true);
+      }
+    });
+  };
+
   const loadSuggestions = () => {
     if (loading)
       getSuggestionList().then((res) => {
         setSuggestions(res);
         setLoading(false);
       });
+  };
+
+  const deleteSugestion = (id) => {
+    deleteSuggestionData(id).then((res) => {
+      if (res.status === 204) {
+        dispatch(setErrSeverity("success"));
+        dispatch(setErrMessage(`Data Berhasil di Hapus`));
+        dispatch(setErrCatch(true));
+        setLoading(true);
+      }
+    });
   };
 
   React.useEffect(() => {
@@ -114,18 +151,6 @@ function DataTable({ title }) {
     dispatch(setPopUp(true));
   };
 
-  const deleteSugestion = (id) => {
-    deleteSuggestionData(id).then((res) => {
-      if (res.status === 204) {
-        dispatch(setErrSeverity("success"));
-        dispatch(setErrMessage(`Data Berhasil di Hapus`));
-        dispatch(setErrCatch(true));
-        setLoading(true);
-        loadSuggestions();
-      }
-    });
-  };
-
   const SegmentationTableHead = (
     <TableRow>
       <TableCell align="center">No.</TableCell>
@@ -156,13 +181,35 @@ function DataTable({ title }) {
         {row.createdate.split(".")[0].replace("T", " ")}
       </TableCell>
       <TableCell align="center">
-        <Button
-          variant="contained"
-          size="small"
-          onClick={() => handleShow(row.images)}
+        <Stack
+          direction={"row"}
+          spacing={2}
+          justifyContent={"center"}
+          alignItems={"center"}
         >
-          Lihat
-        </Button>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => handleShow(row.images)}
+          >
+            Lihat
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => deleteSegData(row.id)}
+            sx={{
+              color: "white",
+              backgroundColor: "orange",
+              "&:hover": {
+                color: "white",
+                backgroundColor: "red",
+              },
+            }}
+          >
+            Hapus
+          </Button>
+        </Stack>
       </TableCell>
     </TableRow>
   ));
@@ -191,13 +238,35 @@ function DataTable({ title }) {
         {row.createdate.split(".")[0].replace("T", " ")}
       </TableCell>
       <TableCell align="center">
-        <Button
-          variant="contained"
-          size="small"
-          onClick={() => handleRender(row.files)}
+        <Stack
+          direction={"row"}
+          spacing={2}
+          justifyContent={"center"}
+          alignItems={"center"}
         >
-          Lihat
-        </Button>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => handleRender(row.files)}
+          >
+            Lihat
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => deleteRecData(row.id)}
+            sx={{
+              color: "white",
+              backgroundColor: "orange",
+              "&:hover": {
+                color: "white",
+                backgroundColor: "red",
+              },
+            }}
+          >
+            Hapus
+          </Button>
+        </Stack>
       </TableCell>
     </TableRow>
   ));
@@ -223,7 +292,7 @@ function DataTable({ title }) {
         {row.user.username}
       </TableCell>
       <TableCell align="center">{row.subject}</TableCell>
-      <TableCell align="center" width={"20%"}>
+      <TableCell align="center">
         <Stack
           direction={"row"}
           spacing={2}
