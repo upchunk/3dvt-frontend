@@ -115,6 +115,20 @@ export async function getSegmentasi(id) {
     });
 }
 
+export async function deleteSegmentasi(id) {
+  if (controller != undefined) {
+    controller.abort();
+  }
+  controller = new AbortController();
+  return await axios
+    .delete(url.SegmentationObjectUrl(id), {
+      signal: controller.signal,
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
 export async function postRekonstruksi(formData) {
   return await axios
     .post(url.ReconstructionUrl(), formData, {
@@ -152,6 +166,20 @@ export async function getRekonstruksi(id) {
   controller = new AbortController();
   return await axios
     .get(url.ReconstructionObjectUrl(id), {
+      signal: controller.signal,
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function deleteRekonstruksi(id) {
+  if (controller != undefined) {
+    controller.abort();
+  }
+  controller = new AbortController();
+  return await axios
+    .delete(url.ReconstructionObjectUrl(id), {
       signal: controller.signal,
     })
     .catch((error) => {

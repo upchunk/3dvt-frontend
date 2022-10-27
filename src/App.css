@@ -113,6 +113,12 @@
   justify-content: center;
 }
 
+.centerText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .cardRow {
   padding-bottom: 20px;
 }

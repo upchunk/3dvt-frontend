@@ -255,35 +255,39 @@ export default function PersistentDrawerLeft() {
           );
         })}
       </List>
-      <Divider
-        variant="string"
-        textAlign="left"
-        sx={{ pt: 2, color: "#a6b0cf" }}
-      >
-        Staff Only
-      </Divider>
-      <List>
-        {StaffOnly.map((item, index) => {
-          return (
-            <ListItem key={index} className={item.cName} disablePadding>
-              <ListItemButton>
-                <Link to={item.path}>
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      pl: 2,
-                      pr: 2,
-                    }}
-                  >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText primary={item.title} />
-                </Link>
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
+      {userData.is_staff ? (
+        <>
+          <Divider
+            variant="string"
+            textAlign="left"
+            sx={{ pt: 2, color: "#a6b0cf" }}
+          >
+            Staff Only
+          </Divider>
+          <List>
+            {StaffOnly.map((item, index) => {
+              return (
+                <ListItem key={index} className={item.cName} disablePadding>
+                  <ListItemButton>
+                    <Link to={item.path}>
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          pl: 2,
+                          pr: 2,
+                        }}
+                      >
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText primary={item.title} />
+                    </Link>
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </>
+      ) : null}
     </>
   );
 

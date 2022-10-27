@@ -5,10 +5,8 @@ import Dashboard from "./pages/dashboard/dashboard";
 import Rekonstruksi3d from "./pages/rekonstruksi3d/rekonstruksi3d";
 import Feedback from "./pages/feedback/feedback";
 import PersistentDrawerLeft from "./components/navigation/navigation";
-import Pengaturan from "./pages/pengaturan";
 import DataSegmentasi from "./pages/segmentasi/dataSegmentasi";
 import DataRekonstruksi from "./pages/rekonstruksi3d/dataRekonstruksi";
-import User from "./pages/user";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo, newRefreshToken, setDefaultToken } from "./utils/api";
 import {
@@ -26,6 +24,7 @@ import TopAppBar from "./components/appbar/appbar";
 import ScrollDialog from "./components/ScrollablePopUp";
 import LihatSaran from "./pages/lihatSaran";
 import LandingPageModification from "./pages/landingPageForm";
+import StaffOnly from "./utils/StaffOnlyWrapper";
 
 export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
@@ -76,13 +75,13 @@ export default function App() {
               <Route path="/rekonstruksi" element={<Rekonstruksi3d />} />
               <Route path="/rekonstruksi/data" element={<DataRekonstruksi />} />
               <Route path="/saran" element={<Feedback />} />
-              <Route path="/saran/data" element={<LihatSaran />} />
-              <Route path="/pengaturan" element={<Pengaturan />} />
-              <Route path="/user" element={<User />} />
-              <Route
-                path="/edit-landing-page"
-                element={<LandingPageModification />}
-              />
+              <Route element={<StaffOnly />}>
+                <Route path="/saran/data" element={<LihatSaran />} />
+                <Route
+                  path="/edit-landing-page"
+                  element={<LandingPageModification />}
+                />
+              </Route>
             </Route>
           </Route>
           <Route element={<TopAppBar />}>
