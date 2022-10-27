@@ -104,7 +104,6 @@ function DataTable({ title }) {
   };
 
   const handleRender = (files) => {
-    console.log(files[0].files);
     dispatch(setModel(files[0].files));
     dispatch(setShowModel(true));
   };

@@ -1,15 +1,33 @@
 import React from "react";
 import "./imageGalery.css";
 import ImageGallery from "react-image-gallery";
-import { Card, Grid, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import { Box, Button, Card, Grid, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setResultImages,
+  setShowGalery,
+  setSourceImages,
+} from "../../redux/runnerConfig";
 
 export default function ImageGalleryViewer() {
   const source = useSelector((state) => state.runnerConfig.sourceImages);
   const result = useSelector((state) => state.runnerConfig.resultImages);
+  const dispatch = useDispatch();
+
+  function handleClose() {
+    dispatch(setSourceImages([]));
+    dispatch(setResultImages([]));
+    dispatch(setShowGalery(false));
+  }
 
   return (
     <Card sx={{ p: 3, mt: 2 }}>
+      <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
+        <Button variant="contained" size="small" onClick={() => handleClose()}>
+          Tutup
+        </Button>
+      </Box>
+
       <Grid container spacing={2}>
         <Grid item xs={6}>
           <Typography

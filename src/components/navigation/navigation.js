@@ -20,7 +20,7 @@ import { IconContext } from "react-icons";
 import { Link, Outlet } from "react-router-dom";
 import logo from "../../assets/horizontal-white.png";
 import { Avatar, Grid } from "@mui/material";
-import { IoChevronDown, IoSettingsOutline } from "react-icons/io5";
+import { IoChevronDown } from "react-icons/io5";
 import Stack from "@mui/system/Stack";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -153,21 +153,9 @@ export default function PersistentDrawerLeft() {
                 "aria-labelledby": "IconButton",
               }}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
               <MenuItem onClick={handleSignOut}>Logout</MenuItem>
             </Menu>
           </div>
-          <Link to={"/pengaturan"}>
-            <IconButton
-              aria-label="settings"
-              size="small"
-              edge="end"
-              color="inherit"
-            >
-              <IoSettingsOutline />
-            </IconButton>
-          </Link>
         </Stack>
       </Grid>
     </Toolbar>
