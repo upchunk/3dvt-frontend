@@ -5,10 +5,10 @@ import Dashboard from "./pages/dashboard/dashboard";
 import Rekonstruksi3d from "./pages/rekonstruksi3d/rekonstruksi3d";
 import Feedback from "./pages/feedback/feedback";
 import PersistentDrawerLeft from "./components/navigation/navigation";
-import Pengaturan from "./pages/pengaturan/pengaturan";
+import Pengaturan from "./pages/pengaturan";
 import DataSegmentasi from "./pages/segmentasi/dataSegmentasi";
 import DataRekonstruksi from "./pages/rekonstruksi3d/dataRekonstruksi";
-import User from "./pages/user/user";
+import User from "./pages/user";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserInfo, newRefreshToken, setDefaultToken } from "./utils/api";
 import {
@@ -23,7 +23,9 @@ import PrivateWrapper from "./utils/PrivateWrapper";
 import Segmentasi from "./pages/segmentasi/segmentasi";
 import Landing from "./pages/landing/landing";
 import TopAppBar from "./components/appbar/appbar";
-import LandingPageModification from "./pages/landingPageForm/landingPageForm";
+import ScrollDialog from "./components/ScrollablePopUp";
+import LihatSaran from "./pages/lihatSaran";
+import LandingPageModification from "./pages/landingPageForm";
 
 export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
@@ -63,6 +65,7 @@ export default function App() {
   return (
     <>
       <Snackbars />
+      <ScrollDialog />
       <BrowserRouter>
         <Routes>
           <Route element={<PrivateWrapper />}>
@@ -73,6 +76,7 @@ export default function App() {
               <Route path="/rekonstruksi" element={<Rekonstruksi3d />} />
               <Route path="/rekonstruksi/data" element={<DataRekonstruksi />} />
               <Route path="/saran" element={<Feedback />} />
+              <Route path="/saran/data" element={<LihatSaran />} />
               <Route path="/pengaturan" element={<Pengaturan />} />
               <Route path="/user" element={<User />} />
               <Route

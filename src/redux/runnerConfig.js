@@ -4,7 +4,8 @@ const initialState = {
   taskid: "",
   lastType: "",
   type: "",
-  result: "",
+  popUpHeader: "",
+  popUpMsg: "",
   segData: {},
   recData: {},
   page: "dashboard",
@@ -32,8 +33,11 @@ export const runnerConfigSlice = createSlice({
     setType: (state, action) => {
       state.type = action.payload;
     },
-    setResult: (state, action) => {
-      state.result = JSON.stringify(action.payload, null, 2);
+    setPopUpHeader: (state, action) => {
+      state.popUpHeader = action.payload;
+    },
+    setPopUpMsg: (state, action) => {
+      state.popUpMsg = action.payload;
     },
     setSegData: (state, action) => {
       state.segData = action.payload;
@@ -79,7 +83,8 @@ export const {
   setTaskid,
   setType,
   setLastType,
-  setResult,
+  setPopUpHeader,
+  setPopUpMsg,
   setSegData,
   setRecData,
   setPage,

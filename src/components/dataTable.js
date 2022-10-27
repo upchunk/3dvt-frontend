@@ -8,9 +8,19 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useDispatch, useSelector } from "react-redux";
-import { listRekonstruksi, listSegmentasi } from "../utils/api";
 import {
+  deleteSuggestionData,
+  getSuggestionList,
+  listRekonstruksi,
+  listSegmentasi,
+} from "../utils/api";
+import {
+  setErrCatch,
+  setErrMessage,
+  setErrSeverity,
   setModel,
+  setPopUpHeader,
+  setPopUpMsg,
   setRecData,
   setResultImages,
   setSegData,
@@ -18,12 +28,14 @@ import {
   setShowModel,
   setSourceImages,
 } from "../redux/runnerConfig";
-import { Button, Skeleton, Typography } from "@mui/material";
+import { Button, Skeleton, Stack, Typography } from "@mui/material";
+import { setPopUp } from "../redux/userConfig";
 
 function DataTable({ title }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [loading, setLoading] = React.useState(true);
+  const [suggestions, setSuggestions] = React.useState(10);
   const userid = useSelector((state) => state.userConfig.userid);
   const userData = useSelector((state) => state.userConfig.userData);
   const segData = useSelector((state) => state.runnerConfig.segData);
@@ -47,15 +59,25 @@ function DataTable({ title }) {
       });
   };
 
+  const loadSuggestions = () => {
+    if (loading)
+      getSuggestionList().then((res) => {
+        setSuggestions(res);
+        setLoading(false);
+      });
+  };
+
   React.useEffect(() => {
     if (userid !== "" && userData !== {}) {
       {
         title === "Segmentasi"
           ? loadSegData(userid, userData?.institution, "SUCCESS")
-          : loadRecData(userid, userData?.institution);
+          : title === "Rekonstruksi"
+          ? loadRecData(userid, userData?.institution)
+          : loadSuggestions();
       }
     }
-  }, [userid]);
+  }, [loading]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -85,6 +107,24 @@ function DataTable({ title }) {
     console.log(files[0].files);
     dispatch(setModel(files[0].files));
     dispatch(setShowModel(true));
+  };
+
+  const showSugestion = (header, text) => {
+    dispatch(setPopUpHeader(header));
+    dispatch(setPopUpMsg(text));
+    dispatch(setPopUp(true));
+  };
+
+  const deleteSugestion = (id) => {
+    deleteSuggestionData(id).then((res) => {
+      if (res.status === 204) {
+        dispatch(setErrSeverity("success"));
+        dispatch(setErrMessage(`Data Berhasil di Hapus`));
+        dispatch(setErrCatch(true));
+        setLoading(true);
+        loadSuggestions();
+      }
+    });
   };
 
   const SegmentationTableHead = (
@@ -163,6 +203,69 @@ function DataTable({ title }) {
     </TableRow>
   ));
 
+  const SuggestionTableHead = (
+    <TableRow>
+      <TableCell align="center">No.</TableCell>
+      <TableCell align="center">User</TableCell>
+      <TableCell align="center">Subjek</TableCell>
+      <TableCell align="center">Opsi</TableCell>
+    </TableRow>
+  );
+
+  const SuggestionTableBody = suggestions?.results?.map((row, index) => (
+    <TableRow
+      key={row.id}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    >
+      <TableCell component="th" scope="row" align="center">
+        {index + 1}
+      </TableCell>
+      <TableCell align="center" className="textContainer">
+        {row.user.username}
+      </TableCell>
+      <TableCell align="center">{row.subject}</TableCell>
+      <TableCell align="center" width={"20%"}>
+        <Stack
+          direction={"row"}
+          spacing={2}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => showSugestion(row.subject, row.text)}
+          >
+            Lihat
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => deleteSugestion(row.id)}
+            sx={{
+              color: "white",
+              backgroundColor: "orange",
+              "&:hover": {
+                color: "white",
+                backgroundColor: "red",
+              },
+            }}
+          >
+            Hapus
+          </Button>
+        </Stack>
+      </TableCell>
+    </TableRow>
+  ));
+
+  const skeletonRows = (num) => {
+    return Array(num).fill(
+      <TableCell component="th" scope="row" align="center">
+        <Skeleton />
+      </TableCell>
+    );
+  };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -183,61 +286,60 @@ function DataTable({ title }) {
           <TableHead>
             {title === "Segmentasi"
               ? SegmentationTableHead
-              : ReconstructionTableHead}
+              : title === "Rekonstruksi"
+              ? ReconstructionTableHead
+              : SuggestionTableHead}
           </TableHead>
           <TableBody>
-            {loading &&
-              skeletonArray.map((_, index) => (
-                <TableRow key={index}>
-                  <TableCell component="th" scope="row" align="center">
-                    <Skeleton />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Skeleton />
-                  </TableCell>
-
-                  {title === "Segmentasi" ? (
-                    <>
-                      <TableCell align="center">
-                        <Skeleton />
-                      </TableCell>
-                      <TableCell align="center">
-                        <Skeleton />
-                      </TableCell>
-                    </>
-                  ) : null}
-                </TableRow>
-              ))}
-            {title === "Segmentasi" ? (
+            {loading ? (
               <>
-                {segData?.count === 0 ? (
-                  <TableRow>
-                    <TableCell align="center" colSpan={6}>
-                      Belum ada data yang dapat ditampilkan, silahkan melakukan
-                      Segmentasi
-                    </TableCell>
+                {skeletonArray.map((_, index) => (
+                  <TableRow key={index}>
+                    {title === "Segmentasi" ? skeletonRows(6) : skeletonRows(4)}
                   </TableRow>
-                ) : (
-                  SegmentationTableBody
-                )}
+                ))}
               </>
             ) : (
               <>
-                {recData?.count === 0 ? (
-                  <TableRow>
-                    <TableCell align="center" colSpan={4}>
-                      Belum ada data yang dapat ditampilkan, silahkan melakukan
-                      Rekonstruksi
-                    </TableCell>
-                  </TableRow>
+                {title === "Segmentasi" ? (
+                  <>
+                    {segData?.count === 0 ? (
+                      <TableRow>
+                        <TableCell align="center" colSpan={6}>
+                          Belum ada data yang dapat ditampilkan, silahkan
+                          melakukan Segmentasi
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      SegmentationTableBody
+                    )}
+                  </>
+                ) : title === "Rekonstruksi" ? (
+                  <>
+                    {recData?.count === 0 ? (
+                      <TableRow>
+                        <TableCell align="center" colSpan={4}>
+                          Belum ada data yang dapat ditampilkan, silahkan
+                          melakukan Rekonstruksi
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      ReconstructionTableBody
+                    )}
+                  </>
                 ) : (
-                  ReconstructionTableBody
+                  <>
+                    {suggestions?.count === 0 ? (
+                      <TableRow>
+                        <TableCell align="center" colSpan={4}>
+                          Belum ada data yang dapat ditampilkan, silahkan
+                          mengisi Kritik dan Saran
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      SuggestionTableBody
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -254,11 +356,21 @@ function DataTable({ title }) {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      ) : (
+      ) : title === "Rekonstruksi" ? (
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"
           count={recData?.count}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      ) : (
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={suggestions?.count}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

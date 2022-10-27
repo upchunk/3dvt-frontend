@@ -7,35 +7,15 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setApproval, setPopUp, setReload } from "../../redux/userConfig";
+import { setPopUp, setReload } from "../redux/userConfig";
 import { toHeaderCase } from "js-convert-case";
 
 export default function ScrollDialog() {
-  const result = useSelector((state) => state.crawlerConfig.result);
-  const toApprove = useSelector((state) => state.userConfig.toApprove);
-  const taskid = useSelector((state) => state.crawlerConfig.taskid);
+  const popUpHeader = useSelector((state) => state.runnerConfig.popUpHeader);
+  const popUpMsg = useSelector((state) => state.runnerConfig.popUpMsg);
   const popUp = useSelector((state) => state.userConfig.popUp);
   const dispatch = useDispatch();
   const scroll = "paper";
-
-  const handleDownload = () => {
-    const element = document.createElement("a");
-    const file = new Blob([result], {
-      type: "application/json",
-    });
-    element.href = URL.createObjectURL(file);
-    element.download = `RT Crawl Result ${taskid}.json`;
-    document.body.appendChild(element);
-    element.click();
-    element.remove();
-  };
-
-  const handleApproval = () => {
-    if (toApprove !== "") {
-      dispatch(setApproval(true));
-      dispatch(setReload(true));
-    }
-  };
 
   const handleClose = () => {
     dispatch(setPopUp(false));
@@ -61,7 +41,9 @@ export default function ScrollDialog() {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <DialogTitle id="scroll-dialog-title">Crawl Result</DialogTitle>
+        <DialogTitle id="scroll-dialog-title" align="center">
+          {toHeaderCase(popUpHeader)}
+        </DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText
             id="scroll-dialog-description"
@@ -69,19 +51,10 @@ export default function ScrollDialog() {
             tabIndex={-1}
             component={"pre"}
           >
-            {toApprove !== ""
-              ? `Are You Sure to ${toHeaderCase(toApprove)} this task?`
-              : result}
+            {popUpMsg}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {toApprove !== "" ? (
-            <Button onClick={handleApproval}>
-              {toHeaderCase(String(toApprove))}
-            </Button>
-          ) : (
-            <Button onClick={handleDownload}>Download</Button>
-          )}
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>

@@ -1,5 +1,4 @@
 import React from "react";
-import "./pengaturan.css";
 
 export default function Pengaturan() {
   return (

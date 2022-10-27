@@ -55,4 +55,10 @@ export const StaffOnly = [
     icon: <TbLayout />,
     cName: "nav-text",
   },
+  {
+    title: " Lihat Saran",
+    path: "/saran/data",
+    icon: <TbLayout />,
+    cName: "nav-text",
+  },
 ];
