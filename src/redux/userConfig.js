@@ -15,7 +15,7 @@ const initialState = {
   password: "",
   accessToken: "",
   refreshToken: "",
-  jwtToken: "",
+  jwtToken: {},
   isAuthenticated: false,
 };
 
