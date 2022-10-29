@@ -31,8 +31,16 @@ function AdminTable({ type }) {
   const [loading, setLoading] = React.useState(true);
   const [suggestions, setSuggestions] = React.useState(10);
   const [userList, setUserList] = React.useState([]);
-  const skeletonArray = Array(5).fill("");
   const dispatch = useDispatch();
+
+  const skeletonArray = Array(5).fill("");
+  const skeletonRows = (num) => {
+    Array(num).fill(
+      <TableCell component="th" scope="row" align="center">
+        <Skeleton />
+      </TableCell>
+    );
+  };
 
   const loadSuggestions = () => {
     if (loading)
@@ -56,7 +64,6 @@ function AdminTable({ type }) {
   const loadUserList = () => {
     if (loading)
       getUserList().then((res) => {
-        console.log(res.data);
         setUserList(res.data);
         setLoading(false);
       });
@@ -165,14 +172,6 @@ function AdminTable({ type }) {
       </TableCell>
     </TableRow>
   ));
-
-  const skeletonRows = (num) => {
-    return Array(num).fill(
-      <TableCell component="th" scope="row" align="center">
-        <Skeleton />
-      </TableCell>
-    );
-  };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);

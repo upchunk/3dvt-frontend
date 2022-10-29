@@ -61,4 +61,10 @@ export const StaffOnly = [
     icon: <TbLayout />,
     cName: "nav-text",
   },
+  {
+    title: " User Management",
+    path: "/usermanagement",
+    icon: <TbLayout />,
+    cName: "nav-text",
+  },
 ];

@@ -36,8 +36,16 @@ function DataTable({ title }) {
   const userData = useSelector((state) => state.userConfig.userData);
   const segData = useSelector((state) => state.runnerConfig.segData);
   const recData = useSelector((state) => state.runnerConfig.recData);
-  const skeletonArray = Array(5).fill("");
   const dispatch = useDispatch();
+
+  const skeletonArray = Array(5).fill("");
+  const skeletonRows = (num) => {
+    Array(num).fill(
+      <TableCell key- component="th" scope="row" align="center">
+        <Skeleton />
+      </TableCell>
+    );
+  };
 
   const loadSegData = (userid, institution, status) => {
     if (loading)
@@ -237,14 +245,6 @@ function DataTable({ title }) {
       </TableCell>
     </TableRow>
   ));
-
-  const skeletonRows = (num) => {
-    return Array(num).fill(
-      <TableCell component="th" scope="row" align="center">
-        <Skeleton />
-      </TableCell>
-    );
-  };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
