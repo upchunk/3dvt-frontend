@@ -271,7 +271,7 @@ export default function Landing() {
               >
                 {each.title}
               </Typography>
-              <Grid container rowSpacing={2} justifyContent={"center"}>
+              <Grid container spacing={2} justifyContent={"center"}>
                 {publicationList.map((each) => (
                   <Grid
                     item
@@ -313,7 +313,7 @@ export default function Landing() {
               >
                 {each.content}
               </Typography>
-              <Grid container rowSpacing={2} justifyContent={"center"}>
+              <Grid container spacing={2} justifyContent={"center"}>
                 {researchers.map((each) => (
                   <Grid
                     item
