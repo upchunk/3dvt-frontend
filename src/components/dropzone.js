@@ -6,7 +6,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   FormControl,
   Grid,
   MenuItem,
@@ -83,7 +82,12 @@ export default function StyledDropzone({ type }) {
   let formData = new FormData();
 
   const cardTitle = (
-    <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
+    <Typography
+      variant="h5"
+      fontWeight={"bold"}
+      fontFamily={"montserrat"}
+      p={1}
+    >
       {type === "segmentasi"
         ? "Buat Projek Segmentasi Baru"
         : "Buat Projek Rekonstruksi Baru"}
@@ -162,15 +166,8 @@ export default function StyledDropzone({ type }) {
   }
 
   return (
-    <Card sx={{ p: 3 }}>
-      <CardHeader
-        sx={{
-          color: "black",
-          size: "small",
-          height: 0,
-        }}
-        title={cardTitle}
-      ></CardHeader>
+    <Card sx={{ p: 1 }}>
+      {cardTitle}
       {type === "segmentasi" ? (
         <CardContent>
           <Grid

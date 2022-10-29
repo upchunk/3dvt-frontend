@@ -4,7 +4,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   FormControl,
   Grid,
   MenuItem,
@@ -38,7 +37,12 @@ export default function ResearchersForm() {
   const [imageURL, setImageURL] = React.useState("");
   const [mode, setMode] = React.useState("update");
   const cardTitle = (
-    <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
+    <Typography
+      variant="h5"
+      fontWeight={"bold"}
+      fontFamily={"montserrat"}
+      p={1}
+    >
       Modifikasi Data Peneliti
     </Typography>
   );
@@ -180,15 +184,8 @@ export default function ResearchersForm() {
   }
 
   return (
-    <Card sx={{ p: 3 }}>
-      <CardHeader
-        sx={{
-          color: "black",
-          size: "small",
-          height: 0,
-        }}
-        title={cardTitle}
-      ></CardHeader>
+    <Card sx={{ p: 1 }}>
+      {cardTitle}
       <CardContent>
         <Grid
           container

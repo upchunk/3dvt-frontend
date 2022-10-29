@@ -4,7 +4,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   FormControl,
   Grid,
   MenuItem,
@@ -33,7 +32,12 @@ export default function LandingPageSectionForm() {
   const [image, setImage] = React.useState(null);
   const dispatch = useDispatch();
   const cardTitle = (
-    <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
+    <Typography
+      variant="h5"
+      fontWeight={"bold"}
+      fontFamily={"montserrat"}
+      p={1}
+    >
       Modifikasi Landing Page
     </Typography>
   );
@@ -138,15 +142,8 @@ export default function LandingPageSectionForm() {
   }
 
   return (
-    <Card sx={{ p: 3 }}>
-      <CardHeader
-        sx={{
-          color: "black",
-          size: "small",
-          height: 0,
-        }}
-        title={cardTitle}
-      ></CardHeader>
+    <Card sx={{ p: 1 }}>
+      {cardTitle}
       <CardContent>
         <Grid
           container

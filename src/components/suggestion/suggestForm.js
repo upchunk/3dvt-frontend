@@ -4,7 +4,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   FormControl,
   Grid,
   TextField,
@@ -21,7 +20,12 @@ import { Stack } from "@mui/system";
 export default function SuggestionForm() {
   const dispatch = useDispatch();
   const cardTitle = (
-    <Typography variant="h6" fontFamily={"Montserrat"} fontWeight={"bold"}>
+    <Typography
+      variant="h5"
+      fontWeight={"bold"}
+      fontFamily={"montserrat"}
+      p={1}
+    >
       Kritik dan Saran
     </Typography>
   );
@@ -48,15 +52,8 @@ export default function SuggestionForm() {
   }
 
   return (
-    <Card sx={{ p: 3 }}>
-      <CardHeader
-        sx={{
-          color: "black",
-          size: "small",
-          height: 0,
-        }}
-        title={cardTitle}
-      ></CardHeader>
+    <Card sx={{ p: 1 }}>
+      {cardTitle}
       <CardContent>
         <Grid
           container
