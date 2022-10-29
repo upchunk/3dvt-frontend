@@ -17,7 +17,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { IconContext } from "react-icons";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/horizontal-white.png";
 import { Avatar, Grid } from "@mui/material";
 import { IoChevronDown } from "react-icons/io5";
@@ -80,6 +80,7 @@ export default function PersistentDrawerLeft() {
   const refresh_token = useSelector((state) => state.userConfig.refreshToken);
   const userData = useSelector((state) => state.userConfig.userData);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleDrawerOpen = () => {
     setOpen(!open);
   };
@@ -94,11 +95,17 @@ export default function PersistentDrawerLeft() {
   };
 
   const handleSignOut = () => {
+    setAnchorEl(null);
     LogOut(refresh_token).then((res) => {
       if (res.status === 205) {
         dispatch(setAuth(false));
       }
     });
+  };
+
+  const aboutPage = () => {
+    setAnchorEl(null);
+    navigate("/");
   };
 
   const toolbar = (
@@ -154,6 +161,7 @@ export default function PersistentDrawerLeft() {
               }}
             >
               <MenuItem onClick={handleSignOut}>Logout</MenuItem>
+              <MenuItem onClick={aboutPage}>Tentang 3DVT</MenuItem>
             </Menu>
           </div>
         </Stack>
