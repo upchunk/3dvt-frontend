@@ -11,6 +11,12 @@ import * as url from "./urls";
 
 let controller;
 
+const useFormData = {
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+};
+
 export const ErrorViewer = (error) => {
   const errorList = [];
   if (error.response) {
@@ -44,19 +50,45 @@ export async function setDefaultToken(accessToken) {
   return (axios.defaults.headers["Authorization"] = `Bearer ${accessToken}`);
 }
 
-export async function getUserInfo(id) {
-  return await axios.get(url.userInfoUrl(id)).catch((error) => {
+export async function getUserList() {
+  return await axios.get(url.userListUrl()).catch((error) => {
     ErrorViewer(error);
   });
 }
 
-export async function getGroupInfo(id) {
+export async function getUserData(id) {
+  return await axios.get(url.userObjectUrl(id)).catch((error) => {
+    ErrorViewer(error);
+  });
+}
+
+export async function updateUserData(id, formData) {
+  return await axios
+    .patch(url.userObjectUrl(id), formData, useFormData)
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function updateUserDataJSON(id, data) {
+  return await axios.patch(url.userObjectUrl(id), data).catch((error) => {
+    ErrorViewer(error);
+  });
+}
+
+export async function deleteUserData(id) {
+  return await axios.delete(url.userObjectUrl(id)).catch((error) => {
+    ErrorViewer(error);
+  });
+}
+
+export async function getGroupObject(id) {
   if (controller != undefined) {
     controller.abort();
   }
   controller = new AbortController();
   return await axios
-    .get(url.groupInfoUrl(id), {
+    .get(url.groupObjectUrl(id), {
       signal: controller.signal,
     })
     .catch((error) => {
@@ -77,11 +109,7 @@ export async function jwtauthenticate(data) {
 
 export async function postSegmentasi(formData) {
   return await axios
-    .post(url.SegmentationUrl(), formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+    .post(url.SegmentationUrl(), formData, useFormData)
     .then((res) => {
       store.dispatch(setErrSeverity("success"));
       store.dispatch(setErrMessage(res.data.message));
@@ -131,11 +159,7 @@ export async function deleteSegmentasi(id) {
 
 export async function postRekonstruksi(formData) {
   return await axios
-    .post(url.ReconstructionUrl(), formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+    .post(url.ReconstructionUrl(), formData, useFormData)
     .then((res) => {
       store.dispatch(setErrSeverity("success"));
       store.dispatch(setErrMessage(res.data.message));
@@ -294,11 +318,7 @@ export async function deleteSectionData(section) {
 
 export async function updateSectionData(section, data) {
   return await axios
-    .patch(url.SectionObjectUrl(section), data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+    .patch(url.SectionObjectUrl(section), data, useFormData)
     .then((response) => {
       return response;
     })
@@ -342,11 +362,7 @@ export async function getResearcherData(section) {
 
 export async function postResearcherData(data) {
   return await axios
-    .post(url.ResearcherListUrl(), data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+    .post(url.ResearcherListUrl(), data, useFormData)
     .then((response) => {
       return response;
     })
@@ -357,11 +373,7 @@ export async function postResearcherData(data) {
 
 export async function updateResearcherData(id, data) {
   return await axios
-    .patch(url.ResearcherObjectUrl(id), data, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+    .patch(url.ResearcherObjectUrl(id), data, useFormData)
     .then((response) => {
       return response;
     })

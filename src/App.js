@@ -8,7 +8,7 @@ import PersistentDrawerLeft from "./components/navigation/navigation";
 import DataSegmentasi from "./pages/segmentasi/dataSegmentasi";
 import DataRekonstruksi from "./pages/rekonstruksi3d/dataRekonstruksi";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserInfo, newRefreshToken, setDefaultToken } from "./utils/api";
+import { getUserData, newRefreshToken, setDefaultToken } from "./utils/api";
 import { setJwtToken, setUserData } from "./redux/userConfig";
 import AuthPage from "./pages/authPage/authPage";
 import Snackbars from "./components/snackbar";
@@ -20,6 +20,7 @@ import ScrollDialog from "./components/ScrollablePopUp";
 import LihatSaran from "./pages/lihatSaran";
 import LandingPageModification from "./pages/landingPageForm";
 import StaffOnly from "./utils/StaffOnlyWrapper";
+import UserManagement from "./pages/userManagement";
 
 export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
@@ -45,7 +46,7 @@ export default function App() {
 
   useEffect(() => {
     if (userid && userid !== "")
-      getUserInfo(userid).then((res) => {
+      getUserData(userid).then((res) => {
         dispatch(setUserData(res?.data));
       });
   }, [userid]);
@@ -72,6 +73,7 @@ export default function App() {
                   path="/edit-landing-page"
                   element={<LandingPageModification />}
                 />
+                <Route path="/usermanagement" element={<UserManagement />} />
               </Route>
             </Route>
           </Route>

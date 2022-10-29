@@ -8,6 +8,8 @@ const initialState = {
   popUpMsg: "",
   segData: {},
   recData: {},
+  userDetail: {},
+  viewUserDetail: false,
   page: "dashboard",
   errCatch: false,
   errMessage: "",
@@ -44,6 +46,12 @@ export const runnerConfigSlice = createSlice({
     },
     setRecData: (state, action) => {
       state.recData = action.payload;
+    },
+    setUserDetail: (state, action) => {
+      state.userDetail = action.payload;
+    },
+    setViewUserDetail: (state, action) => {
+      state.viewUserDetail = action.payload;
     },
     setPage: (state, action) => {
       state.page = action.payload;
@@ -87,6 +95,8 @@ export const {
   setPopUpMsg,
   setSegData,
   setRecData,
+  setUserDetail,
+  setViewUserDetail,
   setPage,
   setErrMessage,
   setErrCatch,

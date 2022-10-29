@@ -7,129 +7,83 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-  deleteRekonstruksi,
-  deleteSegmentasi,
-  listRekonstruksi,
-  listSegmentasi,
+  deleteSuggestionData,
+  getSuggestionList,
+  getUserList,
 } from "../utils/api";
 import {
   setErrCatch,
   setErrMessage,
   setErrSeverity,
-  setModel,
-  setRecData,
-  setResultImages,
-  setSegData,
-  setShowGalery,
-  setShowModel,
-  setSourceImages,
+  setPopUpHeader,
+  setPopUpMsg,
+  setUserDetail,
+  setViewUserDetail,
 } from "../redux/runnerConfig";
 import { Button, Skeleton, Stack, Typography } from "@mui/material";
+import { setPopUp } from "../redux/userConfig";
 
-function DataTable({ title }) {
+function AdminTable({ type }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [loading, setLoading] = React.useState(true);
-  const userid = useSelector((state) => state.userConfig.userid);
-  const userData = useSelector((state) => state.userConfig.userData);
-  const segData = useSelector((state) => state.runnerConfig.segData);
-  const recData = useSelector((state) => state.runnerConfig.recData);
+  const [suggestions, setSuggestions] = React.useState(10);
+  const [userList, setUserList] = React.useState([]);
   const skeletonArray = Array(5).fill("");
   const dispatch = useDispatch();
 
-  const loadSegData = (userid, institution, status) => {
+  const loadSuggestions = () => {
     if (loading)
-      listSegmentasi(userid, institution, status).then((res) => {
-        dispatch(setSegData(res?.data));
+      getSuggestionList().then((res) => {
+        setSuggestions(res);
         setLoading(false);
       });
   };
 
-  const deleteSegData = (id) => {
-    deleteSegmentasi(id).then((res) => {
+  const deleteSugestion = (id) => {
+    deleteSuggestionData(id).then((res) => {
       if (res.status === 204) {
         dispatch(setErrSeverity("success"));
-        dispatch(setErrMessage(`Segmentasi dengan ID ${id} berhasil di Hapus`));
+        dispatch(setErrMessage(`Data Berhasil di Hapus`));
         dispatch(setErrCatch(true));
         setLoading(true);
       }
     });
   };
 
-  const loadRecData = (userid, institution) => {
+  const loadUserList = () => {
     if (loading)
-      listRekonstruksi(userid, institution).then((res) => {
-        dispatch(setRecData(res?.data));
+      getUserList().then((res) => {
+        console.log(res.data);
+        setUserList(res.data);
         setLoading(false);
       });
-  };
-
-  const deleteRecData = (id) => {
-    deleteRekonstruksi(id).then((res) => {
-      if (res.status === 204) {
-        dispatch(setErrSeverity("success"));
-        dispatch(
-          setErrMessage(`Rekonstruksi dengan ID ${id} berhasil di Hapus`)
-        );
-        dispatch(setErrCatch(true));
-        setLoading(true);
-      }
-    });
   };
 
   React.useEffect(() => {
-    if (userid !== "" && userData !== {}) {
-      {
-        title === "Segmentasi"
-          ? loadSegData(userid, userData?.institution, "SUCCESS")
-          : loadRecData(userid, userData?.institution);
-      }
-    }
+    type === "Saran" ? loadSuggestions() : loadUserList();
   }, [loading]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleShow = (images) => {
-    const soureList = [];
-    const resultList = [];
-    images.forEach((image) => {
-      soureList.push({
-        original: image.images,
-        originalHeight: 448,
-        originalWidth: 448,
-      });
-      resultList.push({
-        original: image.result,
-        originalHeight: 448,
-        originalWidth: 448,
-      });
-    });
-    dispatch(setSourceImages(soureList));
-    dispatch(setResultImages(resultList));
-    dispatch(setShowGalery(true));
+  const showSugestion = (header, text) => {
+    dispatch(setPopUpHeader(header));
+    dispatch(setPopUpMsg(text));
+    dispatch(setPopUp(true));
   };
 
-  const handleRender = (files) => {
-    dispatch(setModel(files[0].files));
-    dispatch(setShowModel(true));
+  const showUserDetail = (row) => {
+    dispatch(setViewUserDetail(true));
+    dispatch(setUserDetail(row));
   };
 
-  const SegmentationTableHead = (
-    <TableRow>
-      <TableCell align="center">No.</TableCell>
-      <TableCell align="center">Project {title} ID</TableCell>
-      <TableCell align="center">Jumlah Citra</TableCell>
-      <TableCell align="center">Status</TableCell>
-      <TableCell align="center">Waktu</TableCell>
-      <TableCell align="center">Hasil</TableCell>
-    </TableRow>
-  );
+  const SuggestionTableHead = ["No.", "User", "Subjek", "Opsi"];
 
-  const SegmentationTableBody = segData?.results?.map((row, index) => (
+  const SuggestionTableBody = suggestions?.results?.map((row, index) => (
     <TableRow
       key={row.id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -138,15 +92,9 @@ function DataTable({ title }) {
         {index + 1}
       </TableCell>
       <TableCell align="center" className="textContainer">
-        {row.id}
+        {row.user.username}
       </TableCell>
-      <TableCell align="center" className="textContainer">
-        {String(row.images).split(",").length}
-      </TableCell>
-      <TableCell align="center">{row.status}</TableCell>
-      <TableCell align="center">
-        {row.createdate.split(".")[0].replace("T", " ")}
-      </TableCell>
+      <TableCell align="center">{row.subject}</TableCell>
       <TableCell align="center">
         <Stack
           direction={"row"}
@@ -157,14 +105,14 @@ function DataTable({ title }) {
           <Button
             variant="contained"
             size="small"
-            onClick={() => handleShow(row.images)}
+            onClick={() => showSugestion(row.subject, row.text)}
           >
             Lihat
           </Button>
           <Button
             variant="contained"
             size="small"
-            onClick={() => deleteSegData(row.id)}
+            onClick={() => deleteSugestion(row.id)}
             sx={{
               color: "white",
               backgroundColor: "orange",
@@ -181,16 +129,9 @@ function DataTable({ title }) {
     </TableRow>
   ));
 
-  const ReconstructionTableHead = (
-    <TableRow>
-      <TableCell align="center">No.</TableCell>
-      <TableCell align="center">Project {title} ID</TableCell>
-      <TableCell align="center">Waktu</TableCell>
-      <TableCell align="center">Hasil</TableCell>
-    </TableRow>
-  );
+  const UserTableHead = ["No.", "Username", "Email", "Login", "Staff", "Opsi"];
 
-  const ReconstructionTableBody = recData?.results?.map((row, index) => (
+  const UserTableBody = userList?.results?.map((row, index) => (
     <TableRow
       key={row.id}
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -199,11 +140,13 @@ function DataTable({ title }) {
         {index + 1}
       </TableCell>
       <TableCell align="center" className="textContainer">
-        {row.id}
+        {row.username}
       </TableCell>
+      <TableCell align="center">{row.email}</TableCell>
       <TableCell align="center">
-        {row.createdate.split(".")[0].replace("T", " ")}
+        {row.last_login.split(".")[0].replace("T", " ")}
       </TableCell>
+      <TableCell align="center">{String(row.is_staff)}</TableCell>
       <TableCell align="center">
         <Stack
           direction={"row"}
@@ -214,24 +157,9 @@ function DataTable({ title }) {
           <Button
             variant="contained"
             size="small"
-            onClick={() => handleRender(row.files)}
+            onClick={() => showUserDetail(row)}
           >
             Lihat
-          </Button>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => deleteRecData(row.id)}
-            sx={{
-              color: "white",
-              backgroundColor: "orange",
-              "&:hover": {
-                color: "white",
-                backgroundColor: "red",
-              },
-            }}
-          >
-            Hapus
           </Button>
         </Stack>
       </TableCell>
@@ -259,50 +187,60 @@ function DataTable({ title }) {
         fontFamily={"montserrat"}
         p={1}
       >
-        Data {title}
+        Data {type}
       </Typography>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
-            {title === "Segmentasi"
-              ? SegmentationTableHead
-              : ReconstructionTableHead}
+            <TableRow>
+              {type === "Saran"
+                ? SuggestionTableHead.map((each, index) => (
+                    <TableCell key={index} align="center">
+                      {each}
+                    </TableCell>
+                  ))
+                : UserTableHead.map((each, index) => (
+                    <TableCell key={index} align="center">
+                      {each}
+                    </TableCell>
+                  ))}
+            </TableRow>
           </TableHead>
           <TableBody>
             {loading ? (
               <>
                 {skeletonArray.map((_, index) => (
                   <TableRow key={index}>
-                    {title === "Segmentasi" ? skeletonRows(6) : skeletonRows(4)}
+                    {type === "Saran" ? skeletonRows(4) : skeletonRows(5)}
                   </TableRow>
                 ))}
               </>
             ) : (
               <>
-                {title === "Segmentasi" ? (
+                {type === "Saran" ? (
                   <>
-                    {segData?.count === 0 ? (
+                    {suggestions?.count === 0 ? (
                       <TableRow>
-                        <TableCell align="center" colSpan={6}>
+                        <TableCell align="center" colSpan={4}>
                           Belum ada data yang dapat ditampilkan, silahkan
-                          melakukan Segmentasi
+                          mengisi Kritik dan Saran
                         </TableCell>
                       </TableRow>
                     ) : (
-                      SegmentationTableBody
+                      SuggestionTableBody
                     )}
                   </>
                 ) : (
                   <>
-                    {recData?.count === 0 ? (
+                    {userList?.count === 0 ? (
                       <TableRow>
                         <TableCell align="center" colSpan={4}>
                           Belum ada data yang dapat ditampilkan, silahkan
-                          melakukan Rekonstruksi
+                          mengisi Kritik dan Saran
                         </TableCell>
                       </TableRow>
                     ) : (
-                      ReconstructionTableBody
+                      UserTableBody
                     )}
                   </>
                 )}
@@ -313,11 +251,11 @@ function DataTable({ title }) {
       </TableContainer>
       {!loading ? (
         <>
-          {title === "Segmentasi" ? (
+          {type === "Saran" ? (
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={segData.count}
+              count={suggestions.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -327,7 +265,7 @@ function DataTable({ title }) {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={recData.count}
+              count={userList.count}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -340,4 +278,4 @@ function DataTable({ title }) {
   );
 }
 
-export default DataTable;
+export default AdminTable;

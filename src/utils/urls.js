@@ -1,9 +1,13 @@
 /* eslint-disable no-undef */
 export const baseURL = () => `http://localhost:8000`;
 
-export const userInfoUrl = (id) => `/api/users/${id}/`;
+export const userListUrl = () => `/api/users/`;
 
-export const groupInfoUrl = (id) => `/api/group/${id}/`;
+export const userObjectUrl = (id) => `/api/users/${id}/`;
+
+export const groupListUrl = () => `/api/group//`;
+
+export const groupObjectUrl = (id) => `/api/group/${id}/`;
 
 export const JWTAuthenticateUrl = () => `/api/token/`;
 
