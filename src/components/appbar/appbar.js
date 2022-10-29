@@ -9,7 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import { IconContext } from "react-icons";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { Avatar, Button, Grid } from "@mui/material";
-import { IoChevronDown, IoSettingsOutline } from "react-icons/io5";
+import { IoChevronDown } from "react-icons/io5";
 import Stack from "@mui/system/Stack";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -135,21 +135,9 @@ export default function TopAppBar() {
                   "aria-labelledby": "IconButton",
                 }}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleSignOut}>Logout</MenuItem>
               </Menu>
             </div>
-            <Link to={"/pengaturan"}>
-              <IconButton
-                aria-label="settings"
-                size="small"
-                edge="end"
-                color="inherit"
-              >
-                <IoSettingsOutline />
-              </IconButton>
-            </Link>
           </Stack>
         ) : (
           <Stack direction="row" alignItems="center" spacing={1}>

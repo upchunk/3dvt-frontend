@@ -176,128 +176,131 @@ export default function LandingPageSectionForm() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>Judul</Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <FormControl fullWidth>
-              <TextField
-                className="white soften"
-                size="small"
-                type="string"
-                variant="outlined"
-                value={requestBody.title}
-                sx={{ marginBottom: 1 }}
-                onChange={(e) =>
-                  setRequestBody({ ...requestBody, title: e.target.value })
-                }
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>
-              Konten / Isi Paragraf
-            </Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <FormControl fullWidth>
-              <TextField
-                className="white soften"
-                size="small"
-                multiline
-                type="string"
-                variant="outlined"
-                value={requestBody.content}
-                sx={{ marginBottom: 1 }}
-                onChange={(e) =>
-                  setRequestBody({
-                    ...requestBody,
-                    content: e.target.value,
-                  })
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>Gambar</Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <Stack
-              direction={"row"}
-              spacing={{ xs: 2, md: 4 }}
-              alignItems="center"
-            >
-              {requestBody.image ? (
-                <img
-                  width="200px"
-                  src={requestBody.image}
-                  alt="Image Preview"
-                />
-              ) : null}
-              {image ? (
-                <>
-                  <DoubleArrowIcon fontSize="large" />
-                  <img width="200px" src={imageURL} alt="image" />
-                  <Button
-                    variant="contained"
-                    component="label"
-                    onClick={emptyImage}
-                    sx={{
-                      "&:hover": {
-                        backgroundColor: "orange",
-                      },
-                    }}
-                  >
-                    Batalkan
-                  </Button>
-                </>
-              ) : (
-                <Stack spacing={1}>
-                  <Button variant="contained" component="label">
-                    Pilih Gambar Baru
-                    <input
-                      hidden
-                      accept="image/*"
-                      type="file"
-                      onChange={handleImage}
+          {requestBody.section && requestBody.section !== "" ? (
+            <>
+              <Grid item xs={2}>
+                <Typography fontFamily={"montserrat"}>Judul</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <FormControl fullWidth>
+                  <TextField
+                    className="white soften"
+                    size="small"
+                    type="string"
+                    variant="outlined"
+                    value={requestBody.title}
+                    sx={{ marginBottom: 1 }}
+                    onChange={(e) =>
+                      setRequestBody({ ...requestBody, title: e.target.value })
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={2}>
+                <Typography fontFamily={"montserrat"}>
+                  Konten / Isi Paragraf
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <FormControl fullWidth>
+                  <TextField
+                    className="white soften"
+                    size="small"
+                    multiline
+                    type="string"
+                    variant="outlined"
+                    value={requestBody.content}
+                    sx={{ marginBottom: 1 }}
+                    onChange={(e) =>
+                      setRequestBody({
+                        ...requestBody,
+                        content: e.target.value,
+                      })
+                    }
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={2}>
+                <Typography fontFamily={"montserrat"}>Gambar</Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <Stack
+                  direction={"row"}
+                  spacing={{ xs: 2, md: 4 }}
+                  alignItems="center"
+                >
+                  {requestBody.image ? (
+                    <img
+                      width="200px"
+                      src={requestBody.image}
+                      alt="Image Preview"
                     />
-                  </Button>
-                  <Button
-                    variant="contained"
-                    component="label"
-                    onClick={deleteImage}
-                  >
-                    Hapus Gambar
-                  </Button>
+                  ) : null}
+                  {image ? (
+                    <>
+                      <DoubleArrowIcon fontSize="large" />
+                      <img width="200px" src={imageURL} alt="image" />
+                      <Button
+                        variant="contained"
+                        component="label"
+                        onClick={emptyImage}
+                        sx={{
+                          "&:hover": {
+                            backgroundColor: "orange",
+                          },
+                        }}
+                      >
+                        Batalkan
+                      </Button>
+                    </>
+                  ) : (
+                    <Stack spacing={1}>
+                      <Button variant="contained" component="label">
+                        Pilih Gambar Baru
+                        <input
+                          hidden
+                          accept="image/*"
+                          type="file"
+                          onChange={handleImage}
+                        />
+                      </Button>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        onClick={deleteImage}
+                      >
+                        Hapus Gambar
+                      </Button>
+                    </Stack>
+                  )}
                 </Stack>
-              )}
-            </Stack>
-          </Grid>
-          <Grid item xs={2}>
-            <Typography fontFamily={"montserrat"}>
-              Keyword Argument (JSON)
-            </Typography>
-          </Grid>
-          <Grid item xs={10}>
-            <FormControl fullWidth>
-              <TextField
-                className="white soften"
-                size="small"
-                multiline
-                type="string"
-                variant="outlined"
-                value={JSON.stringify(requestBody.kwargs, null, 2)}
-                sx={{ marginBottom: 1 }}
-                onChange={(e) =>
-                  setRequestBody({
-                    ...requestBody,
-                    kwargs: JSON.parse(e.target.value),
-                  })
-                }
-              />
-            </FormControl>
-          </Grid>
+              </Grid>
+              <Grid item xs={2}>
+                <Typography fontFamily={"montserrat"}>
+                  Keyword Argument (JSON)
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <FormControl fullWidth>
+                  <TextField
+                    className="white soften"
+                    size="small"
+                    multiline
+                    type="string"
+                    variant="outlined"
+                    value={JSON.stringify(requestBody.kwargs, null, 2)}
+                    sx={{ marginBottom: 1 }}
+                    onChange={(e) =>
+                      setRequestBody({
+                        ...requestBody,
+                        kwargs: JSON.parse(e.target.value),
+                      })
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </>
+          ) : null}
         </Grid>
       </CardContent>
       <CardActions>
