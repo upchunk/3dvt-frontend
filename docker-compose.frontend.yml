@@ -1,0 +1,5 @@
+services:
+  nginx:
+    image: "${NGINX_IMAGE}"
+    ports:
+      - 80:80

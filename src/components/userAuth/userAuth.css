@@ -1,0 +1,26 @@
+.white {
+  color: black;
+  background-color: white;
+}
+
+.soften {
+  border-radius: 5px;
+}
+
+.headerFont {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+  text-align: center;
+  padding: 5%;
+}
+
+.logo {
+  width: 150px;
+  margin: 10px 50px 20px 50px;
+}
+
+.linkText {
+  text-decoration: none;
+}

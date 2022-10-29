@@ -1,0 +1,73 @@
+name: Continuous Integration and Delivery
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+env:
+  NGINX_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/app_nginx
+
+jobs:
+
+  build:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v3
+      - name: Set environment variables
+        run: |
+          echo "NGINX_IMAGE=$(echo ${{env.NGINX_IMAGE}} )" >> $GITHUB_ENV
+      - name: Log in to GitHub Packages
+        run: echo ${PERSONAL_ACCESS_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
+        env:
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - name: Pull images
+        run: |
+          docker pull ${{ env.NGINX_IMAGE }} || true
+      - name: Build images
+        run: |
+          docker-compose -f docker-compose.ci.yml build
+      - name: Push images
+        run: |
+          docker push ${{ env.NGINX_IMAGE }}
+  
+  deploy:
+    name: Deploy to DigitalOcean
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v3
+      - name: Add environment variables to .env
+        run: |
+          echo "NGINX_IMAGE=${{ env.NGINX_IMAGE }}" >> .env
+          echo "NAMESPACE=${{ secrets.NAMESPACE }}" >> .env
+          echo "PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }}" >> .env
+      - name: Add the private SSH key to the ssh-agent
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
+      - name: Deploy env file and docker file to remote Host
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.frontend.yml root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/home/prabu/app
+      - name: Build and deploy images to DigitalOcean
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}
+          username: root
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            cd /home/prabu/app
+            source .env
+            docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
+            docker pull $NGINX_IMAGE
+            docker-compose -f docker-compose.frontend.yml up -d

@@ -1,38 +1,141 @@
-.App {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Montserrat", "Roboto", sans-serif;
+}
+
+#root html {
+  background-color: #ffffff;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.vspace-2px {
+  margin-top: 0.2vh;
+  margin-bottom: 0.2vh;
+}
+
+.vspace-2vh {
+  margin: 2vh 0;
+}
+
+.vspace-1vh {
+  margin: 1vh 0;
+}
+
+.hspace-1vw {
+  margin: 0 0.5vw;
+}
+
+.bottom-1vh {
+  margin-bottom: 1vh;
+}
+
+.right-1vw {
+  margin-right: 1vw;
+}
+
+.inline-spacing {
+  display: grid;
+  grid-auto-flow: column;
+  grid-column-gap: 1vw;
+}
+
+.flex-container {
+  display: flex;
+  padding: 2vh 1vw;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: x-large;
+  flex-direction: column;
+}
+
+.center-text {
+  display: flex;
   text-align: center;
+  flex-direction: row;
+  font-size: medium;
+  justify-content: center;
+  align-items: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.spotlight {
+  align-items: center;
+  justify-content: flex-start;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.wrap-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-height: max-content;
+  max-width: max-content;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.wrap-col {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-height: max-content;
+  max-width: max-content;
+}
+
+.reversed-row {
+  display: flex;
+  flex-direction: row-reverse;
+  max-width: 100%;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.textContainer {
+  display: block;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btnContainer {
+  display: block;
+  white-space: nowrap;
+}
+
+.textRow {
+  display: flex;
+  margin: 1vh;
+  justify-content: center;
+}
+
+.centerText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardRow {
+  padding-bottom: 20px;
+}
+
+.top {
+  padding-top: 0px;
+}
+
+.col {
+  flex-direction: column;
+  max-width: 100%;
+  align-items: flex-start;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+  align-items: center;
 }

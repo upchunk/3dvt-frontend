@@ -1,0 +1,10 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      cache_from:
+        - "${NGINX_IMAGE}"
+    image: "${NGINX_IMAGE}"
+    ports:
+      - 80:80
