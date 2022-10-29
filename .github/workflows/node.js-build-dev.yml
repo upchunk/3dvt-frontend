@@ -2,7 +2,7 @@ name: Continuous Integration and Delivery
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "develop", "debug"]
   pull_request:
     branches: [ "develop" ]
 
