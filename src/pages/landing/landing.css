@@ -25,6 +25,13 @@
   margin: auto;
 }
 
+.publication {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 .researcher {
   display: flex;
   align-items: center;

@@ -9,17 +9,18 @@ export default function Publication({ title, link }) {
   };
 
   return (
-    <Card sx={{ maxWidth: 400, position: "relative" }}>
+    <Card sx={{ maxWidth: "100%", position: "relative" }}>
       <CardActions>
-        <Box padding="1vh 0.5vw">
+        <Box padding="0.5vh 0.5vw">
           <Button onClick={openInNewTab}>
             <Typography
               variant="p"
               color="black"
-              maxWidth={300}
-              whiteSpace={"nowrap"}
-              overflow={"hidden"}
-              textOverflow={"ellipsis"}
+              maxWidth="300px"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              textAlign={"center"}
             >
               {title}
             </Typography>

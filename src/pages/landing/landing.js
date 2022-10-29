@@ -271,19 +271,16 @@ export default function Landing() {
               >
                 {each.title}
               </Typography>
-              <Grid container spacing={2} justifyContent={"center"}>
+              <Grid container spacing={3} justifyContent={"center"}>
                 {publicationList.map((each) => (
                   <Grid
                     item
                     key={each.id}
-                    xs={6}
-                    sm={4}
-                    md={3}
+                    xs={12}
+                    md={6}
+                    xl={4}
                     className="publication"
-                    display={"flex"}
                     flexDirection={{ xs: "row", sm: "column" }}
-                    justifyContent={"center"}
-                    alignItems={"center"}
                   >
                     <Publication title={each.name} link={each.link} />
                   </Grid>
@@ -322,10 +319,7 @@ export default function Landing() {
                     sm={6}
                     md={4}
                     className="researcher"
-                    display={"flex"}
                     flexDirection={{ xs: "row", sm: "column" }}
-                    justifyContent={"center"}
-                    alignItems={"center"}
                   >
                     <a href={each.link} target="_blank" rel="noreferrer">
                       <Avatar
