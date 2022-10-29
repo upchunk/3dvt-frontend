@@ -281,6 +281,17 @@ export async function getSectionData(section) {
     });
 }
 
+export async function deleteSectionData(section) {
+  return await axios
+    .delete(url.SectionObjectUrl(section))
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
 export async function updateSectionData(section, data) {
   return await axios
     .patch(url.SectionObjectUrl(section), data, {
@@ -288,6 +299,17 @@ export async function updateSectionData(section, data) {
         "Content-Type": "multipart/form-data",
       },
     })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function updateSectionDataJSON(section, data) {
+  return await axios
+    .patch(url.SectionObjectUrl(section), data)
     .then((response) => {
       return response;
     })
@@ -340,6 +362,17 @@ export async function updateResearcherData(id, data) {
         "Content-Type": "multipart/form-data",
       },
     })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      ErrorViewer(error);
+    });
+}
+
+export async function updateResearcherDataJSON(id, data) {
+  return await axios
+    .patch(url.ResearcherObjectUrl(id), data)
     .then((response) => {
       return response;
     })

@@ -19,6 +19,7 @@ import {
   getResearcherList,
   postResearcherData,
   updateResearcherData,
+  updateResearcherDataJSON,
 } from "../../utils/api";
 import { Stack } from "@mui/system";
 import { useDispatch } from "react-redux";
@@ -52,13 +53,7 @@ export default function ResearchersForm() {
     kwargs: "",
   };
 
-  const [requestBody, setRequestBody] = React.useState({
-    id: "",
-    name: "",
-    link: "",
-    avatar: "",
-    kwargs: "",
-  });
+  const [requestBody, setRequestBody] = React.useState(defaultBody);
 
   const handleChange = (event) => {
     if (mode !== event.target.value) {
@@ -158,6 +153,27 @@ export default function ResearchersForm() {
           )
         );
         dispatch(setErrCatch(true));
+        loadData();
+      }
+    });
+  }
+
+  async function deleteAvatar() {
+    setAvatar(null);
+    setRequestBody({ ...requestBody, avatar: null });
+    const data = {
+      avatar: null,
+    };
+    await updateResearcherDataJSON(requestBody.id, data).then((res) => {
+      if (res.status === 200) {
+        dispatch(setErrSeverity("success"));
+        dispatch(
+          setErrMessage(
+            `Data ${toHeaderCase(requestBody.id)} Berhasil di Update`
+          )
+        );
+        dispatch(setErrCatch(true));
+        setRequestBody({ ...requestBody, defaultBody });
         loadData();
       }
     });
@@ -284,15 +300,24 @@ export default function ResearchersForm() {
                       </Button>
                     </>
                   ) : (
-                    <Button variant="contained" component="label">
-                      Pilih Avatar Baru
-                      <input
-                        hidden
-                        accept="image/*"
-                        type="file"
-                        onChange={handleAvatar}
-                      />
-                    </Button>
+                    <Stack spacing={1}>
+                      <Button variant="contained" component="label">
+                        Pilih Avatar Baru
+                        <input
+                          hidden
+                          accept="image/*"
+                          type="file"
+                          onChange={handleAvatar}
+                        />
+                      </Button>
+                      <Button
+                        variant="contained"
+                        component="label"
+                        onClick={deleteAvatar}
+                      >
+                        Hapus Avatar
+                      </Button>
+                    </Stack>
                   )}
                 </Stack>
               </Grid>
