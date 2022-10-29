@@ -103,9 +103,9 @@ export default function PersistentDrawerLeft() {
     });
   };
 
-  const aboutPage = () => {
+  const toChangePassword = () => {
     setAnchorEl(null);
-    navigate("/");
+    navigate("/ubahpassword");
   };
 
   const toolbar = (
@@ -160,8 +160,8 @@ export default function PersistentDrawerLeft() {
                 "aria-labelledby": "IconButton",
               }}
             >
+              <MenuItem onClick={toChangePassword}>Ubah Password</MenuItem>
               <MenuItem onClick={handleSignOut}>Logout</MenuItem>
-              <MenuItem onClick={aboutPage}>Tentang 3DVT</MenuItem>
             </Menu>
           </div>
         </Stack>
@@ -172,7 +172,7 @@ export default function PersistentDrawerLeft() {
   const drawer = (
     <>
       <DrawerHeader>
-        <Link to={"/dashboard"}>
+        <Link to={"/"}>
           <img src={logo} alt="3DVT" width="100"></img>
         </Link>
       </DrawerHeader>

@@ -9,13 +9,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { postSuggestionData } from "../../utils/api";
+import { postSuggestionData } from "../utils/api";
 import { useDispatch } from "react-redux";
 import {
   setErrCatch,
   setErrMessage,
   setErrSeverity,
-} from "../../redux/runnerConfig";
+} from "../redux/runnerConfig";
 import { Stack } from "@mui/system";
 export default function SuggestionForm() {
   const dispatch = useDispatch();

@@ -21,6 +21,7 @@ import LihatSaran from "./pages/lihatSaran";
 import LandingPageModification from "./pages/landingPageForm";
 import StaffOnly from "./utils/StaffOnlyWrapper";
 import UserManagement from "./pages/userManagement";
+import ChangePasswordPage from "./pages/authPage/changePassword";
 
 export default function App() {
   const userid = useSelector((state) => state.userConfig.userid);
@@ -75,6 +76,10 @@ export default function App() {
                 />
                 <Route path="/usermanagement" element={<UserManagement />} />
               </Route>
+              <Route
+                path="/ubahpassword"
+                element={<ChangePasswordPage page={"Ubah Password"} />}
+              />
             </Route>
           </Route>
           <Route element={<TopAppBar />}>
