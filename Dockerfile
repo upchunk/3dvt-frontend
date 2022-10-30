@@ -23,7 +23,10 @@ ENV PUID=1000
 ENV PGID=1000
 ENV TZ=Asia/Jakarta
 ENV URL=3dvtusg.com
+ENV SUBDOMAINS=www
 ENV VALIDATION=http
+ENV EMAIL=prabuega55@gmail.com
+ENV STAGING=true
 
 COPY --from=builder /react/build /var/www/react
 CMD ["nginx", "-g", "daemon off;"]
