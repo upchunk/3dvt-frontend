@@ -19,5 +19,11 @@ RUN npm run build
 # Nginx image for serving the assets
 FROM linuxserver/swag:latest
 
+ENV PUID=1000
+ENV PGID=1000
+ENV TZ=Asia/Jakarta
+ENV URL=3dvtusg.com
+ENV VALIDATION=http
+
 COPY --from=builder /react/build /var/www/react
 CMD ["nginx", "-g", "daemon off;"]

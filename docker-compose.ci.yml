@@ -6,12 +6,6 @@ services:
       cache_from:
         - "${NGINX_IMAGE}"
     image: "${NGINX_IMAGE}"
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Jakarta
-      - URL='3dvtusg.com'
-      - VALIDATION=http
     volumes:
       - ./nginx_conf:/config
     ports:

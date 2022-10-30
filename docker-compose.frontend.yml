@@ -1,5 +1,15 @@
 services:
   nginx:
     image: "${NGINX_IMAGE}"
+    volumes:
+      - ./nginx_conf:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+      - URL=3dvtusg.com
+      - VALIDATION=http
     ports:
+      - 443:443
       - 80:80
+    restart: unless-stopped
