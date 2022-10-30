@@ -58,7 +58,9 @@ jobs:
       - name: Deploy env file and docker file to remote Host
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.frontend.yml ./init-letsencrypt.sh root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/home/prabu/app
+        run: |
+          scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.frontend.yml ./init-letsencrypt.sh root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/home/prabu/app
+          scp  -o StrictHostKeyChecking=no -rx ./init-letsencrypt.sh root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/home/prabu/app
       - name: Build and deploy images to DigitalOcean
         uses: appleboy/ssh-action@master
         with:
