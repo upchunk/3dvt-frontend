@@ -17,10 +17,7 @@ RUN npm run build
 
 # Stage 2
 # Nginx image for serving the assets
-FROM nginx:stable-alpine
-
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx_conf/nginx.conf /etc/nginx/conf.d
+FROM linuxserver/swag:latest
 
 COPY --from=builder /react/build /var/www/react
 CMD ["nginx", "-g", "daemon off;"]

@@ -8,3 +8,22 @@ services:
     image: "${NGINX_IMAGE}"
     ports:
       - 80:80
+  swag:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+      - URL=3dvtusg.com
+      - SUBDOMAINS=wildcard
+      - VALIDATION=http
+    volumes:
+      - ./nginx_conf:/config
+    ports:
+      - 443:443
+      - 80:80
+    restart: unless-stopped
