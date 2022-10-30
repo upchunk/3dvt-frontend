@@ -29,4 +29,3 @@ ENV EMAIL=prabuega55@gmail.com
 ENV STAGING=true
 
 COPY --from=builder /react/build /var/www/react
-CMD ["nginx", "-g", "daemon off;"]
