@@ -24,8 +24,6 @@ jobs:
         run: echo ${PERSONAL_ACCESS_TOKEN} | docker login ghcr.io -u ${{ secrets.NAMESPACE }} --password-stdin
         env:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-      - name: Set Certbot Staging
-        run: echo "STAGING=1" >> $GITHUB_ENV
       - name: Pull images
         run: |
           docker pull ${{ env.NGINX_IMAGE }} || true
@@ -61,6 +59,8 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.frontend.yml ./init-letsencrypt.sh root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/home/prabu/app
+      - name: Set Certbot Staging
+        run: echo "STAGING=1" >> $GITHUB_ENV
       - name: Build and deploy images to DigitalOcean
         uses: appleboy/ssh-action@master
         with:
