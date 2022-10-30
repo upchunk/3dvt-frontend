@@ -3,6 +3,7 @@
 FROM node:lts-alpine AS builder
 WORKDIR /react
 ENV PATH /react/node_modules/.bin:$PATH
+ENV MODE='server'
 COPY package.json ./
 COPY package-lock.json ./
 
