@@ -29,6 +29,6 @@ ENV EMAIL=prabuega55@gmail.com
 ENV STAGING=false
 
 # Copy server configuration to SWAG conf folder
-COPY ./nginx/site-confs/default.conf /config/nginx/site-confs/default.conf
+COPY ./nginx/default.conf /config/nginx/site-confs/default.conf
 # Copy React App Build folder to SWAF www folder
 COPY --from=builder /react/build /config/www/react

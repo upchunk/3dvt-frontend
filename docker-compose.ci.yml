@@ -6,8 +6,6 @@ services:
       cache_from:
         - "${NGINX_IMAGE}"
     image: "${NGINX_IMAGE}"
-    volumes:
-      - ./nginx_conf:/config
     ports:
       - 443:443
       - 80:80
