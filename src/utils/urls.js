@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-export const baseURL = () => `http://localhost:8000`;
+export const baseURL = () => process.env.DOMAIN ? `http://localhost:8000`: `https://3dvtusg.com:8000`;
 
 export const userListUrl = () => `/api/users/`;
 
