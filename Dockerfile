@@ -30,5 +30,5 @@ ENV STAGING=false
 
 # Copy server configuration to SWAG conf folder
 COPY ./nginx/default.conf /config/nginx/site-confs/default.conf
-# Copy React App Build folder to SWAF www folder
+# Copy React App Build folder to SWAG www folder
 COPY --from=builder /react/build /config/www/react

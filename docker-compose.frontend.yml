@@ -1,8 +1,6 @@
 services:
   nginx:
     image: "${NGINX_IMAGE}"
-    volumes:
-      - ./nginx_conf:/config
     environment:
       - PUID=1000
       - PGID=1000
