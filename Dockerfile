@@ -3,7 +3,7 @@
 FROM node:lts-alpine AS builder
 WORKDIR /react
 ENV PATH /react/node_modules/.bin:$PATH
-ENV MODE='server'
+ENV MODE=''
 COPY package.json ./
 COPY package-lock.json ./
 
@@ -24,7 +24,7 @@ ENV PUID=1000
 ENV PGID=1000
 ENV TZ=Asia/Jakarta
 ENV URL=3dvtusg.com
-ENV SUBDOMAINS=www,api
+ENV SUBDOMAINS=www
 ENV VALIDATION=http
 ENV EMAIL=prabuega55@gmail.com
 ENV STAGING=false
