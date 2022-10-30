@@ -69,6 +69,7 @@ jobs:
           script: |
             cd /home/prabu/app
             source .env
+            chmod +x ./init-letsencrypt.sh
             docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
             docker pull $NGINX_IMAGE
             ./init-letsencrypt.sh
