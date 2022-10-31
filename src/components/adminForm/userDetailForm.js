@@ -342,7 +342,7 @@ export default function UserDetailForm() {
                   disabled
                   type="datetime-local"
                   variant="outlined"
-                  value={requestBody.date_joined.slice(0, 16)}
+                  value={String(requestBody.date_joined).slice(0, 16)}
                   sx={{ marginBottom: 1 }}
                 />
               </FormControl>
@@ -358,7 +358,7 @@ export default function UserDetailForm() {
                   disabled
                   type="datetime-local"
                   variant="outlined"
-                  value={requestBody.last_login.slice(0, 16)}
+                  value={String(requestBody.last_login).slice(0, 16)}
                   sx={{ marginBottom: 1 }}
                 />
               </FormControl>
