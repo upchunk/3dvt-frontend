@@ -58,7 +58,8 @@ jobs:
       - name: Deploy env file and docker file to remote Host
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.frontend.yml root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/home/prabu/app
+        run: |
+          scp  -o StrictHostKeyChecking=no -r ./.env ./docker-compose.frontend.yml root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/home/prabu/app
       - name: Build and deploy images to DigitalOcean
         uses: appleboy/ssh-action@master
         with:
@@ -68,6 +69,7 @@ jobs:
           script: |
             cd /home/prabu/app
             source .env
+            chmod +x ./init-letsencrypt.sh
             docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
             docker pull $NGINX_IMAGE
             docker-compose -f docker-compose.frontend.yml up -d
