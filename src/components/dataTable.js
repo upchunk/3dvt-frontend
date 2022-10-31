@@ -48,11 +48,10 @@ function DataTable({ title }) {
   };
 
   const loadSegData = (userid, institution, status) => {
-    if (loading)
-      listSegmentasi(userid, institution, status).then((res) => {
-        dispatch(setSegData(res?.data));
-        setLoading(false);
-      });
+    listSegmentasi(userid, institution, status).then((res) => {
+      dispatch(setSegData(res?.data));
+      setLoading(false);
+    });
   };
 
   const deleteSegData = (id) => {
@@ -67,11 +66,10 @@ function DataTable({ title }) {
   };
 
   const loadRecData = (userid, institution) => {
-    if (loading)
-      listRekonstruksi(userid, institution).then((res) => {
-        dispatch(setRecData(res?.data));
-        setLoading(false);
-      });
+    listRekonstruksi(userid, institution).then((res) => {
+      dispatch(setRecData(res?.data));
+      setLoading(false);
+    });
   };
 
   const deleteRecData = (id) => {
@@ -88,13 +86,11 @@ function DataTable({ title }) {
   };
 
   React.useEffect(() => {
-    if (userid !== "" && userData !== {}) {
-      {
+    if (userid !== "" && userData !== {})
+      if (loading)
         title === "Segmentasi"
           ? loadSegData(userid, userData?.institution, "SUCCESS")
           : loadRecData(userid, userData?.institution);
-      }
-    }
   }, [loading]);
 
   const handleChangePage = (event, newPage) => {
@@ -153,7 +149,7 @@ function DataTable({ title }) {
       </TableCell>
       <TableCell align="center">{row.status}</TableCell>
       <TableCell align="center">
-        {row.createdate.split(".")[0].replace("T", " ")}
+        {String(row.createdate).split(".")[0].replace("T", " ")}
       </TableCell>
       <TableCell align="center">
         <Stack
@@ -210,7 +206,7 @@ function DataTable({ title }) {
         {row.id}
       </TableCell>
       <TableCell align="center">
-        {row.createdate.split(".")[0].replace("T", " ")}
+        {String(row.createdate).split(".")[0].replace("T", " ")}
       </TableCell>
       <TableCell align="center">
         <Stack

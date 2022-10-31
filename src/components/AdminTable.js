@@ -43,11 +43,10 @@ function AdminTable({ type }) {
   };
 
   const loadSuggestions = () => {
-    if (loading)
-      getSuggestionList().then((res) => {
-        setSuggestions(res);
-        setLoading(false);
-      });
+    getSuggestionList().then((res) => {
+      setSuggestions(res);
+      setLoading(false);
+    });
   };
 
   const deleteSugestion = (id) => {
@@ -62,15 +61,14 @@ function AdminTable({ type }) {
   };
 
   const loadUserList = () => {
-    if (loading)
-      getUserList().then((res) => {
-        setUserList(res.data);
-        setLoading(false);
-      });
+    getUserList().then((res) => {
+      setUserList(res.data);
+      setLoading(false);
+    });
   };
 
   React.useEffect(() => {
-    type === "Saran" ? loadSuggestions() : loadUserList();
+    if (loading) type === "Saran" ? loadSuggestions() : loadUserList();
   }, [loading]);
 
   const handleChangePage = (event, newPage) => {
@@ -151,7 +149,7 @@ function AdminTable({ type }) {
       </TableCell>
       <TableCell align="center">{row.email}</TableCell>
       <TableCell align="center">
-        {row.last_login.split(".")[0].replace("T", " ")}
+        {String(row.last_login).split(".")[0].replace("T", " ")}
       </TableCell>
       <TableCell align="center">{String(row.is_staff)}</TableCell>
       <TableCell align="center">
