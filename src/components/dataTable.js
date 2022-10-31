@@ -39,13 +39,6 @@ function DataTable({ title }) {
   const dispatch = useDispatch();
 
   const skeletonArray = Array(5).fill("");
-  const skeletonRows = (num) => {
-    Array(num).fill(
-      <TableCell key- component="th" scope="row" align="center">
-        <Skeleton />
-      </TableCell>
-    );
-  };
 
   const loadSegData = (userid, institution, status) => {
     listSegmentasi(userid, institution, status).then((res) => {
@@ -269,7 +262,28 @@ function DataTable({ title }) {
               <>
                 {skeletonArray.map((_, index) => (
                   <TableRow key={index}>
-                    {title === "Segmentasi" ? skeletonRows(6) : skeletonRows(4)}
+                    <TableCell component="th" scope="row" align="center">
+                      <Skeleton />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton />
+                    </TableCell>
+                    {title === "Segmentasi" ? (
+                      <>
+                        <TableCell align="center">
+                          <Skeleton />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Skeleton />
+                        </TableCell>
+                      </>
+                    ) : null}
                   </TableRow>
                 ))}
               </>

@@ -34,13 +34,6 @@ function AdminTable({ type }) {
   const dispatch = useDispatch();
 
   const skeletonArray = Array(5).fill("");
-  const skeletonRows = (num) => {
-    Array(num).fill(
-      <TableCell component="th" scope="row" align="center">
-        <Skeleton />
-      </TableCell>
-    );
-  };
 
   const loadSuggestions = () => {
     getSuggestionList().then((res) => {
@@ -208,7 +201,28 @@ function AdminTable({ type }) {
               <>
                 {skeletonArray.map((_, index) => (
                   <TableRow key={index}>
-                    {type === "Saran" ? skeletonRows(4) : skeletonRows(5)}
+                    <TableCell component="th" scope="row" align="center">
+                      <Skeleton />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Skeleton />
+                    </TableCell>
+                    {type === "Saran" ? null : (
+                      <>
+                        <TableCell align="center">
+                          <Skeleton />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Skeleton />
+                        </TableCell>
+                      </>
+                    )}
                   </TableRow>
                 ))}
               </>
