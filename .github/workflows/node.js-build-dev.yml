@@ -72,4 +72,4 @@ jobs:
             chmod +x ./init-letsencrypt.sh
             docker login ghcr.io -u $NAMESPACE -p $PERSONAL_ACCESS_TOKEN
             docker pull $NGINX_IMAGE
-            docker-compose -f docker-compose.frontends.yml up -d
+            docker-compose -f docker-compose.frontend.yml up -d
