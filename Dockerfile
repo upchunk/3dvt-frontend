@@ -24,6 +24,6 @@ COPY nginx/default.conf /etc/nginx/conf.d
 
 COPY --from=builder /react/build /var/www/react
 
-# Copy Policy Privacy and TO pages
+# Copy Policy Privacy and TOC pages
 COPY additional_pages/privacy.html /var/www/react
-COPY additional_pages/to.html /var/www/react
+COPY additional_pages/toc.html /var/www/react
