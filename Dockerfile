@@ -23,3 +23,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/default.conf /etc/nginx/conf.d
 
 COPY --from=builder /react/build /var/www/react
+
+# Copy Policy Privacy and TO pages
+COPY additional_pages/privacy.html /var/www/react
+COPY additional_pages/to.html /var/www/react
